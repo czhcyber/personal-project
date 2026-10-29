@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Tactics Board — Football Tactics Board</title>
+  <meta name="description" content="An interactive football tactics board: drag players, arrange formations and draw moves.">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Football Tactics Board">
+  <meta property="og:title" content="Tactics Board">
+  <meta property="og:description" content="Drag players, arrange formations and draw moves on an interactive pitch.">
+  <meta property="og:url" content="https://czhcyber.github.io/personal-project/board.html">
+  <meta property="og:image" content="https://czhcyber.github.io/personal-project/assets/img/og-image.png">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header" id="site-header"></header>
+
+  <main id="main">
+    <div class="container">
+      <header class="hero" style="border-bottom:0;padding-bottom:1.2rem;">
+        <p class="eyebrow">The board</p>
+        <h1>Tactics Board</h1>
+        <p class="lead">Drag the players, pick a formation, and draw the moves with arrows.</p>
+      </header>
+
+      <section class="section" aria-label="Interactive tactics board">
+        <div class="board-layout">
+          <!-- ============ PITCH ============ -->
+          <div class="pitch-wrap">
+            <svg id="pitch" class="pitch" viewBox="0 0 720 460" role="img" aria-label="Football pitch with draggable players">
+              <defs>
+                <pattern id="stripes" width="72" height="460" patternUnits="userSpaceOnUse">
+                  <rect width="36" height="460" fill="rgba(255,255,255,0.045)"/>
+                  <rect x="36" width="36" height="460" fill="rgba(0,0,0,0.05)"/>
+                </pattern>
+                <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#f0b429"/>
+                </marker>
+              </defs>
+
+              <!-- grass -->
+              <rect width="720" height="460" fill="#2c7a43"/>
+              <rect width="720" height="460" fill="url(#stripes)"/>
+
+              <!-- markings -->
+              <rect class="pitch-line" x="20" y="20" width="680" height="420"/>
+              <line class="pitch-line" x1="360" y1="20" x2="360" y2="440"/>
+              <circle class="pitch-line" cx="360" cy="230" r="55"/>
+              <circle class="pitch-spot" cx="360" cy="230" r="3"/>
+
+              <rect class="pitch-line" x="20" y="120" width="110" height="220"/>
+              <rect class="pitch-line" x="590" y="120" width="110" height="220"/>
+              <rect class="pitch-line" x="20" y="175" width="44" height="110"/>
+              <rect class="pitch-line" x="656" y="175" width="44" height="110"/>
+              <circle class="pitch-spot" cx="96" cy="230" r="3"/>
+              <circle class="pitch-spot" cx="624" cy="230" r="3"/>
+              <path class="pitch-line" d="M130 187 A55 55 0 0 1 130 273"/>
+              <path class="pitch-line" d="M590 187 A55 55 0 0 0 590 273"/>
+
+              <!-- goals -->
+              <rect class="pitch-line" x="6" y="200" width="14" height="60"/>
+              <rect class="pitch-line" x="700" y="200" width="14" height="60"/>
+
+              <!-- dynamic layers (filled by board.js) -->
+              <g id="arrows"></g>
+              <g id="players"></g>
+            </svg>
+          </div>
+
+          <!-- ============ SIDEBAR ============ -->
+          <aside class="board-sidebar">
+            <div class="panel">
+              <h3>Tool</h3>
+              <div class="mode-row">
+                <button class="chip" data-mode="move" type="button">👆 Move</button>
+                <button class="chip" data-mode="arrow" type="button">➡️ Arrow</button>
+                <button class="chip" data-mode="erase" type="button">🧹 Erase</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>Formation</h3>
+              <div class="formation-row">
+                <button class="chip" data-formation="4-3-3" type="button">4-3-3</button>
+                <button class="chip" data-formation="4-4-2" type="button">4-4-2</button>
+                <button class="chip" data-formation="3-5-2" type="button">3-5-2</button>
+                <button class="chip" data-formation="4-2-3-1" type="button">4-2-3-1</button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3>Board</h3>
+              <div class="action-row">
+                <button class="button" data-save type="button">Save</button>
+                <button class="button" data-reset type="button">Reset</button>
+                <button class="button" data-clear-arrows type="button">Clear arrows</button>
+              </div>
+              <p class="hint" data-saved style="margin-top:0.6rem;color:var(--accent);"></p>
+            </div>
+
+            <div class="panel">
+              <h3>Selected player</h3>
+              <div class="selected-info" data-selected>
+                <span class="hint">Click a player to select them.</span>
+              </div>
+              <div class="number-field">
+                <label for="number-input" class="hint">Number</label>
+                <input id="number-input" type="text" inputmode="numeric" maxlength="2" data-number-input placeholder="—">
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <p class="hint" data-hint style="margin-top:1rem;">Drag a player to move them. Click to select.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+  <script src="assets/js/nav.js" defer></script>
+  <script src="assets/js/board.js" defer></script>
+</body>
+</html>

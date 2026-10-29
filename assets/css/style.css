@@ -1,0 +1,373 @@
+/* ============================================================================
+   Football Tactics Board — main stylesheet
+   ----------------------------------------------------------------------------
+   Theme:   dark neutral UI + a bright green pitch, two team colours
+   Stack:   plain CSS (no framework), custom properties for the design tokens
+   Layout:  mobile-first; the board page switches to a two-column layout
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. Design tokens
+--------------------------------------------------------------------------- */
+:root {
+  /* Backgrounds (neutral dark) */
+  --bg:            #0e1317;
+  --bg-soft:       #141a1f;
+  --surface:       #1a2127;
+  --surface-raised:#232c34;
+  --border:        #2b353e;
+  --border-strong: #3a4752;
+
+  /* Text */
+  --text:          #e9eef1;
+  --text-muted:    #9aa6af;
+  --text-faint:    #74808a;
+
+  /* Accent — football green */
+  --accent:        #3dd06b;
+  --accent-strong: #2aa854;
+  --accent-soft:   rgba(61, 208, 107, 0.12);
+  --accent-border: rgba(61, 208, 107, 0.35);
+
+  /* Arrow / highlight colour */
+  --warn:          #f0b429;
+
+  /* The two teams */
+  --team-a:        #e0524d;   /* red */
+  --team-b:        #4d8de0;   /* blue */
+
+  /* Fonts — clean, modern, no serif */
+  --font:          system-ui, -apple-system, "Segoe UI", Roboto,
+                   "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono:     "SF Mono", Consolas, "Cascadia Code", Menlo, monospace;
+
+  --radius:        10px;
+  --radius-lg:     16px;
+  --container:     1080px;
+  --nav-h:         64px;
+}
+
+/* ---------------------------------------------------------------------------
+   2. Reset
+--------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg { max-width: 100%; display: block; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  margin: 0 0 0.5em;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: clamp(1.9rem, 4.5vw, 2.6rem); }
+h2 { font-size: clamp(1.35rem, 3vw, 1.75rem); margin-top: 1.6em; }
+h3 { font-size: 1.12rem; }
+h4 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+
+p { margin: 0 0 1.1em; }
+code, kbd {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.1em 0.4em;
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+   3. Layout container
+--------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+main { display: block; padding-bottom: 4rem; }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0;
+  background: var(--accent); color: #07110b;
+  padding: 0.6em 1em; z-index: 100;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------------------------------------------------------------------------
+   4. Header + navigation (injected by assets/js/nav.js)
+--------------------------------------------------------------------------- */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(14, 19, 23, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; min-height: var(--nav-h);
+}
+.brand {
+  display: flex; align-items: center; gap: 0.55rem;
+  font-weight: 700; font-size: 1.05rem; color: var(--text); white-space: nowrap;
+}
+.brand:hover { text-decoration: none; }
+.brand-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--accent-soft); border: 1px solid var(--accent-border);
+  display: grid; place-items: center; font-size: 0.9rem;
+}
+
+.site-nav ul {
+  display: flex; flex-wrap: wrap; gap: 0.2rem 1rem;
+  list-style: none; margin: 0; padding: 0;
+}
+.site-nav a {
+  display: block; padding: 0.35rem 0.4rem;
+  color: var(--text-muted); font-size: 0.95rem;
+  border-bottom: 2px solid transparent;
+}
+.site-nav a:hover { color: var(--text); text-decoration: none; }
+.site-nav a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); }
+
+.nav-toggle {
+  display: none;
+  background: var(--surface-raised); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); padding: 0.4rem 0.6rem;
+  cursor: pointer; font-size: 1.2rem; line-height: 1;
+}
+
+/* ---------------------------------------------------------------------------
+   5. Hero
+--------------------------------------------------------------------------- */
+.hero {
+  padding: 3.2rem 0 2.2rem;
+  border-bottom: 1px solid var(--border);
+  background:
+    radial-gradient(900px 360px at 75% -10%, rgba(61, 208, 107, 0.12), transparent 60%),
+    var(--bg);
+}
+.hero .eyebrow {
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+.hero h1 { margin-bottom: 0.4rem; }
+.hero .lead { font-size: 1.15rem; color: var(--text-muted); max-width: 640px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+
+/* ---------------------------------------------------------------------------
+   6. Sections
+--------------------------------------------------------------------------- */
+.section { padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: 0; }
+.section-alt { background: var(--bg-soft); }
+.section-head { max-width: 720px; margin-bottom: 1.5rem; }
+.section-head .sub { color: var(--text-muted); margin: 0; }
+
+/* ---------------------------------------------------------------------------
+   7. Buttons + chips
+--------------------------------------------------------------------------- */
+.button {
+  display: inline-block; padding: 0.6em 1.2em;
+  border-radius: var(--radius); border: 1px solid var(--accent-border);
+  background: var(--accent-soft); color: var(--accent);
+  font-size: 0.95rem; cursor: pointer; font-family: inherit;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.button:hover { background: rgba(61, 208, 107, 0.2); text-decoration: none; }
+.button-primary { background: var(--accent); border-color: var(--accent); color: #07110b; font-weight: 700; }
+.button-primary:hover { background: var(--accent-strong); }
+
+.chip {
+  padding: 0.45rem 0.9rem; border-radius: 99px;
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text-muted); cursor: pointer; font-size: 0.9rem; font-family: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+.chip:hover { border-color: var(--accent-border); color: var(--text); }
+.chip.is-active { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
+
+/* ---------------------------------------------------------------------------
+   8. Cards + grids
+--------------------------------------------------------------------------- */
+.card-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.4rem 1.5rem;
+}
+.card h3 { margin-top: 0; }
+.card p:last-child { margin-bottom: 0; }
+.card .card-icon { font-size: 1.7rem; margin: 0 0 0.5rem; }
+
+/* ---------------------------------------------------------------------------
+   9. Tables
+--------------------------------------------------------------------------- */
+.table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+th, td { text-align: left; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+th { color: var(--accent); font-weight: 700; border-bottom: 2px solid var(--border-strong); }
+tbody tr:hover { background: var(--surface); }
+
+/* ---------------------------------------------------------------------------
+   10. Callout
+--------------------------------------------------------------------------- */
+.callout {
+  border-left: 3px solid var(--accent); background: var(--accent-soft);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 0.9rem 1.1rem; margin: 1.4rem 0;
+}
+.callout strong { color: var(--text); }
+
+/* ---------------------------------------------------------------------------
+   11. Tactics board layout
+--------------------------------------------------------------------------- */
+.board-layout {
+  display: grid; grid-template-columns: 1fr; gap: 1.2rem;
+  align-items: start;
+}
+
+.pitch-wrap {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 0.75rem;
+}
+.pitch {
+  width: 100%; height: auto; border-radius: 8px;
+  background: #2c7a43;                 /* fallback grass green */
+  touch-action: none;                  /* stop the page scrolling while dragging */
+}
+
+/* Pitch markings */
+.pitch-line { stroke: rgba(255, 255, 255, 0.85); fill: none; stroke-width: 1.6; }
+.pitch-spot { fill: rgba(255, 255, 255, 0.9); }
+
+/* Players */
+.player { cursor: grab; }
+.player:active { cursor: grabbing; }
+.player circle { stroke: rgba(0, 0, 0, 0.45); stroke-width: 1.5; }
+.player text {
+  fill: #fff; font-size: 11px; font-weight: 700;
+  text-anchor: middle; dominant-baseline: central;
+  pointer-events: none; user-select: none;
+}
+.player.is-selected circle { stroke: #fff; stroke-width: 3; }
+.team-a circle { fill: var(--team-a); }
+.team-b circle { fill: var(--team-b); }
+
+/* Arrows */
+.arrow { stroke: var(--warn); stroke-width: 3; fill: none; pointer-events: stroke; cursor: pointer; }
+.arrow:hover { stroke: #fff; }
+
+/* Board sidebar (toolbar + selected-player info) */
+.board-sidebar { display: grid; gap: 1rem; }
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.2rem 1.3rem;
+}
+.panel h3 {
+  margin-top: 0; font-size: 0.95rem;
+  text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted);
+}
+.mode-row, .formation-row, .action-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.selected-info { min-height: 2.5rem; color: var(--text-muted); }
+.selected-info strong { color: var(--text); }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 0.4rem; vertical-align: baseline; }
+.swatch.team-a { background: var(--team-a); }
+.swatch.team-b { background: var(--team-b); }
+
+.number-field { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.8rem; }
+.number-field input {
+  width: 4.5rem; padding: 0.4rem 0.5rem;
+  background: var(--surface-raised); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 1rem; font-family: var(--font-mono);
+}
+.number-field input:focus { outline: 2px solid var(--accent); border-color: var(--accent); }
+
+.hint { color: var(--text-faint); font-size: 0.88rem; }
+
+/* ---------------------------------------------------------------------------
+   12. Formations page
+--------------------------------------------------------------------------- */
+.formation-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 1.2rem 1.3rem;
+}
+.formation-card .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.6rem 0 0.8rem; }
+.formation-card .tags span {
+  font-size: 0.8rem; color: var(--text-muted);
+  border: 1px solid var(--border); border-radius: 6px; padding: 0.15rem 0.5rem;
+}
+
+/* ---------------------------------------------------------------------------
+   13. Footer
+--------------------------------------------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--border); background: var(--bg-soft);
+  padding: 2.5rem 0; font-size: 0.92rem; color: var(--text-muted);
+}
+.footer-inner { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.site-footer h2 { font-size: 1rem; color: var(--text); margin-top: 0; }
+.site-footer ul { list-style: none; margin: 0; padding: 0; }
+.site-footer li { margin: 0.3rem 0; }
+.site-footer a { color: var(--text-muted); }
+.site-footer a:hover { color: var(--accent); }
+.footer-bottom {
+  margin-top: 2rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+  color: var(--text-faint); font-size: 0.85rem;
+}
+
+/* ---------------------------------------------------------------------------
+   14. Scroll reveal (only when JavaScript is running)
+--------------------------------------------------------------------------- */
+.js .reveal {
+  opacity: 0; transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+/* ---------------------------------------------------------------------------
+   15. Responsive
+--------------------------------------------------------------------------- */
+@media (min-width: 760px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+  .footer-inner { grid-template-columns: 2fr 1fr; }
+}
+
+@media (min-width: 960px) {
+  .board-layout { grid-template-columns: 1fr 260px; }
+}
+
+@media (max-width: 759px) {
+  .nav-toggle { display: block; }
+  .site-nav {
+    display: none; position: absolute; left: 0; right: 0; top: var(--nav-h);
+    background: var(--bg-soft); border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.25rem 1.25rem;
+  }
+  .site-nav.is-open { display: block; }
+  .site-nav ul { flex-direction: column; gap: 0.2rem; }
+  .site-nav a { padding: 0.55rem 0.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
+}
