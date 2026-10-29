@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find your drink — Refreshments</title>
+<meta name="description" content="Answer a few quick questions and find the classic drink that fits your mood.">
+<meta name="theme-color" content="#f5f5f7">
+
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Refreshments">
+<meta property="og:title" content="Find your drink — Refreshments">
+<meta property="og:description" content="Answer a few quick questions and find your drink.">
+<meta property="og:url" content="https://czhcyber.github.io/personal-project/quiz.html">
+<meta property="og:image" content="https://czhcyber.github.io/personal-project/assets/img/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Refreshments</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-menu" id="nav-menu" aria-label="Main">
+      <a href="index.html">Home</a>
+      <a href="products.html">Products</a>
+      <a href="about.html">About</a>
+      <a href="quiz.html" aria-current="page">Find your drink</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section" aria-labelledby="page-title">
+    <div class="container">
+      <h1 class="section-title" id="page-title">Which one is yours?</h1>
+      <p class="section-sub">Answer a couple of quick questions and we'll point you to the right can.</p>
+
+      <div class="quiz" id="quiz">
+        <p class="quiz-progress" id="quiz-progress" aria-live="polite"></p>
+        <h2 class="quiz-question" id="quiz-question"></h2>
+        <div class="quiz-options" id="quiz-options"></div>
+        <div class="quiz-result" id="quiz-result" hidden></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-big">Refreshments</p>
+    <div class="footer-bottom">
+      <p class="footer-note">Student project · Not affiliated with The Coca-Cola Company. Product names belong to their respective owners.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/js/app.js" defer></script>
+</body>
+</html>

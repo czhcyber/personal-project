@@ -3,21 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>English Scenes — Learn Everyday English</title>
-<meta name="description" content="Learn everyday English through three real scenes — the airport, the café and the campus.">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Refreshments — The classic drinks, reimagined</title>
+<meta name="description" content="A concept showcase of the Coca-Cola Company's classic drinks — Coca-Cola, Sprite, Fanta, Minute Maid and Coca-Cola Cherry — in a clean, modern light.">
+<meta name="theme-color" content="#f5f5f7">
 
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/img/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="English Scenes">
-<meta property="og:title" content="English Scenes — Learn Everyday English">
-<meta property="og:description" content="Learn everyday English through three real scenes.">
+<meta property="og:site_name" content="Refreshments">
+<meta property="og:title" content="Refreshments — The classic drinks, reimagined">
+<meta property="og:description" content="A concept showcase of the Coca-Cola Company's classic drinks.">
 <meta property="og:url" content="https://czhcyber.github.io/personal-project/">
 <meta property="og:image" content="https://czhcyber.github.io/personal-project/assets/img/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -26,49 +23,106 @@
 </head>
 <body>
 
-<section class="hero" id="hero">
-  <header class="nav">
-    <a href="index.html" class="logo"><i class="logo-mark"></i><b>English</b><span>Scenes</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html" aria-current="page">Home</a></li>
-      <li><a href="airport.html">Airport</a></li>
-      <li><a href="cafe.html">Café</a></li>
-      <li><a href="campus.html">Campus</a></li>
-      <li><a href="collection.html">Collection</a></li>
-    </ul>
-  </header>
-
-  <h1 class="headline">
-    <span>Learn</span>
-    <span>Everyday</span>
-    <span>English</span>
-  </h1>
-
-  <nav class="dots" aria-label="Scenes">
-    <a class="dot" href="airport.html" aria-label="Airport"></a>
-    <a class="dot" href="cafe.html" aria-label="Café"></a>
-    <a class="dot" href="campus.html" aria-label="Campus"></a>
-  </nav>
-
-  <p class="tagline">Master the<br>English you <strong>use.</strong></p>
-
-  <div class="cta-row">
-    <a href="airport.html" class="cta">Start Learning</a>
-    <span class="cta-line"></span>
-    <span class="count" aria-hidden="true">03</span>
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Refreshments</span>
+    </a>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="nav-menu" id="nav-menu" aria-label="Main">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="products.html">Products</a>
+      <a href="about.html">About</a>
+      <a href="quiz.html">Find your drink</a>
+    </nav>
   </div>
+</header>
 
-  <div class="loader" id="loader">Loading</div>
-</section>
+<main>
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1 class="hero-title">Every classic.<br>One collection.</h1>
+      <p class="hero-sub">Coca-Cola, Sprite, Fanta, Minute Maid — the drinks you know, presented in a clean, modern light.</p>
+      <a href="products.html" class="btn btn-primary">Browse the collection</a>
+    </div>
 
-<script>
-// Fade the loading hint once the font is ready (or after a short fallback).
-function hideLoader() {
-  var el = document.getElementById('loader');
-  if (el) el.classList.add('done');
-}
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(hideLoader);
-setTimeout(hideLoader, 1200);
-</script>
+    <div class="hero-lineup">
+      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/coke.jpg" alt="Coca-Cola" loading="lazy"></a>
+      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/sprite.jpg" alt="Sprite" loading="lazy"></a>
+      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/fanta.jpg" alt="Fanta" loading="lazy"></a>
+      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/minute-maid.jpg" alt="Minute Maid" loading="lazy"></a>
+      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/cherry.jpg" alt="Coca-Cola Cherry" loading="lazy"></a>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="featured-title">
+    <div class="container">
+      <h2 class="section-title" id="featured-title">Featured</h2>
+      <p class="section-sub">A few of the classics. Tap a card to see the full story.</p>
+
+      <div class="grid grid-3">
+        <article class="card fade" data-product="coke" tabindex="0" role="button" aria-haspopup="dialog">
+          <div class="card-visual">
+            <img class="p-img" src="assets/img/products/coke.jpg" alt="Coca-Cola glass bottle" loading="lazy">
+          </div>
+          <h3 class="card-name">Coca-Cola<span class="card-zh">可口可乐</span></h3>
+          <p class="card-tagline">The original spark.</p>
+          <span class="card-cta">Learn more →</span>
+        </article>
+
+        <article class="card fade" data-product="sprite" tabindex="0" role="button" aria-haspopup="dialog">
+          <div class="card-visual">
+            <img class="p-img" src="assets/img/products/sprite.jpg" alt="Sprite bottle" loading="lazy">
+          </div>
+          <h3 class="card-name">Sprite<span class="card-zh">雪碧</span></h3>
+          <p class="card-tagline">Crisp lemon-lime clarity.</p>
+          <span class="card-cta">Learn more →</span>
+        </article>
+
+        <article class="card fade" data-product="fanta" tabindex="0" role="button" aria-haspopup="dialog">
+          <div class="card-visual">
+            <img class="p-img" src="assets/img/products/fanta.jpg" alt="Fanta orange can" loading="lazy">
+          </div>
+          <h3 class="card-name">Fanta<span class="card-zh">芬达</span></h3>
+          <p class="card-tagline">Bright, juicy orange.</p>
+          <span class="card-cta">Learn more →</span>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <p class="footer-big">Refreshments</p>
+    <div class="footer-bottom">
+      <p class="footer-note">Student project · Not affiliated with The Coca-Cola Company. Product names belong to their respective owners.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="products.html">Products</a>
+        <a href="about.html">About</a>
+        <a href="quiz.html">Find your drink</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<dialog class="product-dialog" id="product-dialog" aria-labelledby="dlg-name">
+  <div class="dlg-inner">
+    <button class="dlg-close" id="dlg-close" type="button" aria-label="Close">✕</button>
+    <div class="dlg-visual" id="dlg-visual"></div>
+    <div class="dlg-body">
+      <h2 class="dlg-name" id="dlg-name"></h2>
+      <p class="dlg-tagline" id="dlg-tagline"></p>
+      <p class="dlg-desc" id="dlg-desc"></p>
+      <div class="dlg-meters" id="dlg-meters"></div>
+      <ul class="dlg-facts" id="dlg-facts"></ul>
+    </div>
+  </div>
+</dialog>
+
+<script src="assets/js/app.js" defer></script>
 </body>
 </html>
