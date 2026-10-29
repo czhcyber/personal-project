@@ -29,32 +29,95 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span>Refreshments</span>
     </a>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-overlay">
+      <span>Menu</span>
+      <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i></span>
     </button>
-    <nav class="nav-menu" id="nav-menu" aria-label="Main">
-      <a href="index.html" aria-current="page">Home</a>
-      <a href="products.html">Products</a>
-      <a href="about.html">About</a>
-      <a href="quiz.html">Find your drink</a>
-    </nav>
   </div>
 </header>
 
-<main>
-  <section class="hero">
-    <div class="container hero-inner">
-      <h1 class="hero-title">Every classic.<br>One collection.</h1>
-      <p class="hero-sub">Coca-Cola, Sprite, Fanta, Minute Maid — the drinks you know, presented in a clean, modern light.</p>
-      <a href="products.html" class="btn btn-primary">Browse the collection</a>
-    </div>
+<nav class="menu-overlay" id="menu-overlay" aria-label="Main" aria-hidden="true">
+  <div class="container menu-overlay-top">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Refreshments</span>
+    </a>
+    <button class="menu-close" id="menu-close" type="button" aria-label="Close menu">✕</button>
+  </div>
+  <div class="container menu-links">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="products.html">Products</a>
+    <a href="about.html">About</a>
+    <a href="quiz.html">Find your drink</a>
+  </div>
+  <div class="container menu-overlay-foot">
+    <span>Student project · Not affiliated with The Coca-Cola Company.</span>
+  </div>
+</nav>
 
-    <div class="hero-lineup">
-      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/coke.jpg" alt="Coca-Cola" loading="lazy"></a>
-      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/sprite.jpg" alt="Sprite" loading="lazy"></a>
-      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/fanta.jpg" alt="Fanta" loading="lazy"></a>
-      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/minute-maid.jpg" alt="Minute Maid" loading="lazy"></a>
-      <a class="hero-item" href="products.html"><img class="hero-thumb" src="assets/img/products/cherry.jpg" alt="Coca-Cola Cherry" loading="lazy"></a>
+<main>
+  <section class="hero hero-dark" id="hero">
+    <div class="container hero-inner">
+      <h1 class="hero-big">Every classic.<br>One collection.</h1>
+      <div class="hero-tile">
+        <img class="hero-product" src="assets/img/products/coke.jpg" alt="Coca-Cola glass bottle">
+      </div>
+      <a href="products.html" class="btn btn-primary">Explore the lineup</a>
+    </div>
+  </section>
+
+  <section class="band-ink" aria-labelledby="manifesto-title">
+    <div class="container band-grid">
+      <div class="band-lead">
+        <h2 class="manifesto" id="manifesto-title">Every classic<br>starts cold.</h2>
+        <p class="manifesto-sub">Five drinks, one colour, a hundred and forty years of practice.</p>
+      </div>
+      <div class="band-aside">
+        <p class="band-aside-label">In the collection</p>
+        <ul class="band-names">
+          <li><a href="products.html">Coca-Cola</a></li>
+          <li><a href="products.html">Sprite</a></li>
+          <li><a href="products.html">Fanta</a></li>
+          <li><a href="products.html">Minute Maid</a></li>
+          <li><a href="products.html">Coca-Cola Cherry</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="lineup" id="lineup" aria-label="The collection in motion">
+    <div class="lineup-sticky">
+      <div class="container lineup-stage">
+        <div class="lineup-visual">
+          <img class="lineup-img is-active" src="assets/img/products/coke.jpg" alt="Coca-Cola">
+          <img class="lineup-img" src="assets/img/products/sprite.jpg" alt="Sprite">
+          <img class="lineup-img" src="assets/img/products/fanta.jpg" alt="Fanta">
+          <img class="lineup-img" src="assets/img/products/minute-maid.jpg" alt="Minute Maid">
+          <img class="lineup-img" src="assets/img/products/cherry.jpg" alt="Coca-Cola Cherry">
+        </div>
+        <div class="lineup-meta">
+          <p class="lineup-count" id="lineup-count">01 / 05</p>
+          <h2 class="lineup-name" id="lineup-name">Coca-Cola</h2>
+          <p class="lineup-year" id="lineup-year">Since 1886</p>
+          <p class="lineup-tag" id="lineup-tag">The original spark.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-band" aria-labelledby="closeup-title">
+    <div class="container closeup-grid">
+      <div class="closeup-visual">
+        <img class="closeup-img" src="assets/img/products/coke.jpg" alt="Coca-Cola glass bottle">
+      </div>
+      <div class="closeup-meta">
+        <p class="closeup-year">Since 1886</p>
+        <h2 class="closeup-name" id="closeup-title">Coca-Cola</h2>
+        <p class="closeup-tag">The original spark.</p>
+        <div class="dlg-meters" id="closeup-meters"></div>
+        <p class="closeup-served">Best served chilled — over ice.</p>
+        <a href="products.html" class="btn btn-primary">See the full story</a>
+      </div>
     </div>
   </section>
 

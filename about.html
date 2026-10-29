@@ -29,22 +29,36 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span>Refreshments</span>
     </a>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-overlay">
+      <span>Menu</span>
+      <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i></span>
     </button>
-    <nav class="nav-menu" id="nav-menu" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="about.html" aria-current="page">About</a>
-      <a href="quiz.html">Find your drink</a>
-    </nav>
   </div>
 </header>
+
+<nav class="menu-overlay" id="menu-overlay" aria-label="Main" aria-hidden="true">
+  <div class="container menu-overlay-top">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Refreshments</span>
+    </a>
+    <button class="menu-close" id="menu-close" type="button" aria-label="Close menu">✕</button>
+  </div>
+  <div class="container menu-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="about.html" aria-current="page">About</a>
+    <a href="quiz.html">Find your drink</a>
+  </div>
+  <div class="container menu-overlay-foot">
+    <span>Student project · Not affiliated with The Coca-Cola Company.</span>
+  </div>
+</nav>
 
 <main>
   <section class="section" aria-labelledby="page-title">
     <div class="container">
-      <h1 class="lead" id="page-title" style="margin-bottom:0.6em">A century of bubbles, in one clean collection.</h1>
+      <h1 class="page-title" id="page-title">A century of bubbles, in one clean collection.</h1>
       <p class="prose">Refreshments is a concept showcase — a study in how a single design language can frame a family of very different drinks. Each product here belongs to The Coca-Cola Company, one of the world's most recognisable beverage portfolios.</p>
     </div>
   </section>
@@ -56,9 +70,23 @@
         <p class="section-sub">Strip away the noise. Keep one accent, plenty of white space, and let each drink speak for itself.</p>
       </div>
 
-      <div class="fade" style="max-width:680px;margin:0 auto">
+      <div class="fade" style="max-width:680px">
         <p class="prose">The collection spans carbonated classics and real fruit juice — from the original Coca-Cola of 1886 to Minute Maid's orange juice. They share little in flavour, but they share a lineage, and a single, instantly familiar colour.</p>
         <p class="prose">This site reimagines that lineage in Apple's minimalist language: an off-white canvas, one restrained red accent, frosted glass and a grid of quiet product cards. No clutter, no noise — just the drinks.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="collection-title">
+    <div class="container">
+      <h2 class="section-title" id="collection-title">The collection</h2>
+      <p class="section-sub">Five drinks, one colour — from 1886 to today.</p>
+      <div class="strip">
+        <a class="strip-item" href="products.html"><img class="strip-img" src="assets/img/products/coke.jpg" alt="Coca-Cola" loading="lazy"></a>
+        <a class="strip-item" href="products.html"><img class="strip-img" src="assets/img/products/sprite.jpg" alt="Sprite" loading="lazy"></a>
+        <a class="strip-item" href="products.html"><img class="strip-img" src="assets/img/products/fanta.jpg" alt="Fanta" loading="lazy"></a>
+        <a class="strip-item" href="products.html"><img class="strip-img" src="assets/img/products/minute-maid.jpg" alt="Minute Maid" loading="lazy"></a>
+        <a class="strip-item" href="products.html"><img class="strip-img" src="assets/img/products/cherry.jpg" alt="Coca-Cola Cherry" loading="lazy"></a>
       </div>
     </div>
   </section>
@@ -74,6 +102,24 @@
         <div class="timeline-item fade"><span class="timeline-year">2005</span><p>Coca-Cola Zero Sugar proves great taste needs no sugar.</p></div>
         <div class="timeline-item fade"><span class="timeline-year">Today</span><p>The portfolio keeps growing — collected here in one clean lineup.</p></div>
       </div>
+    </div>
+  </section>
+
+  <section class="section section-band" aria-labelledby="built-title">
+    <div class="container">
+      <h2 class="section-title" id="built-title">How it was built</h2>
+      <p class="section-sub">Plain HTML, CSS and JavaScript — nothing that needs a server.</p>
+      <div class="prose">
+        <p>Every page is hand-written HTML with a single stylesheet and one small script. The product grid, the detail dialog and the "Find your drink" quiz are all vanilla JavaScript — no framework, no build step, no database.</p>
+        <p>Product imagery is a set of concept renders made for this study. The five drinks and their names belong to The Coca-Cola Company; this site is an unaffiliated student project.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Get started">
+    <div class="container" style="text-align:center">
+      <p class="lead" style="margin:0 auto 1.5rem">Not sure which to try?</p>
+      <a href="quiz.html" class="btn btn-primary">Find your drink</a>
     </div>
   </section>
 </main>

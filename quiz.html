@@ -29,29 +29,47 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span>Refreshments</span>
     </a>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-overlay">
+      <span>Menu</span>
+      <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i></span>
     </button>
-    <nav class="nav-menu" id="nav-menu" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="products.html">Products</a>
-      <a href="about.html">About</a>
-      <a href="quiz.html" aria-current="page">Find your drink</a>
-    </nav>
   </div>
 </header>
+
+<nav class="menu-overlay" id="menu-overlay" aria-label="Main" aria-hidden="true">
+  <div class="container menu-overlay-top">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Refreshments</span>
+    </a>
+    <button class="menu-close" id="menu-close" type="button" aria-label="Close menu">✕</button>
+  </div>
+  <div class="container menu-links">
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="about.html">About</a>
+    <a href="quiz.html" aria-current="page">Find your drink</a>
+  </div>
+  <div class="container menu-overlay-foot">
+    <span>Student project · Not affiliated with The Coca-Cola Company.</span>
+  </div>
+</nav>
 
 <main>
   <section class="section" aria-labelledby="page-title">
     <div class="container">
       <h1 class="section-title" id="page-title">Which one is yours?</h1>
-      <p class="section-sub">Answer a couple of quick questions and we'll point you to the right can.</p>
+      <p class="section-sub">This is a tiny slice of the collection — three quick questions, one recommendation.</p>
 
       <div class="quiz" id="quiz">
+        <div class="quiz-bar" aria-hidden="true"><span class="quiz-bar-fill" id="quiz-bar-fill"></span></div>
         <p class="quiz-progress" id="quiz-progress" aria-live="polite"></p>
         <h2 class="quiz-question" id="quiz-question"></h2>
         <div class="quiz-options" id="quiz-options"></div>
+        <p class="quiz-hint" id="quiz-hint">Pick one to continue.</p>
+        <button class="quiz-back" id="quiz-back" type="button" hidden>← Back</button>
         <div class="quiz-result" id="quiz-result" hidden></div>
+        <p class="quiz-foot">A small demo — the full lineup lives on the <a href="products.html">products page</a>.</p>
       </div>
     </div>
   </section>

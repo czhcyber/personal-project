@@ -29,17 +29,31 @@
       <span class="brand-mark" aria-hidden="true"></span>
       <span>Refreshments</span>
     </a>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle menu">
-      <span></span><span></span><span></span>
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-overlay">
+      <span>Menu</span>
+      <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i></span>
     </button>
-    <nav class="nav-menu" id="nav-menu" aria-label="Main">
-      <a href="index.html">Home</a>
-      <a href="products.html" aria-current="page">Products</a>
-      <a href="about.html">About</a>
-      <a href="quiz.html">Find your drink</a>
-    </nav>
   </div>
 </header>
+
+<nav class="menu-overlay" id="menu-overlay" aria-label="Main" aria-hidden="true">
+  <div class="container menu-overlay-top">
+    <a href="index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span>Refreshments</span>
+    </a>
+    <button class="menu-close" id="menu-close" type="button" aria-label="Close menu">✕</button>
+  </div>
+  <div class="container menu-links">
+    <a href="index.html">Home</a>
+    <a href="products.html" aria-current="page">Products</a>
+    <a href="about.html">About</a>
+    <a href="quiz.html">Find your drink</a>
+  </div>
+  <div class="container menu-overlay-foot">
+    <span>Student project · Not affiliated with The Coca-Cola Company.</span>
+  </div>
+</nav>
 
 <main>
   <section class="section" aria-labelledby="page-title">
