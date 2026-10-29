@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>English Scenes — Learn Everyday English</title>
-<meta name="description" content="Learn everyday English through three real scenes — the airport, the café and the campus — with a glass 3D hero.">
+<meta name="description" content="Learn everyday English through three real scenes — the airport, the café and the campus.">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -27,471 +27,48 @@
 <body>
 
 <section class="hero" id="hero">
-  <canvas id="scene" aria-label="Rotatable glass cube. Drag to rotate."></canvas>
-  <div class="ui">
-    <h1 class="sr-only">Learn Everyday English</h1>
-    <header class="nav">
-      <a href="index.html" class="logo"><i class="logo-mark"></i><b>English</b><span>Scenes</span></a>
-      <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="airport.html">Airport</a></li>
-        <li><a href="cafe.html">Café</a></li>
-        <li><a href="campus.html">Campus</a></li>
-        <li><a href="collection.html">Collection</a></li>
-      </ul>
-    </header>
-    <div class="arrows">
-      <button class="arrow" id="prev" aria-label="Rotate left">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
-      </button>
-      <button class="arrow" id="next" aria-label="Rotate right">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </button>
-    </div>
-    <nav class="dots" aria-label="Scenes">
-      <button class="dot"></button>
-      <button class="dot active"></button>
-      <button class="dot"></button>
-    </nav>
-    <p class="tagline">Master the<br>English you <strong>use.</strong></p>
-    <div class="cta-row">
-      <a href="airport.html" class="cta">Start Learning</a>
-      <span class="cta-line"></span>
-      <span class="count" aria-hidden="true">03</span>
-    </div>
-    <div class="loader" id="loader">Loading</div>
+  <header class="nav">
+    <a href="index.html" class="logo"><i class="logo-mark"></i><b>English</b><span>Scenes</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html" aria-current="page">Home</a></li>
+      <li><a href="airport.html">Airport</a></li>
+      <li><a href="cafe.html">Café</a></li>
+      <li><a href="campus.html">Campus</a></li>
+      <li><a href="collection.html">Collection</a></li>
+    </ul>
+  </header>
+
+  <h1 class="headline">
+    <span>Learn</span>
+    <span>Everyday</span>
+    <span>English</span>
+  </h1>
+
+  <nav class="dots" aria-label="Scenes">
+    <a class="dot" href="airport.html" aria-label="Airport"></a>
+    <a class="dot" href="cafe.html" aria-label="Café"></a>
+    <a class="dot" href="campus.html" aria-label="Campus"></a>
+  </nav>
+
+  <p class="tagline">Master the<br>English you <strong>use.</strong></p>
+
+  <div class="cta-row">
+    <a href="airport.html" class="cta">Start Learning</a>
+    <span class="cta-line"></span>
+    <span class="count" aria-hidden="true">03</span>
   </div>
+
+  <div class="loader" id="loader">Loading</div>
 </section>
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
-  }
+<script>
+// Fade the loading hint once the font is ready (or after a short fallback).
+function hideLoader() {
+  var el = document.getElementById('loader');
+  if (el) el.classList.add('done');
 }
-</script>
-
-<script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { mergeVertices, mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-
-const MODEL_URL = 'https://motionsites.org/assets/prompt-media/fa96096e78c8153a70d2.glb';
-const canvas = document.getElementById('scene');
-const loaderEl = document.getElementById('loader');
-const Y_AXIS = new THREE.Vector3(0, 1, 0);
-const X_AXIS = new THREE.Vector3(1, 0, 0);
-
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
-renderer.setClearColor(0x000000, 1);
-renderer.outputColorSpace = THREE.SRGBColorSpace;
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 100);
-camera.position.set(0, 0, 10);
-camera.lookAt(0, 0, 0);
-
-const bgScene = new THREE.Scene();
-const mainScene = new THREE.Scene();
-
-const GLASS_VERT = /* glsl */`
-varying vec3 vNormal;
-varying vec3 vEye;
-void main() {
-  vec4 worldPos = modelMatrix * vec4(position, 1.0);
-  vec4 mvPos = viewMatrix * worldPos;
-  gl_Position = projectionMatrix * mvPos;
-  vNormal = normalize(normalMatrix * normal);
-  vEye = normalize(mvPos.xyz);
-}`;
-
-const GLASS_FRAG = /* glsl */`
-precision highp float;
-varying vec3 vNormal;
-varying vec3 vEye;
-uniform sampler2D uTexture;
-uniform vec2 uResolution;
-uniform float uIorR;
-uniform float uIorY;
-uniform float uIorG;
-uniform float uIorC;
-uniform float uIorB;
-uniform float uIorP;
-uniform float uRefractPower;
-uniform float uChromatic;
-uniform float uSaturation;
-uniform float uShininess;
-uniform float uDiffuseness;
-uniform float uFresnelPower;
-uniform vec3 uLight;
-uniform float uBackside;
-
-float specular(vec3 lightVec, vec3 n, vec3 view, float shininess, float diffuseness) {
-  vec3 L = normalize(lightVec);
-  vec3 halfVec = normalize(L + view);
-  return pow(max(dot(n, halfVec), 0.0), shininess) + max(0.0, dot(n, L)) * diffuseness;
-}
-
-void main() {
-  vec2 uv = gl_FragCoord.xy / uResolution;
-  vec3 n = normalize(vNormal);
-  if (uBackside > 0.5) n = -n;
-  vec3 eye = normalize(vEye);
-  vec3 view = -eye;
-
-  const int LOOP = 16;
-  vec3 color = vec3(0.0);
-
-  for (int i = 0; i < LOOP; i++) {
-    float t = float(i) / float(LOOP);
-    float slide = t * 0.045;
-
-    vec3 rr = refract(eye, n, 1.0 / uIorR);
-    vec3 ry = refract(eye, n, 1.0 / uIorY);
-    vec3 rg = refract(eye, n, 1.0 / uIorG);
-    vec3 rc = refract(eye, n, 1.0 / uIorC);
-    vec3 rb = refract(eye, n, 1.0 / uIorB);
-    vec3 rp = refract(eye, n, 1.0 / uIorP);
-
-    vec2 uvR = uv + rr.xy * (uRefractPower + slide * 1.0) * uChromatic;
-    vec2 uvY = uv + ry.xy * (uRefractPower + slide * 1.0) * uChromatic;
-    vec2 uvG = uv + rg.xy * (uRefractPower + slide * 2.0) * uChromatic;
-    vec2 uvC = uv + rc.xy * (uRefractPower + slide * 2.5) * uChromatic;
-    vec2 uvB = uv + rb.xy * (uRefractPower + slide * 3.0) * uChromatic;
-    vec2 uvP = uv + rp.xy * (uRefractPower + slide * 1.0) * uChromatic;
-
-    vec3 tR = texture2D(uTexture, uvR).rgb;
-    vec3 tY = texture2D(uTexture, uvY).rgb;
-    vec3 tG = texture2D(uTexture, uvG).rgb;
-    vec3 tC = texture2D(uTexture, uvC).rgb;
-    vec3 tB = texture2D(uTexture, uvB).rgb;
-    vec3 tP = texture2D(uTexture, uvP).rgb;
-
-    float r = tR.x * 0.5;
-    float y = (tY.x * 2.0 + tY.y * 2.0 - tY.z) / 6.0;
-    float g = tG.y * 0.5;
-    float c = (tC.y * 2.0 + tC.z * 2.0 - tC.x) / 6.0;
-    float b = tB.z * 0.5;
-    float p = (tP.z * 2.0 + tP.x * 2.0 - tP.y) / 6.0;
-
-    float R = r + (2.0 * p + 2.0 * y - c) / 3.0;
-    float G = g + (2.0 * y + 2.0 * c - p) / 3.0;
-    float B = b + (2.0 * c + 2.0 * p - y) / 3.0;
-
-    color += vec3(R, G, B);
-  }
-  color /= float(LOOP);
-
-  float luma = dot(color, vec3(0.2125, 0.7154, 0.0721));
-  color = mix(vec3(luma), color, uSaturation);
-
-  vec3 lightVec = normalize(-uLight);
-  float spec = specular(lightVec, n, view, uShininess, uDiffuseness)
-             + 0.6 * specular(vec3(1.0, 1.0, -1.0), n, view, uShininess * 0.6, uDiffuseness * 0.5);
-  color += spec * (uBackside > 0.5 ? 0.35 : 1.0);
-
-  float f = pow(1.0 + dot(eye, n), uFresnelPower);
-  color = mix(color, vec3(1.0), f * (uBackside > 0.5 ? 0.25 : 0.55));
-
-  color += vec3(0.004, 0.005, 0.007);
-
-  gl_FragColor = vec4(color, 1.0);
-}`;
-
-function makeGlassUniforms(refractPower, backside) {
-  return {
-    uTexture:      { value: null },
-    uResolution:   { value: new THREE.Vector2(1, 1) },
-    uIorR:         { value: 1.15 },
-    uIorY:         { value: 1.16 },
-    uIorG:         { value: 1.18 },
-    uIorC:         { value: 1.22 },
-    uIorB:         { value: 1.22 },
-    uIorP:         { value: 1.22 },
-    uRefractPower: { value: refractPower },
-    uChromatic:    { value: 0.5 },
-    uSaturation:   { value: 1.08 },
-    uShininess:    { value: 90 },
-    uDiffuseness:  { value: 0.02 },
-    uFresnelPower: { value: 5.0 },
-    uLight:        { value: new THREE.Vector3(-1, 1, 1) },
-    uBackside:     { value: backside }
-  };
-}
-
-const backMat = new THREE.ShaderMaterial({
-  uniforms: makeGlassUniforms(0.22, 1),
-  vertexShader: GLASS_VERT, fragmentShader: GLASS_FRAG,
-  side: THREE.BackSide
-});
-const frontMat = new THREE.ShaderMaterial({
-  uniforms: makeGlassUniforms(0.30, 0),
-  vertexShader: GLASS_VERT, fragmentShader: GLASS_FRAG,
-  side: THREE.FrontSide
-});
-
-let headlineTex = null;
-
-const bgQuadMat = new THREE.ShaderMaterial({
-  uniforms: { uTex: { value: null } },
-  vertexShader: /* glsl */`
-    varying vec2 vUv;
-    void main() {
-      vUv = uv;
-      gl_Position = vec4(position.xy, 0.0, 1.0);
-    }`,
-  fragmentShader: /* glsl */`
-    varying vec2 vUv;
-    uniform sampler2D uTex;
-    void main() {
-      gl_FragColor = texture2D(uTex, vUv);
-    }`,
-  depthTest: false,
-  depthWrite: false
-});
-const bgQuad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), bgQuadMat);
-bgQuad.frustumCulled = false;
-bgScene.add(bgQuad);
-
-function drawHeadline(W, H, vw, vh) {
-  const mobile = (vw < 768) || (vw / vh < 1);
-  const cnv = document.createElement('canvas');
-  cnv.width = W; cnv.height = H;
-  const ctx = cnv.getContext('2d');
-  ctx.fillStyle = '#000';
-  ctx.fillRect(0, 0, W, H);
-
-  let fs = Math.min(H * 0.21, W * (mobile ? 0.21 : 0.118));
-  const setFont = () => { ctx.font = '800 ' + fs + 'px Poppins, sans-serif'; };
-  setFont();
-  ctx.fillStyle = '#e9e9e9';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'alphabetic';
-
-  const lines = ['Learn', 'Everyday', 'English'];
-  let widest = 0;
-  lines.forEach((l) => { widest = Math.max(widest, ctx.measureText(l).width); });
-  const maxW = W * (mobile ? 0.9 : 0.5);
-  if (widest > maxW) { fs *= maxW / widest; setFont(); }
-
-  const cx = W * (mobile ? 0.5 : 0.505);
-  const cy = H * (mobile ? 0.45 : 0.468);
-  const gap = fs * 1.07;
-  const cap = fs * 0.7;
-  lines.forEach((l, i) => {
-    const y = cy + cap / 2 + (i - 1) * gap;
-    ctx.fillText(l, cx, y);
-  });
-
-  if (headlineTex) headlineTex.dispose();
-  headlineTex = new THREE.CanvasTexture(cnv);
-  headlineTex.colorSpace = THREE.NoColorSpace;
-  headlineTex.minFilter = THREE.LinearFilter;
-  headlineTex.magFilter = THREE.LinearFilter;
-  headlineTex.generateMipmaps = false;
-  headlineTex.needsUpdate = true;
-  bgQuadMat.uniforms.uTex.value = headlineTex;
-}
-
-const pivot = new THREE.Group();
-const spinner = new THREE.Group();
-pivot.add(spinner);
-mainScene.add(pivot);
-spinner.rotation.set(-0.42, 0.62, 0.18);
-
-let cube = null;
-
-function processGltf(gltf) {
-  const parts = [];
-  gltf.scene.updateMatrixWorld(true);
-  gltf.scene.traverse((obj) => {
-    if (obj.isMesh) {
-      const g = obj.geometry.clone();
-      ['uv', 'color', 'tangent'].forEach((name) => {
-        if (g.getAttribute(name)) g.deleteAttribute(name);
-      });
-      const merged = mergeVertices(g, 1e-4);
-      merged.computeVertexNormals();
-      merged.applyMatrix4(obj.matrixWorld);
-      parts.push(merged);
-    }
-  });
-  const geo = mergeGeometries(parts);
-  geo.computeBoundingBox();
-  const box = geo.boundingBox;
-  const center = box.getCenter(new THREE.Vector3());
-  geo.translate(-center.x, -center.y, -center.z);
-  const size = box.getSize(new THREE.Vector3());
-  const maxDim = Math.max(size.x, size.y, size.z);
-  geo.scale(1 / maxDim, 1 / maxDim, 1 / maxDim);
-  return geo;
-}
-
-function setCubeGeometry(geo) {
-  if (cube) { spinner.remove(cube); cube.geometry.dispose(); }
-  cube = new THREE.Mesh(geo, frontMat);
-  spinner.add(cube);
-}
-
-function loadModel() {
-  new GLTFLoader().load(
-    MODEL_URL,
-    (gltf) => { setCubeGeometry(processGltf(gltf)); loaderEl.classList.add('done'); },
-    undefined,
-    () => { setCubeGeometry(new RoundedBoxGeometry(1, 1, 1, 8, 0.12)); loaderEl.classList.add('done'); }
-  );
-}
-
-let rtBack = null;
-let rtFront = null;
-
-function makeTargets(W, H) {
-  if (rtBack) { rtBack.dispose(); rtFront.dispose(); }
-  rtBack = new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType });
-  rtFront = new THREE.WebGLRenderTarget(W, H, { type: THREE.HalfFloatType });
-  backMat.uniforms.uTexture.value = rtBack.texture;
-  frontMat.uniforms.uTexture.value = rtFront.texture;
-}
-
-function layout() {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const dpr = Math.min(window.devicePixelRatio, 2);
-  const W = Math.max(1, Math.round(vw * dpr));
-  const H = Math.max(1, Math.round(vh * dpr));
-
-  renderer.setPixelRatio(dpr);
-  renderer.setSize(vw, vh, false);
-  camera.aspect = vw / vh;
-  camera.updateProjectionMatrix();
-
-  makeTargets(W, H);
-  backMat.uniforms.uResolution.value.set(W, H);
-  frontMat.uniforms.uResolution.value.set(W, H);
-  drawHeadline(W, H, vw, vh);
-
-  const mobile = (vw < 768) || (vw / vh < 1);
-  const visH = 2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2) * 10;
-  const visW = visH * camera.aspect;
-  const sx = mobile ? 0.5 : 0.517;
-  const sy = mobile ? 0.45 : 0.488;
-  pivot.position.set((sx - 0.5) * visW, (0.5 - sy) * visH, 0);
-  const px = Math.min(vh * 0.44, vw * (mobile ? 0.45 : 0.29));
-  pivot.scale.setScalar((px / vh) * visH);
-}
-
-let dragging = false;
-let lastX = 0, lastY = 0;
-let velX = 0, velY = 0;
-let idleBlend = 0;
-let idleTimer = 0;
-let arrowRemaining = 0;
-
-function applyRot(dx, dy) {
-  const qY = new THREE.Quaternion().setFromAxisAngle(Y_AXIS, dx);
-  const qX = new THREE.Quaternion().setFromAxisAngle(X_AXIS, dy);
-  spinner.quaternion.premultiply(qY).premultiply(qX);
-}
-
-canvas.addEventListener('pointerdown', (e) => {
-  dragging = true;
-  canvas.classList.add('dragging');
-  try { canvas.setPointerCapture(e.pointerId); } catch (_) {}
-  lastX = e.clientX; lastY = e.clientY;
-  velX = 0; velY = 0;
-  arrowRemaining = 0;
-  idleBlend = 0; idleTimer = 0;
-});
-
-canvas.addEventListener('pointermove', (e) => {
-  if (!dragging) return;
-  const dx = (e.clientX - lastX) * 0.008;
-  const dy = (e.clientY - lastY) * 0.008;
-  lastX = e.clientX; lastY = e.clientY;
-  applyRot(dx, dy);
-  velX = dx; velY = dy;
-});
-
-function endDrag(e) {
-  if (!dragging) return;
-  dragging = false;
-  canvas.classList.remove('dragging');
-  try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
-}
-canvas.addEventListener('pointerup', endDrag);
-canvas.addEventListener('pointercancel', endDrag);
-
-document.getElementById('prev').addEventListener('click', () => { velX = velY = 0; arrowRemaining -= Math.PI / 2; });
-document.getElementById('next').addEventListener('click', () => { velX = velY = 0; arrowRemaining += Math.PI / 2; });
-
-document.querySelectorAll('.dot').forEach((dot) => {
-  dot.addEventListener('click', () => {
-    document.querySelectorAll('.dot').forEach((d) => d.classList.remove('active'));
-    dot.classList.add('active');
-  });
-});
-
-let lastTime = performance.now();
-
-function animate(now) {
-  let dt = (now - lastTime) / 1000;
-  lastTime = now;
-  dt = Math.min(dt, 0.05);
-
-  if (Math.abs(arrowRemaining) > 0.0005) {
-    const step = arrowRemaining * Math.min(1, 0.09 * dt * 60);
-    applyRot(step, 0);
-    arrowRemaining -= step;
-    if (Math.abs(arrowRemaining) < 0.0005) arrowRemaining = 0;
-  } else if (!dragging) {
-    if (Math.abs(velX) + Math.abs(velY) > 1e-5) {
-      applyRot(velX, velY);
-      const damp = Math.pow(0.94, dt * 60);
-      velX *= damp; velY *= damp;
-    } else {
-      velX = 0; velY = 0;
-      idleTimer += dt;
-      if (idleTimer > 0.6) idleBlend = Math.min(1, idleBlend + dt);
-      applyRot(0.0035 * idleBlend, 0.0012 * idleBlend);
-    }
-  }
-
-  spinner.updateMatrixWorld(true);
-
-  renderer.setRenderTarget(rtBack);
-  renderer.render(bgScene, camera);
-
-  renderer.setRenderTarget(rtFront);
-  renderer.render(bgScene, camera);
-  renderer.autoClear = false;
-  cube.material = backMat;
-  renderer.render(mainScene, camera);
-  renderer.autoClear = true;
-
-  renderer.setRenderTarget(null);
-  renderer.render(bgScene, camera);
-  renderer.autoClear = false;
-  renderer.clearDepth();
-  cube.material = frontMat;
-  renderer.render(mainScene, camera);
-  renderer.autoClear = true;
-}
-
-/* boot */
-setCubeGeometry(new RoundedBoxGeometry(1, 1, 1, 8, 0.12));
-loadModel();
-window.addEventListener('resize', layout);
-document.fonts.addEventListener('loadingdone', layout);
-
-Promise.race([
-  Promise.all([document.fonts.load('800 100px Poppins'), document.fonts.ready]),
-  new Promise((resolve) => setTimeout(resolve, 2500))
-]).then(() => {
-  layout();
-  renderer.setAnimationLoop(animate);
-});
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(hideLoader);
+setTimeout(hideLoader, 1200);
 </script>
 </body>
 </html>
