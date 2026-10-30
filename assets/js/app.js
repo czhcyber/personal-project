@@ -11,6 +11,9 @@
 (function () {
   "use strict";
 
+  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+  if (hasGsap) { gsap.registerPlugin(ScrollTrigger); }
+
   /* --------------------------------------------------------------------------
      Product details (text + photo path; the artwork is in assets/img/products)
      -------------------------------------------------------------------------- */
@@ -341,16 +344,16 @@
     var el = document.querySelector(".manifesto");
     if (!el) return;
     var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced || !("IntersectionObserver" in window)) {
+    if (reduced || !hasGsap) {
       el.classList.add("is-in");
       return;
     }
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) { el.classList.add("is-in"); io.disconnect(); }
-      });
-    }, { threshold: 0.35 });
-    io.observe(el);
+    ScrollTrigger.create({
+      trigger: el,
+      start: "top 75%",
+      once: true,
+      onEnter: function () { el.classList.add("is-in"); }
+    });
   }
 
   function initCardMeters() {
@@ -375,21 +378,21 @@
     var tile = hero.querySelector(".hero-tile");
     if (!big || !tile) return;
     var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return;
+    if (reduced || !hasGsap) return;
 
-    var ticking = false;
-    function update() {
-      var y = window.scrollY || window.pageYOffset || 0;
-      var h = window.innerHeight || 1;
-      var p = Math.min(1, y / h);
-      big.style.transform = "translate3d(0," + (-y * 0.1) + "px,0)";
-      big.style.opacity = String(Math.max(0, 1 - p));
-      tile.style.transform = "translate3d(0," + (-y * 0.02) + "px,0) scale(" + (1 + p * 0.1) + ")";
-      ticking = false;
-    }
-    window.addEventListener("scroll", function () {
-      if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
-    }, { passive: true });
+    var st = { trigger: hero, start: "top top", end: "bottom top", scrub: true };
+    gsap.to(big, {
+      y: function () { return -window.innerHeight * 0.1; },
+      opacity: 0,
+      ease: "none",
+      scrollTrigger: st
+    });
+    gsap.to(tile, {
+      scale: 1.1,
+      y: function () { return -window.innerHeight * 0.02; },
+      ease: "none",
+      scrollTrigger: st
+    });
   }
 
   /* --------------------------------------------------------------------------
@@ -431,20 +434,31 @@
       }
     }
 
-    function update() {
-      var rect = section.getBoundingClientRect();
-      var h = section.offsetHeight - window.innerHeight;
-      var progress = h > 0 ? (-rect.top) / h : 0;
-      progress = Math.max(0, Math.min(1, progress));
-      var idx = Math.min(DATA.length - 1, Math.floor(progress * DATA.length));
-      setActive(idx);
-      ticking = false;
+    if (hasGsap) {
+      ScrollTrigger.create({
+        trigger: section,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: function (self) {
+          var idx = Math.min(DATA.length - 1, Math.floor(self.progress * DATA.length));
+          setActive(idx);
+        }
+      });
+    } else {
+      var update = function () {
+        var rect = section.getBoundingClientRect();
+        var h = section.offsetHeight - window.innerHeight;
+        var progress = h > 0 ? (-rect.top) / h : 0;
+        progress = Math.max(0, Math.min(1, progress));
+        setActive(Math.min(DATA.length - 1, Math.floor(progress * DATA.length)));
+        ticking = false;
+      };
+      window.addEventListener("scroll", function () {
+        if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
+      }, { passive: true });
+      update();
     }
-
-    window.addEventListener("scroll", function () {
-      if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
-    }, { passive: true });
-    update();
+    setActive(0);
   }
 
   /* --------------------------------------------------------------------------

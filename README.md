@@ -2,7 +2,7 @@
 
 A concept showcase of The Coca-Cola Company's classic drinks — Coca-Cola, Sprite, Fanta,
 Minute Maid and Coca-Cola Cherry — reimagined in a cinematic, high-contrast design language.
-Built with plain HTML, CSS and vanilla JavaScript; no frameworks, no build step, no backend.
+Built with plain HTML, CSS and vanilla JavaScript, plus one small animation library (GSAP) for the scroll effects; no frameworks, no build step, no backend.
 
 > Student project · Not affiliated with The Coca-Cola Company. Product names belong to their
 > respective owners. Product imagery is a set of AI-generated concept renders made for this study.
@@ -196,20 +196,21 @@ own (SF Pro / Segoe UI / PingFang SC), so no web fonts are downloaded either.
 
 ## Tech stack & design decisions
 
-**No frameworks, no build tools, no dependencies — pure HTML, CSS and JavaScript.**
+**No frameworks, no build tools — pure HTML, CSS and JavaScript, plus one small library (GSAP + ScrollTrigger) for the home page's scroll effects.**
 
 | Technology | Usage |
 |---|---|
 | **HTML5** | Semantic markup, `<dialog>`, accessibility, native form controls |
 | **CSS3** | Custom properties, Grid, Flexbox, `clip-path`, `backdrop-filter`, scroll styling |
 | **JavaScript (ES6+)** | DOM manipulation, `IntersectionObserver`, scroll-driven effects, event handling |
+| **GSAP + ScrollTrigger** | Self-hosted (v3.12.5); scrubbed hero push-in, scroll-driven lineup and section reveals |
 
 **Design direction:** a cinematic black hero and a scroll-driven lineup at the top, then a
 light Apple-style body for the collection and the story. One accent (Coca-Cola red
 `#E60012`) on a monochrome base, enormous display type, and motion that is used once per
 moment rather than everywhere.
 
-**Performance:** zero external dependencies, no web fonts, lazy-loaded product images, and
+**Performance:** no external network calls (GSAP is self-hosted), no web fonts, lazy-loaded product images, and
 `prefers-reduced-motion` support. The page paints immediately even on a slow connection.
 
 **Accessibility:** semantic structure, visible focus rings, a skip-friendly reading order,
