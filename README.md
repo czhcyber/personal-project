@@ -63,8 +63,11 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 - **Plans** — 保留 F1 / F2 内联 SVG 蓝图；可从 Dock 打开。蓝图、项目详情、Gallery lightbox 的 Escape 优先级都是“先返回上一层”，主桌面 Escape 才退出 OS。
 - **Onsen / Garden Map** — 别墅左前方扩展出独立的户外温泉亭：黑石平台、木格栅、暖水池、石灯笼、竹屏、涟漪与蒸汽。可通过空间索引 `08 温泉`、3D 点击或 `GARDEN MAP` 进入；聚焦后右下角提供 `STEAM`、`BATH LIGHT` 和 `RETURN TO GARDEN`。`GARDEN MAP` 也可用 `M` 打开、`ESC` 关闭，包含 Villa / Tea Room / Terrace / Garage / Onsen 五个镜头节点。
 - **Master Suite family photo** — 主卧床头墙新增 1.12 × 0.82 m 深木相框与 `PlaneGeometry(1,1)` 照片平面，读取根目录 `family.jpg` 并按原始宽高比自适应缩放。没有图片时显示深灰底与细金内框，不阻塞场景。鼠标悬停相框会出现手型光标，点击弹出文件选择器；上传图片通过 `FileReader` + `THREE.Texture` 热替换，旧纹理即时 `dispose()`。相框上方有一盏 `0.5` 强度的暖色 `SpotLight`，随卧室在 X-Ray Focus 中的变暗而渐隐到 `0.075`，退出聚焦后回到 `0.5`。
+- **Layered Master Bed** — 床完全由原生 `BoxGeometry` 分层重建：2.2 × 0.3 × 2.0 m 床架、2.1 × 0.25 × 1.9 m 床垫、2.15 × 0.1 × 1.4 m 被子、两只 0.8 × 0.15 × 0.4 m 白色枕头与 2.4 × 0.8 × 0.15 m 床头板。左右各加一只原生 `BoxGeometry` 床头柜，左侧用 `CylinderGeometry` + `ConeGeometry` 组装台灯并内置 1.5 强度暖光；床下是 4.0 × 0.02 × 3.5 m 的深灰 matte rug。所有材质 `transparent: true`、初始 opacity 1，床架 / 床垫 / 枕头 cast / receive shadow。
 
 ![NOCTURNE study interactive computer and bookshelf](preview-study-room.png)
+
+![NOCTURNE layered master bed](preview-nocturne-bed.png)
 
 ![NOCTURNE outdoor onsen](preview-nocturne-onsen.png)
 

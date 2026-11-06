@@ -2370,8 +2370,6 @@ function addIndoorPlant(x, z, scale = 1) {
 function buildUpperInterior() {
   const bedroomStart = G.interior.children.length;
 
-  // Bedroom rug.
-  addGround(G.interior, 2.85, 2.25, MAT.rug, -0.8, 3.84, -1.2);
   addBed(-0.92, -1.54);
   addBox(G.interior, 1.25, 0.38, 0.36, MAT.walnut, -0.94, 4.09, -0.08, {
     cast: false,
@@ -2380,28 +2378,9 @@ function buildUpperInterior() {
     cast: false,
   });
 
-  // Bedside tables + lamps.
-  [-2.02, 0.22].forEach((x) => {
-    addBox(G.interior, 0.42, 0.36, 0.4, MAT.walnut, x, 4.04, -2.32, {
-      cast: false,
-    });
-    addCylinder(G.interior, 0.07, 0.26, MAT.brass, x, 4.35, -2.32, {
-      cast: false,
-    });
-    addCylinder(G.interior, 0.11, 0.02, MAT.warmGlow, x, 4.48, -2.32, {
-      cast: false,
-      receive: false,
-    });
-    addGlow(G.interior, x, 4.48, -2.28, 0xffc58d, 0.18, 0.45, 0.35);
-  });
-
   // Floor lamp by the glass. The misplaced reading chair has been removed so
   // no second seat intrudes into the living-room composition below.
   addFloorLampUpper(0.74, -1.04);
-  addBox(G.interior, 0.95, 0.36, 0.36, MAT.walnut, -2.05, 4.06, -0.35, {
-    cast: false,
-  });
-  addGround(G.interior, 1.08, 0.95, MAT.rugLight, -2.05, 3.855, -0.35);
 
   buildFamilyPhoto();
   captureInteriorRoom("bedroom", "Master Suite", bedroomStart);
@@ -2624,29 +2603,117 @@ function animatePhotoSpotlight(dimmed) {
 
 function addBed(x, z) {
   const group = new THREE.Group();
+  group.name = "Layered Master Bed";
   group.position.set(x, 3.84, z);
   G.interior.add(group);
-  addBox(group, 2.0, 0.3, 2.04, MAT.walnut, 0, 0.17, 0, { cast: false });
-  addBox(group, 1.88, 0.24, 1.86, MAT.linen, 0, 0.41, 0.02, { cast: false });
-  addBox(group, 2.12, 1.05, 0.14, MAT.fabricDark, 0, 0.58, -0.98, {
-    cast: false,
-  });
-  addBox(group, 1.94, 0.45, 0.28, MAT.fabricLight, 0, 0.67, 0.78, {
-    rotation: [4 * DEG, 0, 0],
-    cast: false,
-  });
-  addBox(group, 0.68, 0.1, 0.48, MAT.fabricLight, -0.46, 0.51, 0.5, {
-    rotation: [-2 * DEG, 0, -8 * DEG],
-    cast: false,
-  });
-  addBox(group, 0.68, 0.1, 0.48, MAT.fabricLight, 0.46, 0.51, 0.5, {
-    rotation: [-2 * DEG, 0, 8 * DEG],
-    cast: false,
-  });
-  addBox(group, 0.42, 0.09, 0.38, MAT.rugLight, 0.15, 0.55, 0.28, {
-    rotation: [0, 0, 9 * DEG],
-    cast: false,
-  });
+
+  const material = (color, roughness) =>
+    new THREE.MeshStandardMaterial({
+      color,
+      roughness,
+      metalness: 0,
+      transparent: true,
+      opacity: 1,
+    });
+
+  const frameMaterial = material(0x363638, 0.9);
+  const mattressMaterial = material(0xe0e0e0, 0.8);
+  const duvetMaterial = material(0xc5c5c5, 0.9);
+  const pillowMaterial = material(0xffffff, 0.9);
+  const headboardMaterial = material(0x3a2e28, 0.7);
+  const nightstandMaterial = material(0x3a2e28, 0.7);
+  const rugMaterial = material(0x303033, 0.9);
+
+  const makeBox = (geometry, meshMaterial, px, py, pz, rotationY = 0, rotationZ = 0) => {
+    const mesh = new THREE.Mesh(geometry, meshMaterial);
+    mesh.position.set(px, py, pz);
+    mesh.rotation.y = rotationY;
+    mesh.rotation.z = rotationZ;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    group.add(mesh);
+    return mesh;
+  };
+
+  // Five stacked layers replace the old single-volume bed.
+  makeBox(new THREE.BoxGeometry(2.2, 0.3, 2.0), frameMaterial, 0, 0.15, 0);
+  makeBox(new THREE.BoxGeometry(2.1, 0.25, 1.9), mattressMaterial, 0, 0.425, 0);
+  makeBox(new THREE.BoxGeometry(2.15, 0.1, 1.4), duvetMaterial, 0, 0.6, 0.25);
+  makeBox(
+    new THREE.BoxGeometry(0.8, 0.15, 0.4),
+    pillowMaterial,
+    -0.5,
+    0.625,
+    -0.7,
+    0.12,
+    0.035
+  );
+  makeBox(
+    new THREE.BoxGeometry(0.8, 0.15, 0.4),
+    pillowMaterial,
+    0.5,
+    0.625,
+    -0.7,
+    -0.1,
+    -0.03
+  );
+  makeBox(new THREE.BoxGeometry(2.4, 0.8, 0.15), headboardMaterial, 0, 0.4, -1.0);
+
+  // Native primitive nightstands at each side of the headboard.
+  makeBox(
+    new THREE.BoxGeometry(0.5, 0.4, 0.4),
+    nightstandMaterial,
+    -1.4,
+    0.2,
+    -0.9
+  );
+  makeBox(
+    new THREE.BoxGeometry(0.5, 0.4, 0.4),
+    nightstandMaterial,
+    1.4,
+    0.2,
+    -0.9
+  );
+
+  // Left reading lamp: cylinder base + cone shade + warm local light.
+  const lampBase = new THREE.Mesh(
+    new THREE.CylinderGeometry(0.07, 0.085, 0.18, 24),
+    new THREE.MeshStandardMaterial({
+      color: 0x8d7959,
+      roughness: 0.42,
+      metalness: 0.55,
+      transparent: true,
+      opacity: 1,
+    })
+  );
+  lampBase.position.set(-1.4, 0.49, -0.9);
+  lampBase.castShadow = true;
+  lampBase.receiveShadow = true;
+  group.add(lampBase);
+
+  const shade = new THREE.Mesh(
+    new THREE.ConeGeometry(0.24, 0.25, 24, 1, true),
+    new THREE.MeshStandardMaterial({
+      color: 0xf0dfc8,
+      roughness: 0.7,
+      metalness: 0,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 1,
+    })
+  );
+  shade.position.set(-1.4, 0.7, -0.9);
+  shade.castShadow = true;
+  shade.receiveShadow = true;
+  group.add(shade);
+
+  const lampLight = new THREE.PointLight(0xffd8a8, 1.5, 2.8, 2);
+  lampLight.position.set(-1.4, 0.72, -0.9);
+  group.add(lampLight);
+
+  // A generous, completely matte rug anchors all the new layers.
+  makeBox(new THREE.BoxGeometry(4.0, 0.02, 3.5), rugMaterial, 0, 0.01, 0).castShadow =
+    false;
 }
 
 function addFloorLampUpper(x, z) {
