@@ -2487,17 +2487,26 @@ function buildFamilyPhoto() {
 }
 
 function loadFamilyPhotoTexture() {
-  // A detached Image element can be collected while a slower CDN response is
-  // still in flight. Keep the source image in the DOM until it has decoded.
+  // Keep the source image in the DOM and poll its complete flag. This is a
+  // defensive path for slower CDN responses where the image decodes but the
+  // load event is delivered late or coalesced by the browser.
   const image = document.createElement("img");
   image.alt = "";
   image.style.display = "none";
   document.body.appendChild(image);
-  image.onload = () => {
+  let finished = false;
+  let poll = null;
+  let watchdog = null;
+
+  const finish = () => {
+    if (finished || !image.complete || !image.naturalWidth) return;
+    finished = true;
+    if (poll) window.clearInterval(poll);
+    if (watchdog) window.clearTimeout(watchdog);
     try {
       const canvas = document.createElement("canvas");
-      canvas.width = image.naturalWidth || 1;
-      canvas.height = image.naturalHeight || 1;
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
       const context = canvas.getContext("2d");
       context.drawImage(image, 0, 0);
       const texture = new THREE.CanvasTexture(canvas);
@@ -2512,11 +2521,23 @@ function loadFamilyPhotoTexture() {
       image.remove();
     }
   };
-  image.onerror = () => {
+
+  const fail = () => {
+    if (finished) return;
+    finished = true;
+    if (poll) window.clearInterval(poll);
+    if (watchdog) window.clearTimeout(watchdog);
     image.remove();
     showPhotoFallback();
   };
+
+  image.onload = finish;
+  image.onerror = fail;
   image.src = "family.jpg";
+  poll = window.setInterval(finish, 100);
+  watchdog = window.setTimeout(() => {
+    if (!finished && image.complete && !image.naturalWidth) fail();
+  }, 6000);
 }
 
 function showPhotoFallback() {
