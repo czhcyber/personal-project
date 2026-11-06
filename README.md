@@ -79,6 +79,12 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 
 ![NOCTURNE OS desktop](preview-nocturne-os.png)
 
+![NOCTURNE HOME live dashboard](preview-nocturne-home-dashboard.png)
+
+![NOCTURNE PROJECTS digital gallery](preview-nocturne-projects.png)
+
+![NOCTURNE ENVIRONMENT precision controls](preview-nocturne-environment.png)
+
 ![NOCTURNE OS audio player](preview-nocturne-audio.png)
 
 ![NOCTURNE OS paginated portfolio](preview-nocturne-projects.png)
