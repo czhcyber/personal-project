@@ -58,8 +58,8 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 - **Live Preview** — 外部详情页可打开 iframe 模态：容器 `#000`、12px 圆角、1px 白色透光边，iframe 100% 铺满；`sandbox="allow-scripts allow-same-origin"`。左上角 `[ × ]` 或 Escape 关闭并清空 iframe。
 - **Source isolation** — 除了把 Konbini 静态站复制到 `previews/konbini/` 作为隔离预览，没有修改任何其他项目文件夹；Refreshments / Personal Portfolio 只通过其 GitHub Pages URL 加载。缩略图分别来自 Konbini 自带 preview、Refreshments 首页截图、Personal Portfolio 首页截图。
 - **Gallery** — 5 张从 3D 场景直接捕获的别墅渲染静帧，可按 `ALL / INTERIOR / EXTERIOR` 筛选；点击进入纵向大图 lightbox，支持上一张 / 下一张和 ESC 返回画廊。
-- **Audio** — 四个独立 loop 轨道的播放器：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Never See Me Again`；当前曲目、唱片视觉、播放 / 暂停、上一首 / 下一首、进度、音量与 MIX / QUEUE。四条音轨可同时叠混；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。长音频文件使用 `preload="metadata"`，不阻塞首屏。
-- **My Favourite / Record** — Audio 默认展示 `Never See Me Again`：260 × 260 px 方形封面 `images/blond.jpg`（`object-fit: cover`、12px 圆角、深阴影、细白边）、`Kanye West` 与 `MY FAVOURITE / RECORD` 标签；黑胶唱片从封面右侧露出，音频播放时旋转、暂停时停住，封面保持静止。音源位于 `music/Never See Me Again.mp3`。
+- **Audio** — Audio 引擎保留四条 loop 轨道：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Never See Me Again`；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。长音频使用 `preload="metadata"`，不阻塞首屏。
+- **Immersive Audio / My Favourite** — 打开 Audio 会进入独立的全屏唱片房：暖棕色径向背景，左侧 60% 为巨型黑胶盘（封面圆形、黑胶凹槽 `repeating-radial-gradient`、CSS 持续旋转），右侧 40% 为 `Never See Me Again / Kanye West / Ghost Town Run...` 与极简播放控制。左上角 `[ ∨ MINIMIZE ]` 返回桌面；此视图会隐藏标准 OS 玻璃窗口、顶部栏与 Dock。银色唱臂由 GSAP 控制，播放时转到 `25deg`，暂停回到 `0deg`。音源位于 `music/Never See Me Again.mp3`。
 - **Environment** — `NIGHT MODE` / `DUSK MODE` 只记录 pending 状态，不会立即改变 3D 场景。返回别墅且相机回程完全结束后才执行：Dusk 用 GSAP 把 `AmbientLight` 调暖、`scene.background` 调为暮色，并关闭客厅 / 卧室 / 阅读区 / 茶室 / 书房主灯与局部灯；Night 恢复原始照明、背景和灯光。`currentEnvMode` 跨会话保留。
 - **Plans** — 保留 F1 / F2 内联 SVG 蓝图；可从 Dock 打开。蓝图、项目详情、Gallery lightbox 的 Escape 优先级都是“先返回上一层”，主桌面 Escape 才退出 OS。
 - **Onsen / Garden Map** — 别墅左前方扩展出独立的户外温泉亭：黑石平台、木格栅、暖水池、石灯笼、竹屏、涟漪与蒸汽。可通过空间索引 `08 温泉`、3D 点击或 `GARDEN MAP` 进入；聚焦后右下角提供 `STEAM`、`BATH LIGHT` 和 `RETURN TO GARDEN`。`GARDEN MAP` 也可用 `M` 打开、`ESC` 关闭，包含 Villa / Tea Room / Terrace / Garage / Onsen 五个镜头节点。

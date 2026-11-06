@@ -368,6 +368,8 @@ const osState = {
   audioVolumeInput: null,
   audioNowEl: null,
   audioArtEl: null,
+  audioTonearmEl: null,
+  audioTonearmPlaying: null,
   audioTitleEl: null,
   audioSubtitleEl: null,
   audioArtistEl: null,
@@ -542,7 +544,7 @@ const OS_AUDIO = {
   },
   never: {
     title: "Never See Me Again",
-    subtitle: "LOCAL FILE / AFTER HOURS",
+    subtitle: "Ghost Town Run...",
     artist: "Kanye West",
     label: "MY FAVOURITE / RECORD",
     code: "TRK-04",
@@ -6359,61 +6361,32 @@ function initNocturneOS() {
                   </div>
                 </section>
 
-                <section class="os-app" data-os-panel="audio">
-                  <header class="os-app-head">
-                    <div><p class="os-app-kicker">MEDIA / 04</p><h2>AUDIO</h2></div>
-                    <span class="os-app-meta">04 TRACKS / LIVE</span>
-                  </header>
-                  <div class="os-audio-layout">
-                    <div class="os-audio-now">
-                      <p class="os-app-kicker">MY FAVOURITE / RECORD</p>
-                      <div class="os-audio-art" id="os-audio-art" data-track="never">
-                        <span class="os-audio-orbit" aria-hidden="true"></span>
-                        <div class="os-audio-cover-wrap">
-                          <span class="os-audio-vinyl" aria-hidden="true"></span>
-                          <img class="os-audio-cover" id="os-audio-cover" src="images/blond.jpg" alt="Never See Me Again album cover">
+                <section class="os-audio-immersive" data-os-panel="audio">
+                  <button class="os-audio-minimize" type="button" data-audio-minimize>[ ∨ MINIMIZE ]</button>
+                  <div class="os-audio-immersive-grid">
+                    <div class="os-vinyl-stage">
+                      <div class="os-vinyl-shell">
+                        <div class="os-vinyl-disc" id="os-audio-art" data-track="never">
+                          <img class="os-vinyl-cover" src="images/blond.jpg" alt="Never See Me Again album cover">
                         </div>
-                        <span class="os-audio-code" id="os-audio-code">TRK-04</span>
+                        <div class="os-tonearm" id="os-audio-tonearm" aria-hidden="true">
+                          <span class="os-tonearm-base"></span>
+                          <span class="os-tonearm-arm"></span>
+                          <span class="os-tonearm-head"></span>
+                        </div>
                       </div>
-                      <div class="os-audio-copy">
-                        <p class="os-audio-label" id="os-audio-label">MY FAVOURITE / RECORD</p>
-                        <h2 id="os-audio-title">Never See Me Again</h2>
-                        <p class="os-audio-artist" id="os-audio-artist">Kanye West</p>
-                        <p class="os-audio-subtitle" id="os-audio-subtitle">LOCAL FILE / AFTER HOURS</p>
-                        <p class="os-audio-desc" id="os-audio-description"></p>
-                        <div class="os-audio-transport">
-                          <button type="button" data-os-audio-prev aria-label="Previous track">←</button>
-                          <button class="os-audio-play" type="button" data-os-audio-play id="os-audio-play" aria-label="Play or pause">▶</button>
-                          <button type="button" data-os-audio-next aria-label="Next track">→</button>
-                        </div>
+                    </div>
+                    <div class="os-audio-info">
+                      <p class="os-audio-label" id="os-audio-label">MY FAVOURITE / RECORD</p>
+                      <h2 class="os-audio-title" id="os-audio-title">Never See Me Again</h2>
+                      <p class="os-audio-artist" id="os-audio-artist">Kanye West</p>
+                      <p class="os-audio-album" id="os-audio-subtitle">Ghost Town Run...</p>
+                      <div class="os-audio-player">
+                        <button class="os-audio-play" type="button" data-os-audio-play id="os-audio-play" aria-label="Play or pause">▶</button>
                         <div class="os-audio-progress"><span id="os-audio-progress-fill"></span></div>
                         <div class="os-audio-times"><span id="os-audio-time">00:00</span><span id="os-audio-duration">00:00</span></div>
                         <label class="os-audio-volume">VOL <input id="os-audio-volume" type="range" min="0" max="100" step="1" value="42"></label>
                       </div>
-                    </div>
-                    <div class="os-audio-queue">
-                      <div class="os-queue-head"><span>MIX / QUEUE</span><span id="os-audio-mix">00 ACTIVE</span></div>
-                      <button class="os-audio-row" type="button" data-os-audio="rain">
-                        <span class="os-audio-row-code">01</span>
-                        <span class="os-audio-row-main"><strong>AMBIENT RAIN</strong><small>FIELD RECORDING / LOOP</small></span>
-                        <span class="os-audio-row-state">OFF</span>
-                      </button>
-                      <button class="os-audio-row" type="button" data-os-audio="wind">
-                        <span class="os-audio-row-code">02</span>
-                        <span class="os-audio-row-main"><strong>WIND</strong><small>LOW FREQUENCY / LOOP</small></span>
-                        <span class="os-audio-row-state">OFF</span>
-                      </button>
-                      <button class="os-audio-row" type="button" data-os-audio="jazz">
-                        <span class="os-audio-row-code">03</span>
-                        <span class="os-audio-row-main"><strong>JAZZ</strong><small>SOFT CHORDS / LOOP</small></span>
-                        <span class="os-audio-row-state">OFF</span>
-                      </button>
-                      <button class="os-audio-row" type="button" data-os-audio="never">
-                        <span class="os-audio-row-code">04</span>
-                        <span class="os-audio-row-main"><strong>NEVER SEE ME AGAIN</strong><small>LOCAL FILE / AFTER HOURS</small></span>
-                        <span class="os-audio-row-state">OFF</span>
-                      </button>
-                      <p class="os-audio-note">Independent loops. Mix them, or return to the villa with the sound still running.</p>
                     </div>
                   </div>
                 </section>
@@ -6640,6 +6613,7 @@ function initNocturneOS() {
   osState.audioVolumeInput = overlay.querySelector("#os-audio-volume");
   osState.audioNowEl = overlay.querySelector(".os-audio-now");
   osState.audioArtEl = overlay.querySelector("#os-audio-art");
+  osState.audioTonearmEl = overlay.querySelector("#os-audio-tonearm");
   osState.audioTitleEl = overlay.querySelector("#os-audio-title");
   osState.audioSubtitleEl = overlay.querySelector("#os-audio-subtitle");
   osState.audioArtistEl = overlay.querySelector("#os-audio-artist");
@@ -6719,6 +6693,7 @@ function initNocturneOS() {
     });
   }
   overlay.querySelector(".os-skip-boot")?.addEventListener("click", enterOsDesktop);
+  overlay.querySelector("[data-audio-minimize]")?.addEventListener("click", () => openOsApp("home"));
   overlay.querySelector("[data-os-blueprint]")?.addEventListener("click", openOsBlueprint);
   overlay.querySelector(".os-blueprint-back")?.addEventListener("click", closeOsBlueprint);
   overlay.querySelector("[data-os-project-back]")?.addEventListener("click", hideProjectDetail);
@@ -6902,6 +6877,19 @@ function updateOsAudioUI() {
   const audio = audioElements[osState.selectedAudio];
   const playing = !!audioTracks[osState.selectedAudio];
   if (osState.audioArtEl) osState.audioArtEl.classList.toggle("is-playing", playing);
+  if (osState.audioTonearmEl && osState.audioTonearmPlaying !== playing) {
+    osState.audioTonearmPlaying = playing;
+    if (gsap && !reducedMotion) {
+      gsap.to(osState.audioTonearmEl, {
+        rotation: playing ? 25 : 0,
+        duration: 0.75,
+        ease: "power3.inOut",
+        overwrite: true,
+      });
+    } else {
+      osState.audioTonearmEl.style.transform = `rotate(${playing ? 25 : 0}deg)`;
+    }
+  }
   if (osState.audioPlayButton) {
     osState.audioPlayButton.textContent = playing ? "❚❚" : "▶";
     osState.audioPlayButton.setAttribute("aria-pressed", playing ? "true" : "false");
@@ -7553,6 +7541,7 @@ function setActiveAppUI(name) {
   if (osState.activeAppEl) osState.activeAppEl.textContent = info.label;
   if (osState.menuTitleEl) osState.menuTitleEl.textContent = info.title;
   if (osState.windowTitleEl) osState.windowTitleEl.textContent = `${info.label} / ${info.title}`;
+  osState.overlay?.classList.toggle("is-audio-mode", name === "audio");
 }
 
 function openOsApp(name, { instant = false } = {}) {

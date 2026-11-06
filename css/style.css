@@ -6312,3 +6312,460 @@ body.os-open .hotspot-layer {
     padding-top: 0;
   }
 }
+
+/* =========================================================================
+   Immersive Vinyl & Tonearm audio room
+   ========================================================================= */
+.os-audio-immersive {
+  display: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: #ffffff;
+  background:
+    radial-gradient(ellipse at 28% 38%, rgba(74, 54, 38, 0.96) 0%, rgba(42, 30, 21, 0.94) 42%, #1a120c 100%);
+}
+
+.os-audio-immersive.is-active {
+  display: block;
+}
+
+.os-overlay.is-audio-mode {
+  overflow: hidden !important;
+}
+
+.os-overlay.is-audio-mode .os-topbar,
+.os-overlay.is-audio-mode .os-menubar,
+.os-overlay.is-audio-mode .os-dock,
+.os-overlay.is-audio-mode .os-window-bar {
+  display: none !important;
+}
+
+.os-overlay.is-audio-mode .os-stage {
+  display: block !important;
+  min-height: 0 !important;
+  height: 100vh;
+  padding: 0 !important;
+}
+
+.os-overlay.is-audio-mode .os-console,
+.os-overlay.is-audio-mode .os-main-view {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.os-overlay.is-audio-mode .os-console::before,
+.os-overlay.is-audio-mode .os-console::after,
+.os-overlay.is-audio-mode .os-window::before,
+.os-overlay.is-audio-mode .os-window::after {
+  display: none !important;
+}
+
+.os-overlay.is-audio-mode .os-desktop {
+  display: block !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  gap: 0 !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.os-overlay.is-audio-mode .os-window {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  max-height: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  overflow: hidden !important;
+}
+
+.os-overlay.is-audio-mode .os-window-body {
+  display: block !important;
+  flex: 1 1 100% !important;
+  height: 100vh !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: none !important;
+}
+
+.os-audio-minimize {
+  position: fixed;
+  top: 28px;
+  left: 32px;
+  z-index: 6;
+  padding: 9px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  transition: color 200ms, background 200ms, border-color 200ms;
+}
+
+.os-audio-minimize:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.os-audio-immersive-grid {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  height: 100%;
+  min-height: 0;
+}
+
+.os-vinyl-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 6vh 3vw 5vh 5vw;
+}
+
+.os-vinyl-shell {
+  position: relative;
+  width: min(68vh, 52vw, 760px);
+  aspect-ratio: 1;
+}
+
+.os-vinyl-disc {
+  position: relative;
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  border-radius: 50%;
+  background: #050403;
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.6),
+    0 8px 24px rgba(0, 0, 0, 0.55);
+  animation: osVinylSpin 20s linear infinite;
+  animation-play-state: paused;
+  will-change: transform;
+}
+
+.os-vinyl-disc.is-playing {
+  animation-play-state: running;
+}
+
+.os-vinyl-disc::before {
+  content: "";
+  position: absolute;
+  inset: -3%;
+  z-index: 0;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(circle at center, #040303 0 7px, #15110e 7.5px 8.5px, #080605 9px 14px);
+  box-shadow:
+    inset 0 0 0 8px #050404,
+    inset 0 0 0 9px rgba(255, 255, 255, 0.045);
+}
+
+.os-vinyl-cover {
+  position: relative;
+  z-index: 2;
+  width: 58%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border: 4px solid #0a0807;
+  border-radius: 50%;
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.16);
+}
+
+.os-tonearm {
+  position: absolute;
+  top: -7%;
+  left: 0;
+  z-index: 4;
+  width: 54%;
+  height: 58px;
+  transform: rotate(0deg);
+  transform-origin: 6% 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.os-tonearm-base {
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, #f0ece4, #8f8a80 42%, #2c2925 78%);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+.os-tonearm-arm {
+  position: absolute;
+  top: 27px;
+  left: 34px;
+  width: calc(100% - 42px);
+  height: 5px;
+  border-radius: 99px;
+  background: linear-gradient(180deg, #f1eee8, #b7b1a6 48%, #5b5750);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45);
+}
+
+.os-tonearm-head {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  width: 44px;
+  height: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #ded9cf, #807b72);
+  transform: rotate(18deg);
+  transform-origin: 0 50%;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+}
+
+.os-tonearm-head::after {
+  content: "";
+  position: absolute;
+  right: 4px;
+  bottom: -5px;
+  width: 2px;
+  height: 9px;
+  background: #c9b48d;
+}
+
+.os-audio-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 8vh 7vw 7vh 2vw;
+}
+
+.os-audio-info .os-audio-label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.os-audio-title {
+  max-width: 9ch;
+  margin: 22px 0 0;
+  color: #ffffff;
+  font-family: var(--display);
+  font-size: clamp(3.1rem, 5.5vw, 6.1rem);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 0.88;
+}
+
+.os-audio-info .os-audio-artist {
+  margin: 25px 0 0;
+  color: #a0a0a0;
+  font-family: var(--sans);
+  font-size: clamp(0.95rem, 1.2vw, 1.22rem);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.os-audio-album {
+  margin: 9px 0 0;
+  color: #666666;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+}
+
+.os-audio-player {
+  width: 100%;
+  max-width: 430px;
+  margin-top: clamp(32px, 6vh, 64px);
+}
+
+.os-audio-info .os-audio-play {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  margin: 0 0 22px;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  color: #ffffff !important;
+  font-family: var(--sans);
+  font-size: 24px !important;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none !important;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.os-audio-info .os-audio-play:hover {
+  opacity: 0.72;
+  transform: scale(1.04);
+}
+
+.os-audio-info .os-audio-progress {
+  width: 100%;
+  height: 1px !important;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.2) !important;
+  overflow: hidden;
+}
+
+.os-audio-info .os-audio-progress > span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+}
+
+.os-audio-info .os-audio-times {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9px;
+  color: #777777;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.os-audio-info .os-audio-volume {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+  color: #777777;
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+}
+
+.os-audio-info .os-audio-volume input {
+  width: 140px;
+  height: 16px;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.os-audio-info .os-audio-volume input::-webkit-slider-runnable-track {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.os-audio-info .os-audio-volume input::-webkit-slider-thumb {
+  width: 8px;
+  height: 8px;
+  margin-top: -3.5px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  -webkit-appearance: none;
+}
+
+.os-audio-info .os-audio-volume input::-moz-range-track {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.os-audio-info .os-audio-volume input::-moz-range-thumb {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+@media (max-width: 900px) {
+  .os-audio-immersive-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: 52% 48%;
+  }
+
+  .os-audio-minimize {
+    top: 16px;
+    left: 16px;
+    font-size: 7px;
+  }
+
+  .os-vinyl-stage {
+    padding: 9vh 8vw 0;
+  }
+
+  .os-vinyl-shell {
+    width: min(42vh, 76vw);
+  }
+
+  .os-tonearm {
+    top: -8%;
+    width: 58%;
+  }
+
+  .os-audio-info {
+    justify-content: flex-start;
+    padding: 4vh 8vw 5vh;
+  }
+
+  .os-audio-title {
+    max-width: 11ch;
+    margin-top: 14px;
+    font-size: clamp(2.25rem, 8vw, 3.3rem);
+  }
+
+  .os-audio-info .os-audio-artist {
+    margin-top: 16px;
+  }
+
+  .os-audio-player {
+    margin-top: 22px;
+  }
+
+  .os-audio-info .os-audio-play {
+    margin-bottom: 14px;
+  }
+}
