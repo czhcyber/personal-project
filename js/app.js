@@ -7276,15 +7276,13 @@ function initAmbientAudio() {
     try {
       let audio;
       if (name === "never") {
-        audio = new Audio();
-        audio.dataset.loading = "true";
-        audio.preload = "auto";
+        audio = new Audio("music/Dark.mp3?v=20261105-67");
       } else {
         const { samples, sampleRate } = buildAmbientSamples(name);
         audio = new Audio(encodeWavDataUri(samples, sampleRate));
       }
       audio.loop = true;
-      if (name !== "never") audio.preload = "auto";
+      audio.preload = "auto";
       audio.volume = volumes[name] || 0.4;
       audio.style.display = "none";
       audio.setAttribute("aria-label", `NOCTURNE ${name} audio loop`);
@@ -7296,29 +7294,6 @@ function initAmbientAudio() {
       }
       document.body.appendChild(audio);
       audioElements[name] = audio;
-      if (name === "never") {
-        // Blob loading makes the track fully seekable on hosts that do not
-        // support byte ranges, and removes the CDN streaming stall.
-        fetch("music/Dark.mp3?v=20261105-66")
-          .then((response) => {
-            if (!response.ok) throw new Error(`Dark.mp3 ${response.status}`);
-            return response.blob();
-          })
-          .then((blob) => {
-            audio.src = URL.createObjectURL(blob);
-            audio.load();
-            audio.dataset.loading = "false";
-            if (osState.audioPendingPlay) {
-              osState.audioPendingPlay = false;
-              toggleAmbientAudio(name);
-              updateOsAudioUI();
-            }
-          })
-          .catch(() => {
-            audio.dataset.loading = "false";
-            setOsAudioStatus("AUDIO UNAVAILABLE / CHECK CONNECTION");
-          });
-      }
     } catch {
       // If audio construction is unavailable, the buttons remain inert but usable.
     }
@@ -7337,11 +7312,6 @@ function toggleAmbientAudio(name) {
     audioTracks[name] = false;
     setOsAudioStatus("");
     syncOsAudioButtons();
-    return;
-  }
-  if (name === "never" && audio.dataset.loading === "true") {
-    osState.audioPendingPlay = true;
-    setOsAudioStatus("LOADING TRACK...");
     return;
   }
   audio.muted = false;
