@@ -3840,7 +3840,7 @@ function handleStudyInteraction(type) {
   if (type === "computer") openNocturneOS();
   else if (type === "bookshelf") toggleStudyBookshelf();
   else if (type === "deskLamp") toggleStudyDeskLamp();
-  else if (type === "photoUpload") photoFrameState.input?.click();
+  else if (type === "photoUpload") document.getElementById("photo-upload")?.click();
 }
 
 function buildSunkenGarage(group) {
