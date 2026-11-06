@@ -12,6 +12,8 @@ import { RenderPass } from "../vendor/jsm/postprocessing/RenderPass.js";
 import { OutlinePass } from "../vendor/jsm/postprocessing/OutlinePass.js";
 import { OutputPass } from "../vendor/jsm/postprocessing/OutputPass.js";
 import { CSS2DObject, CSS2DRenderer } from "../vendor/jsm/renderers/CSS2DRenderer.js";
+import { GLTFLoader } from "../vendor/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "../vendor/addons/loaders/DRACOLoader.js";
 
 const gsap = window.gsap;
 const viewer = document.getElementById("viewer");
@@ -4104,37 +4106,153 @@ function buildSunkenGarage(group) {
   });
   makeBush(8.62, -1.55, 0.26, MAT.leafOlive, 0.24, group);
 
-  // Low-poly car in the basement.
-  const car = new THREE.Group();
-  car.position.set(6.85, -0.66, -1.55);
-  group.add(car);
-  addBox(car, 1.3, 0.26, 2.0, MAT.carBody, 0, 0.2, 0, { cast: false });
-  addBox(car, 1.02, 0.3, 0.95, MAT.carBody, 0, 0.44, -0.12, { cast: false });
-  addBox(car, 0.92, 0.2, 0.58, MAT.carGlass, 0, 0.48, 0.22, {
-    cast: false,
-  });
-  [-0.72, 0.72].forEach((x) => {
-    [-0.6, 0.6].forEach((z) => {
-      addCylinder(car, 0.17, 0.12, MAT.darkMetal, x, 0.16, z, {
-        rotation: [0, 0, Math.PI / 2],
-        cast: false,
-      });
-    });
-  });
-  [-0.4, 0.4].forEach((x) => {
-    addBox(car, 0.2, 0.06, 0.02, MAT.carLight, x, 0.21, 1.01, {
-      cast: false,
-      receive: false,
-    });
-    addBox(car, 0.2, 0.06, 0.02, MAT.carTail, x, 0.22, -1.01, {
-      cast: false,
-      receive: false,
-    });
-  });
+  buildGarageCar(group);
 
   const garageLight = new THREE.PointLight(0xa7e2ff, 11, 4.4, 2);
   garageLight.position.set(6.85, 0.3, -1.0);
   group.add(garageLight);
+}
+
+function buildGarageCar(group) {
+  const anchor = new THREE.Group();
+  anchor.name = "Sunken Garage Car";
+  anchor.position.set(6.85, -0.66, -0.72);
+  group.add(anchor);
+
+  // A deliberately simple fallback remains hidden unless the GLB/Draco load
+  // fails. It is not the old low-poly car.
+  const fallback = new THREE.Group();
+  fallback.name = "Garage Car Fallback";
+  fallback.visible = false;
+  addBox(fallback, 2.9, 0.42, 1.55, MAT.carBody, 0, 0.34, 0, { cast: true });
+  addBox(fallback, 1.45, 0.3, 1.35, MAT.carGlass, 0, 0.64, -0.05, { cast: true });
+  [-0.95, 0.95].forEach((x) => {
+    [-0.55, 0.55].forEach((z) => {
+      addCylinder(fallback, 0.3, 0.18, MAT.darkMetal, x, 0.28, z, {
+        rotation: [0, 0, Math.PI / 2],
+        cast: true,
+      });
+    });
+  });
+  anchor.add(fallback);
+
+  const loader = new GLTFLoader();
+  const draco = new DRACOLoader();
+  draco.setDecoderPath("vendor/addons/libs/draco/");
+  loader.setDRACOLoader(draco);
+
+  loader.load(
+    "models/mclaren.glb",
+    (gltf) => {
+      const car = gltf.scene;
+      car.name = "Garage Sports Car";
+
+      // Orient the long axis with the garage depth and normalize the model to
+      // a 3.25 m footprint before centering it on the anchor.
+      const initialBox = new THREE.Box3().setFromObject(car);
+      const initialSize = initialBox.getSize(new THREE.Vector3());
+      if (initialSize.x > initialSize.z) car.rotation.y = Math.PI / 2;
+      car.rotation.y += -7 * DEG;
+      car.updateMatrixWorld(true);
+
+      const rotatedBox = new THREE.Box3().setFromObject(car);
+      const rotatedSize = rotatedBox.getSize(new THREE.Vector3());
+      const longest = Math.max(rotatedSize.x, rotatedSize.z) || 1;
+      car.scale.setScalar(3.25 / longest);
+      car.updateMatrixWorld(true);
+
+      const finalBox = new THREE.Box3().setFromObject(car);
+      const center = finalBox.getCenter(new THREE.Vector3());
+      car.position.x -= center.x;
+      car.position.z -= center.z;
+      car.position.y -= finalBox.min.y;
+      car.position.y += 0.015;
+
+      let carEnvironment = null;
+      try {
+        const cubeTarget = new THREE.WebGLCubeRenderTarget(256, {
+          type: THREE.HalfFloatType,
+          generateMipmaps: true,
+          minFilter: THREE.LinearMipmapLinearFilter,
+        });
+        const cubeCamera = new THREE.CubeCamera(0.1, 20, cubeTarget);
+        cubeCamera.position.set(6.85, -0.08, -0.72);
+        scene.add(cubeCamera);
+        cubeCamera.update(renderer, scene);
+        scene.remove(cubeCamera);
+        const pmrem = new THREE.PMREMGenerator(renderer);
+        carEnvironment = pmrem.fromCubemap(cubeTarget.texture).texture;
+        pmrem.dispose();
+        cubeTarget.dispose();
+      } catch (error) {
+        console.warn("NOCTURNE: garage reflection capture unavailable", error);
+      }
+
+      car.traverse((object) => {
+        if (!object.isMesh) return;
+        object.castShadow = true;
+        object.receiveShadow = true;
+        const materials = Array.isArray(object.material)
+          ? object.material
+          : [object.material];
+        materials.forEach((material) => {
+          if (!material) return;
+          material.envMapIntensity = 1.5;
+          material.envMap = carEnvironment || scene.environment;
+          const name = material.name || "";
+          if (name === "Body_Color") {
+            material.color.set(0x24282d);
+            material.metalness = 0.8;
+            material.roughness = 0.2;
+            material.clearcoat = 0.85;
+            material.clearcoatRoughness = 0.06;
+          } else if (name === "Ferrari_Yellow" || name === "_0098_DodgerBlue") {
+            material.color.set(0xc7a77a);
+            material.metalness = 0.72;
+            material.roughness = 0.24;
+          } else if (name === "metal_gray" || name === "metal_chrome") {
+            material.metalness = 0.8;
+            material.roughness = 0.2;
+          } else if (name === "Carbon_Fiber") {
+            material.metalness = 0.48;
+            material.roughness = 0.3;
+          } else if (name === "Tires") {
+            material.metalness = 0;
+            material.roughness = 0.9;
+          }
+          material.needsUpdate = true;
+        });
+      });
+
+      anchor.add(car);
+      fallback.visible = false;
+      draco.dispose();
+    },
+    undefined,
+    (error) => {
+      console.warn("NOCTURNE: garage car failed to load", error);
+      fallback.visible = true;
+      draco.dispose();
+    }
+  );
+
+  // Showroom lighting: two cool overhead spots and a subtle blue wall wash.
+  const target = new THREE.Object3D();
+  target.position.set(0, 0.42, 0);
+  anchor.add(target);
+  [-0.72, 0.72].forEach((offset) => {
+    const spot = new THREE.SpotLight(0xbfd4ff, 5.5, 5.2, Math.PI / 5.5, 0.72, 2);
+    spot.position.set(offset, 2.2, -0.05);
+    spot.target = target;
+    spot.castShadow = false;
+    anchor.add(spot);
+  });
+  [5.86, 7.84].forEach((x) => {
+    const neon = new THREE.PointLight(0x79c8ff, 1.7, 2.2, 2);
+    neon.position.set(x, -0.16, -0.55);
+    group.add(neon);
+  });
+  addGlow(anchor, 0, 0.16, 0.1, 0x9fc9ff, 0.12, 3.2, 0.5, 2.0);
 }
 
 function addBushBed() {

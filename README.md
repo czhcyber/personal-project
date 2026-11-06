@@ -22,6 +22,7 @@
 - **环绕阳台** — 书房右侧与前侧延展出 L 形阳台，全部使用无框 `MeshPhysicalMaterial` 玻璃栏板、极细黄铜扶手与底槽；一张极简躺椅面向庭院，旧露台保留边几与种植槽，二者在同层连成连续户外平台。
 - **屋顶延伸** — 主屋面以 L 形白色板继续向右悬挑，覆盖书房与新阳台；窄脊与主屋面咬合，保留旧露台的露天部分，并在外缘增加深色收边形成连续水平线。
 - **下沉车库** — 贴住建筑右后侧；斜坡使用绕 X 轴旋转的 `BoxGeometry` 下行，两侧布置 `MeshBasicMaterial` LED；混凝土挡土墙、基础脊墙与首层传力梁延伸至书房楼板，使车库与右翼基础形成连续构造。
+- **GLTF showroom car** — 车库内旧的低多边形车已移除，改为 `GLTFLoader` + `DRACOLoader` 加载 `models/mclaren.glb`（示例跑车资产：three.js Ferrari GLB，重命名为 mclaren.glb）。车体缩放到 3.25 m 长并居中；`Body_Color` 改为石墨色，metalness `0.8`、roughness `0.2`、`envMapIntensity 1.5`。加载后通过车库 `CubeCamera` → `PMREMGenerator` 捕获暗色环境反射，另加两盏冷白 SpotLight 与蓝色霓虹补光。所有车体 mesh 的 `castShadow` / `receiveShadow` 开启；加载失败时显示简洁 BoxGeometry 备用车。
 - **楼板层叠** — 二层主楼板、露台板、茶室传力板与书房楼板下增加深色收边条，形成阴影缝和体块穿插。
 - **客厅交接** — 沙发整体上移到地面与地毯之上，新增一块深色 `BoxGeometry` 地毯遮盖交界；客厅相机改为前右视角。
 - **相机** — `PerspectiveCamera` 默认机位进一步后移，`OrbitControls.maxDistance` 提升到 **64**，让扩展后的水平底座完整居中。
@@ -69,6 +70,8 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 ![NOCTURNE study interactive computer and bookshelf](preview-study-room.png)
 
 ![NOCTURNE layered master bed](preview-nocturne-bed.png)
+
+![NOCTURNE GLTF showroom car](preview-nocturne-garage.png)
 
 ![NOCTURNE outdoor onsen](preview-nocturne-onsen.png)
 
