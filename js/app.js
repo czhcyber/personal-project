@@ -2514,8 +2514,14 @@ function showPhotoFallback() {
 
 async function loadFamilyPhotoViaFetch() {
   if (photoFrameState.texture) return;
+  const controller = new AbortController();
+  const abortTimer = window.setTimeout(() => controller.abort(), 2600);
   try {
-    const response = await fetch("family.jpg", { cache: "reload" });
+    // A unique query avoids waiting on a stalled TextureLoader cache entry.
+    const response = await fetch(`family.jpg?fallback=${Date.now()}`, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
     if (!response.ok) throw new Error(`family.jpg ${response.status}`);
     const bitmap = await createImageBitmap(await response.blob());
     const texture = new THREE.Texture(bitmap);
@@ -2526,6 +2532,8 @@ async function loadFamilyPhotoViaFetch() {
     applyPhotoTexture(texture);
   } catch {
     showPhotoFallback();
+  } finally {
+    window.clearTimeout(abortTimer);
   }
 }
 
