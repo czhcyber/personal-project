@@ -3228,6 +3228,13 @@ body.os-open {
     #0b0a09;
 }
 
+.os-audio-art[data-track="never"] {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(199, 119, 128, 0.28), transparent 38%),
+    radial-gradient(circle at 30% 68%, rgba(76, 49, 91, 0.38), transparent 58%),
+    #0b090a;
+}
+
 .os-audio-orbit {
   position: absolute;
   width: 72%;
@@ -4735,6 +4742,13 @@ body.os-open .hotspot-layer {
   background:
     radial-gradient(circle at 50% 50%, rgba(225, 225, 235, 0.2), transparent 38%),
     linear-gradient(135deg, rgba(154, 148, 170, 0.2), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.035) !important;
+}
+
+.os-audio-art[data-track="never"] {
+  background:
+    radial-gradient(circle at 50% 50%, rgba(214, 164, 174, 0.22), transparent 38%),
+    linear-gradient(135deg, rgba(166, 126, 171, 0.2), rgba(255, 255, 255, 0.03)),
     rgba(255, 255, 255, 0.035) !important;
 }
 

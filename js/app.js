@@ -399,7 +399,7 @@ const osState = {
 };
 
 let currentEnvMode = "night";
-const audioTracks = { rain: false, wind: false, jazz: false };
+const audioTracks = { rain: false, wind: false, jazz: false, never: false };
 const audioElements = {};
 const environmentState = {
   pendingMode: "night",
@@ -413,7 +413,7 @@ const OS_APPS = {
   home: { label: "HOME", title: "SYSTEM OVERVIEW", meta: "SESSION 04 / PRIVATE" },
   projects: { label: "PROJECTS", title: "ARCHIVE / PROJECTS", meta: "04 ENTRIES / 2026" },
   gallery: { label: "GALLERY", title: "ARCHIVE / RENDERS", meta: "05 FRAMES / NIGHT" },
-  audio: { label: "AUDIO", title: "MEDIA / AMBIENCE", meta: "03 LOOPS / LIVE" },
+  audio: { label: "AUDIO", title: "MEDIA / AMBIENCE", meta: "04 TRACKS / LIVE" },
   environment: { label: "ENVIRONMENT", title: "CONTROL / ATMOSPHERE", meta: "NIGHT / DUSK" },
 };
 
@@ -536,6 +536,12 @@ const OS_AUDIO = {
     subtitle: "SOFT CHORDS / LATE HOURS",
     code: "TRK-03",
     description: "A quiet four-bar progression for the late evening. Warm, unresolved and deliberately small.",
+  },
+  never: {
+    title: "NEVER SEE ME AGAIN",
+    subtitle: "LOCAL FILE / AFTER HOURS",
+    code: "TRK-04",
+    description: "A personal track from the local archive. Let it run with the rain, or alone with the bedroom lights down.",
   },
 };
 
@@ -6270,7 +6276,7 @@ function initNocturneOS() {
                   <div class="os-home-strip">
                     <button type="button" data-os-app="projects"><span>01</span><strong>PROJECTS</strong><small>04 ENTRIES</small></button>
                     <button type="button" data-os-app="gallery"><span>02</span><strong>GALLERY</strong><small>05 FRAMES</small></button>
-                    <button type="button" data-os-app="audio"><span>03</span><strong>AUDIO</strong><small>03 LOOPS</small></button>
+                    <button type="button" data-os-app="audio"><span>03</span><strong>AUDIO</strong><small>04 TRACKS</small></button>
                     <button type="button" data-os-app="environment"><span>04</span><strong>ENVIRONMENT</strong><small>NIGHT / DUSK</small></button>
                   </div>
                 </section>
@@ -6350,8 +6356,8 @@ function initNocturneOS() {
 
                 <section class="os-app" data-os-panel="audio">
                   <header class="os-app-head">
-                    <div><p class="os-app-kicker">MEDIA / 03</p><h2>AUDIO</h2></div>
-                    <span class="os-app-meta">03 LOOPS / LIVE</span>
+                    <div><p class="os-app-kicker">MEDIA / 04</p><h2>AUDIO</h2></div>
+                    <span class="os-app-meta">04 TRACKS / LIVE</span>
                   </header>
                   <div class="os-audio-layout">
                     <div class="os-audio-now">
@@ -6388,6 +6394,11 @@ function initNocturneOS() {
                       <button class="os-audio-row" type="button" data-os-audio="jazz">
                         <span class="os-audio-row-code">03</span>
                         <span class="os-audio-row-main"><strong>JAZZ</strong><small>SOFT CHORDS / LOOP</small></span>
+                        <span class="os-audio-row-state">OFF</span>
+                      </button>
+                      <button class="os-audio-row" type="button" data-os-audio="never">
+                        <span class="os-audio-row-code">04</span>
+                        <span class="os-audio-row-main"><strong>NEVER SEE ME AGAIN</strong><small>LOCAL FILE / AFTER HOURS</small></span>
                         <span class="os-audio-row-state">OFF</span>
                       </button>
                       <p class="os-audio-note">Independent loops. Mix them, or return to the villa with the sound still running.</p>
@@ -7186,16 +7197,21 @@ function buildAmbientSamples(kind) {
 
 function initAmbientAudio() {
   if (Object.keys(audioElements).length) return;
-  const volumes = { rain: 0.42, wind: 0.46, jazz: 0.5 };
+  const volumes = { rain: 0.42, wind: 0.46, jazz: 0.5, never: 0.5 };
   Object.keys(audioTracks).forEach((name) => {
     try {
-      const { samples, sampleRate } = buildAmbientSamples(name);
-      const audio = new Audio(encodeWavDataUri(samples, sampleRate));
+      let audio;
+      if (name === "never") {
+        audio = new Audio("assets/audio/never-see-me-again.mp3");
+      } else {
+        const { samples, sampleRate } = buildAmbientSamples(name);
+        audio = new Audio(encodeWavDataUri(samples, sampleRate));
+      }
       audio.loop = true;
-      audio.preload = "auto";
+      audio.preload = name === "never" ? "metadata" : "auto";
       audio.volume = volumes[name] || 0.4;
       audio.style.display = "none";
-      audio.setAttribute("aria-label", `NOCTURNE ${name} ambient loop`);
+      audio.setAttribute("aria-label", `NOCTURNE ${name} audio loop`);
       document.body.appendChild(audio);
       audioElements[name] = audio;
     } catch {
