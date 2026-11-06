@@ -7304,16 +7304,6 @@ function initAmbientAudio() {
     }
   });
 
-  // Prefetch after the document has settled, not during app initialization.
-  const prefetchDark = () => {
-    window.setTimeout(() => {
-      if (!osState.darkAudioReady && audioElements.never) {
-        ensureDarkAudioLoaded().catch(() => {});
-      }
-    }, 600);
-  };
-  if (document.readyState === "complete") prefetchDark();
-  else window.addEventListener("load", prefetchDark, { once: true });
 }
 
 function setOsAudioStatus(text) {
