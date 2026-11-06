@@ -539,6 +539,21 @@ const OS_AUDIO = {
   },
 };
 
+const photoFrameState = {
+  group: null,
+  photo: null,
+  frameMaterial: null,
+  photoMaterial: null,
+  fallbackBorder: null,
+  spotlight: null,
+  texture: null,
+  input: null,
+  maxWidth: 0.98,
+  maxHeight: 0.68,
+  hovering: false,
+  lastTime: 0,
+};
+
 const onsenState = {
   group: null,
   steamPoints: null,
@@ -2388,7 +2403,223 @@ function buildUpperInterior() {
   });
   addGround(G.interior, 1.08, 0.95, MAT.rugLight, -2.05, 3.855, -0.35);
 
+  buildFamilyPhoto();
   captureInteriorRoom("bedroom", "Master Suite", bedroomStart);
+}
+
+function buildFamilyPhoto() {
+  const frameWidth = 1.12;
+  const frameHeight = 0.82;
+  const border = 0.045;
+  const frameDepth = 0.035;
+  const centerX = -0.86;
+  const centerY = 5.18;
+  const centerZ = -2.53;
+
+  const group = new THREE.Group();
+  group.name = "Bedroom Family Photo";
+  group.position.set(centerX, centerY, centerZ);
+  group.userData.interaction = "photoUpload";
+  G.interior.add(group);
+
+  const frameMaterial = new THREE.MeshStandardMaterial({
+    color: 0x2a1b12,
+    roughness: 0.62,
+    metalness: 0.04,
+    transparent: true,
+    opacity: 1,
+  });
+
+  const addStrip = (w, h, d, x, y, z) => {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), frameMaterial);
+    mesh.position.set(x, y, z);
+    mesh.castShadow = false;
+    mesh.receiveShadow = false;
+    group.add(mesh);
+    return mesh;
+  };
+
+  addStrip(border, frameHeight, frameDepth, -(frameWidth / 2 - border / 2), 0, 0);
+  addStrip(border, frameHeight, frameDepth, frameWidth / 2 - border / 2, 0, 0);
+  addStrip(frameWidth, border, frameDepth, 0, frameHeight / 2 - border / 2, 0);
+  addStrip(frameWidth, border, frameDepth, 0, -(frameHeight / 2 - border / 2), 0);
+
+  const photoMaterial = new THREE.MeshStandardMaterial({
+    color: 0x242321,
+    roughness: 0.8,
+    metalness: 0,
+    side: THREE.FrontSide,
+    transparent: true,
+    opacity: 1,
+  });
+  const photo = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), photoMaterial);
+  photo.position.z = 0.022;
+  photo.castShadow = false;
+  photo.receiveShadow = false;
+  group.add(photo);
+
+  // A restrained gold inner border is only revealed when family.jpg is
+  // unavailable. It reads as a designed placeholder rather than a broken map.
+  const fallbackBorder = new THREE.Group();
+  fallbackBorder.visible = false;
+  const goldMaterial = new THREE.MeshStandardMaterial({
+    color: 0xc7a77a,
+    roughness: 0.38,
+    metalness: 0.48,
+    transparent: true,
+    opacity: 1,
+  });
+  const innerW = 0.86;
+  const innerH = 0.56;
+  const gold = 0.012;
+  [
+    [innerW, gold, 0, innerH / 2],
+    [innerW, gold, 0, -innerH / 2],
+    [gold, innerH, -innerW / 2, 0],
+    [gold, innerH, innerW / 2, 0],
+  ].forEach(([w, h, x, y]) => {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.008), goldMaterial);
+    mesh.position.set(x, y, 0.03);
+    mesh.castShadow = false;
+    mesh.receiveShadow = false;
+    fallbackBorder.add(mesh);
+  });
+  group.add(fallbackBorder);
+
+  const target = new THREE.Object3D();
+  target.position.set(0, 0, 0);
+  group.add(target);
+  const spotLight = new THREE.SpotLight(0xffd8a8, 0.5, 5.2, Math.PI / 4, 0.8, 2);
+  spotLight.position.set(0, 0.72, 0.92);
+  spotLight.target = target;
+  spotLight.castShadow = false;
+  group.add(spotLight);
+
+  photoFrameState.group = group;
+  photoFrameState.photo = photo;
+  photoFrameState.frameMaterial = frameMaterial;
+  photoFrameState.photoMaterial = photoMaterial;
+  photoFrameState.fallbackBorder = fallbackBorder;
+  photoFrameState.spotlight = spotLight;
+
+  interactiveGroups.push(group);
+
+  const loader = new THREE.TextureLoader();
+  loader.load(
+    "family.jpg",
+    (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      texture.minFilter = THREE.LinearFilter;
+      texture.magFilter = THREE.LinearFilter;
+      applyPhotoTexture(texture);
+    },
+    undefined,
+    () => {
+      photoMaterial.map = null;
+      photoMaterial.color.set(0x242321);
+      photoMaterial.needsUpdate = true;
+      fallbackBorder.visible = true;
+    }
+  );
+}
+
+function applyPhotoTexture(texture) {
+  const photo = photoFrameState.photo;
+  const material = photoFrameState.photoMaterial;
+  if (!photo || !material || !texture.image) return;
+
+  const imageWidth = texture.image.naturalWidth || texture.image.width || 1;
+  const imageHeight = texture.image.naturalHeight || texture.image.height || 1;
+  const aspect = imageWidth / Math.max(1, imageHeight);
+  let width = photoFrameState.maxWidth;
+  let height = width / aspect;
+  if (height > photoFrameState.maxHeight) {
+    height = photoFrameState.maxHeight;
+    width = height * aspect;
+  }
+  photo.scale.set(width, height, 1);
+
+  const previous = photoFrameState.texture;
+  material.map = texture;
+  material.color.set(0xffffff);
+  material.needsUpdate = true;
+  photoFrameState.texture = texture;
+  photoFrameState.fallbackBorder.visible = false;
+  if (previous && previous !== texture) previous.dispose();
+}
+
+function initPhotoInteraction() {
+  if (!photoFrameState.group || photoFrameState.input) return;
+
+  const input = document.createElement("input");
+  input.type = "file";
+  input.id = "photo-upload";
+  input.accept = "image/*";
+  input.style.display = "none";
+  document.body.appendChild(input);
+  photoFrameState.input = input;
+
+  input.addEventListener("change", () => {
+    const file = input.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const texture = new THREE.Texture(image);
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.anisotropy = renderer?.capabilities?.getMaxAnisotropy?.() || 1;
+        texture.needsUpdate = true;
+        applyPhotoTexture(texture);
+      };
+      image.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+    input.value = "";
+  });
+
+  const hoverRaycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2();
+  const setCursor = (active) => {
+    if (photoFrameState.hovering === active) return;
+    photoFrameState.hovering = active;
+    document.body.style.cursor = active ? "pointer" : "default";
+    canvas.style.cursor = active ? "pointer" : "";
+  };
+
+  canvas.addEventListener("pointermove", (event) => {
+    if (osState.active) {
+      setCursor(false);
+      return;
+    }
+    const rect = canvas.getBoundingClientRect();
+    pointer.set(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      -((event.clientY - rect.top) / rect.height) * 2 + 1
+    );
+    hoverRaycaster.setFromCamera(pointer, camera);
+    setCursor(hoverRaycaster.intersectObject(photoFrameState.group, true).length > 0);
+  });
+  canvas.addEventListener("pointerleave", () => setCursor(false));
+}
+
+function animatePhotoSpotlight(dimmed) {
+  const spotLight = photoFrameState.spotlight;
+  if (!spotLight) return;
+  const targetIntensity = dimmed ? 0.5 * 0.15 : 0.5;
+  if (gsap && !reducedMotion) {
+    gsap.killTweensOf(spotLight);
+    gsap.to(spotLight, {
+      intensity: targetIntensity,
+      duration: 0.5,
+      ease: "power2.out",
+      overwrite: true,
+    });
+  } else {
+    spotLight.intensity = targetIntensity;
+  }
 }
 
 function addBed(x, z) {
@@ -2456,13 +2687,6 @@ function buildInteriorLightPanels() {
   });
   // A warm wash inside the kitchen.
   addGlow(G.interior, -0.25, 1.7, -2.1, 0xffbd83, 0.15, 2.4, 1.1);
-  // Artwork on the quiet wall above the console.
-  addBox(G.interior, 1.0, 0.72, 0.04, MAT.walnut, -0.86, 5.22, -2.64, {
-    cast: false,
-  });
-  addBox(G.interior, 0.86, 0.58, 0.01, MAT.artLight, -0.86, 5.22, -2.6, {
-    cast: false,
-  });
 }
 
 /* Landscape --------------------------------------------------------------- */
@@ -3616,6 +3840,7 @@ function handleStudyInteraction(type) {
   if (type === "computer") openNocturneOS();
   else if (type === "bookshelf") toggleStudyBookshelf();
   else if (type === "deskLamp") toggleStudyDeskLamp();
+  else if (type === "photoUpload") photoFrameState.input?.click();
 }
 
 function buildSunkenGarage(group) {
@@ -5371,6 +5596,7 @@ function focusRoom(roomId) {
   state.focus = { roomId, group, clones, dim };
   outlinePass.selectedObjects = [group];
   outlinePass.enabled = true;
+  animatePhotoSpotlight(roomId !== "bedroom");
 
   if (!gsap || reducedMotion) {
     dim.forEach((entry, material) => {
@@ -5407,6 +5633,7 @@ function clearRoomFocus({ instant = false } = {}) {
   if (!state.focus) {
     closeAccordion();
     syncRoomLabelFocus(null);
+    animatePhotoSpotlight(false);
     return;
   }
 
@@ -5426,6 +5653,7 @@ function clearRoomFocus({ instant = false } = {}) {
     state.focus = null;
     closeAccordion();
     syncRoomLabelFocus(null);
+    animatePhotoSpotlight(false);
   };
 
   if (instant || !gsap || reducedMotion) {
@@ -8068,6 +8296,7 @@ function init() {
   createHotspots();
   initRoomLabels();
   initGardenExperience();
+  initPhotoInteraction();
   initArchitectureStudy();
   initRaycaster();
   initNocturneOS();
@@ -8128,6 +8357,7 @@ function init() {
     controls,
     state,
     onsenState,
+    photoFrameState,
     renderer,
     flyToView,
     setTimePreset,
