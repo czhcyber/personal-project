@@ -6113,3 +6113,202 @@ body.os-open .hotspot-layer {
     display: none;
   }
 }
+
+/* =========================================================================
+   My Favourite Song — album art, vinyl and metadata
+   ========================================================================= */
+.os-audio-cover-wrap {
+  position: relative;
+  z-index: 2;
+  display: none;
+  width: 260px;
+  height: 260px;
+}
+
+.os-audio-cover {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: 260px;
+  height: 260px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.os-audio-art[data-track="never"] {
+  overflow: visible !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  background: none !important;
+}
+
+.os-audio-art[data-track="never"] .os-audio-cover-wrap {
+  display: block;
+}
+
+.os-audio-art[data-track="never"] .os-audio-orbit {
+  display: none;
+}
+
+.os-audio-art[data-track="never"] .os-audio-vinyl {
+  top: 15px;
+  right: -24px;
+  left: auto;
+  z-index: 1;
+  width: 230px;
+  height: 230px;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.75) 0 3.5%, transparent 4.5%),
+    repeating-radial-gradient(circle at center, #050505 0 4px, #151515 4.5px 5.5px) !important;
+  box-shadow: 8px 14px 34px rgba(0, 0, 0, 0.55);
+}
+
+.os-audio-art[data-track="never"] .os-audio-code {
+  right: 14px;
+  bottom: 12px;
+  z-index: 3;
+  color: rgba(255, 255, 255, 0.7) !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+
+.os-audio-art .os-audio-vinyl {
+  animation: osVinylSpin 18s linear infinite;
+  animation-play-state: paused;
+}
+
+.os-audio-art.is-playing .os-audio-vinyl {
+  animation-play-state: running;
+}
+
+@keyframes osVinylSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.os-audio-label {
+  margin: 12px 0 0;
+  color: #888888 !important;
+  font-family: var(--os-font, var(--sans));
+  font-size: 7px;
+  font-weight: 500;
+  letter-spacing: 1.6px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.os-audio-artist {
+  margin: 7px 0 0;
+  color: #b5b5b5 !important;
+  font-family: var(--os-font, var(--sans));
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.os-audio-now.is-favourite h2 {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 760px) {
+  .os-audio-cover-wrap {
+    width: 100%;
+    height: 100%;
+  }
+
+  .os-audio-cover {
+    width: 100%;
+    height: 100%;
+  }
+
+  .os-audio-art[data-track="never"] .os-audio-vinyl {
+    top: 6%;
+    right: -12px;
+    width: 86%;
+    height: 86%;
+  }
+}
+
+/* Keep the featured cover, metadata and transport in one compact stage. */
+.os-audio-now {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: 24px;
+  align-items: start;
+}
+
+.os-audio-now > .os-app-kicker {
+  grid-column: 1 / -1;
+}
+
+.os-audio-now > .os-audio-art {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.os-audio-copy {
+  grid-column: 2;
+  grid-row: 2;
+  min-width: 0;
+  padding-top: 11px;
+}
+
+.os-audio-copy .os-audio-label {
+  margin-top: 0;
+}
+
+.os-audio-copy h2 {
+  margin: 9px 0 0;
+  font-size: clamp(1.65rem, 2.35vw, 2.15rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.045em !important;
+  line-height: 0.96 !important;
+}
+
+.os-audio-copy .os-audio-artist {
+  margin-top: 8px;
+}
+
+.os-audio-copy .os-audio-transport {
+  margin-top: 18px;
+}
+
+.os-audio-copy .os-audio-progress {
+  margin-top: 13px;
+}
+
+.os-audio-copy .os-audio-times {
+  margin-top: 6px;
+}
+
+.os-audio-copy .os-audio-volume {
+  margin-top: 12px;
+}
+
+.os-audio-now.is-favourite .os-audio-subtitle,
+.os-audio-now.is-favourite .os-audio-desc {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .os-audio-now {
+    grid-template-columns: 1fr;
+  }
+
+  .os-audio-now > .os-app-kicker,
+  .os-audio-now > .os-audio-art,
+  .os-audio-copy {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .os-audio-copy {
+    padding-top: 0;
+  }
+}

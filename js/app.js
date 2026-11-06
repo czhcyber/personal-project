@@ -361,14 +361,17 @@ const osState = {
   galleryLightboxEl: null,
   galleryFilter: "all",
   activeGalleryIndex: 0,
-  selectedAudio: "rain",
+  selectedAudio: "never",
   audioTimer: null,
   audioVolume: 42,
   audioPlayButton: null,
   audioVolumeInput: null,
+  audioNowEl: null,
   audioArtEl: null,
   audioTitleEl: null,
   audioSubtitleEl: null,
+  audioArtistEl: null,
+  audioLabelEl: null,
   audioDescriptionEl: null,
   audioCodeEl: null,
   audioTimeEl: null,
@@ -538,10 +541,12 @@ const OS_AUDIO = {
     description: "A quiet four-bar progression for the late evening. Warm, unresolved and deliberately small.",
   },
   never: {
-    title: "NEVER SEE ME AGAIN",
+    title: "Never See Me Again",
     subtitle: "LOCAL FILE / AFTER HOURS",
+    artist: "Kanye West",
+    label: "MY FAVOURITE / RECORD",
     code: "TRK-04",
-    description: "A personal track from the local archive. Let it run with the rain, or alone with the bedroom lights down.",
+    description: "The record that stays after everyone else has gone. Cover art from the personal archive.",
   },
 };
 
@@ -6361,23 +6366,30 @@ function initNocturneOS() {
                   </header>
                   <div class="os-audio-layout">
                     <div class="os-audio-now">
-                      <p class="os-app-kicker">NOW SELECTED</p>
-                      <div class="os-audio-art" id="os-audio-art" data-track="rain">
+                      <p class="os-app-kicker">MY FAVOURITE / RECORD</p>
+                      <div class="os-audio-art" id="os-audio-art" data-track="never">
                         <span class="os-audio-orbit" aria-hidden="true"></span>
-                        <span class="os-audio-vinyl" aria-hidden="true"></span>
-                        <span class="os-audio-code" id="os-audio-code">TRK-01</span>
+                        <div class="os-audio-cover-wrap">
+                          <span class="os-audio-vinyl" aria-hidden="true"></span>
+                          <img class="os-audio-cover" id="os-audio-cover" src="images/blond.jpg" alt="Never See Me Again album cover">
+                        </div>
+                        <span class="os-audio-code" id="os-audio-code">TRK-04</span>
                       </div>
-                      <h2 id="os-audio-title">AMBIENT RAIN</h2>
-                      <p class="os-audio-subtitle" id="os-audio-subtitle">FIELD RECORDING / SOFT RAIN</p>
-                      <p class="os-audio-desc" id="os-audio-description"></p>
-                      <div class="os-audio-transport">
-                        <button type="button" data-os-audio-prev aria-label="Previous track">←</button>
-                        <button class="os-audio-play" type="button" data-os-audio-play id="os-audio-play" aria-label="Play or pause">▶</button>
-                        <button type="button" data-os-audio-next aria-label="Next track">→</button>
+                      <div class="os-audio-copy">
+                        <p class="os-audio-label" id="os-audio-label">MY FAVOURITE / RECORD</p>
+                        <h2 id="os-audio-title">Never See Me Again</h2>
+                        <p class="os-audio-artist" id="os-audio-artist">Kanye West</p>
+                        <p class="os-audio-subtitle" id="os-audio-subtitle">LOCAL FILE / AFTER HOURS</p>
+                        <p class="os-audio-desc" id="os-audio-description"></p>
+                        <div class="os-audio-transport">
+                          <button type="button" data-os-audio-prev aria-label="Previous track">←</button>
+                          <button class="os-audio-play" type="button" data-os-audio-play id="os-audio-play" aria-label="Play or pause">▶</button>
+                          <button type="button" data-os-audio-next aria-label="Next track">→</button>
+                        </div>
+                        <div class="os-audio-progress"><span id="os-audio-progress-fill"></span></div>
+                        <div class="os-audio-times"><span id="os-audio-time">00:00</span><span id="os-audio-duration">00:00</span></div>
+                        <label class="os-audio-volume">VOL <input id="os-audio-volume" type="range" min="0" max="100" step="1" value="42"></label>
                       </div>
-                      <div class="os-audio-progress"><span id="os-audio-progress-fill"></span></div>
-                      <div class="os-audio-times"><span id="os-audio-time">00:00</span><span id="os-audio-duration">00:00</span></div>
-                      <label class="os-audio-volume">VOL <input id="os-audio-volume" type="range" min="0" max="100" step="1" value="42"></label>
                     </div>
                     <div class="os-audio-queue">
                       <div class="os-queue-head"><span>MIX / QUEUE</span><span id="os-audio-mix">00 ACTIVE</span></div>
@@ -6626,9 +6638,12 @@ function initNocturneOS() {
   osState.galleryLightboxEl = overlay.querySelector("#os-gallery-lightbox");
   osState.audioPlayButton = overlay.querySelector("[data-os-audio-play]");
   osState.audioVolumeInput = overlay.querySelector("#os-audio-volume");
+  osState.audioNowEl = overlay.querySelector(".os-audio-now");
   osState.audioArtEl = overlay.querySelector("#os-audio-art");
   osState.audioTitleEl = overlay.querySelector("#os-audio-title");
   osState.audioSubtitleEl = overlay.querySelector("#os-audio-subtitle");
+  osState.audioArtistEl = overlay.querySelector("#os-audio-artist");
+  osState.audioLabelEl = overlay.querySelector("#os-audio-label");
   osState.audioDescriptionEl = overlay.querySelector("#os-audio-description");
   osState.audioCodeEl = overlay.querySelector("#os-audio-code");
   osState.audioTimeEl = overlay.querySelector("#os-audio-time");
@@ -6871,11 +6886,22 @@ function updateOsAudioUI() {
   const meta = OS_AUDIO[osState.selectedAudio] || OS_AUDIO.rain;
   if (osState.audioTitleEl) osState.audioTitleEl.textContent = meta.title;
   if (osState.audioSubtitleEl) osState.audioSubtitleEl.textContent = meta.subtitle;
+  if (osState.audioArtistEl) {
+    osState.audioArtistEl.textContent = meta.artist || "";
+    osState.audioArtistEl.hidden = !meta.artist;
+  }
+  if (osState.audioLabelEl) {
+    osState.audioLabelEl.textContent = meta.label || "NOW SELECTED / AMBIENCE";
+  }
   if (osState.audioDescriptionEl) osState.audioDescriptionEl.textContent = meta.description;
   if (osState.audioCodeEl) osState.audioCodeEl.textContent = meta.code;
   if (osState.audioArtEl) osState.audioArtEl.dataset.track = osState.selectedAudio;
+  if (osState.audioNowEl) {
+    osState.audioNowEl.classList.toggle("is-favourite", osState.selectedAudio === "never");
+  }
   const audio = audioElements[osState.selectedAudio];
   const playing = !!audioTracks[osState.selectedAudio];
+  if (osState.audioArtEl) osState.audioArtEl.classList.toggle("is-playing", playing);
   if (osState.audioPlayButton) {
     osState.audioPlayButton.textContent = playing ? "❚❚" : "▶";
     osState.audioPlayButton.setAttribute("aria-pressed", playing ? "true" : "false");
@@ -7202,7 +7228,7 @@ function initAmbientAudio() {
     try {
       let audio;
       if (name === "never") {
-        audio = new Audio("assets/audio/never-see-me-again.mp3");
+        audio = new Audio("music/Never%20See%20Me%20Again.mp3");
       } else {
         const { samples, sampleRate } = buildAmbientSamples(name);
         audio = new Audio(encodeWavDataUri(samples, sampleRate));
