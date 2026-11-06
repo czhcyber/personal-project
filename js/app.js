@@ -380,6 +380,7 @@ const osState = {
   audioDurationEl: null,
   audioProgressFillEl: null,
   audioStatusEl: null,
+  audioAutoStarted: false,
   audioMixEl: null,
   audioRows: [],
   blueprintView: null,
@@ -7231,7 +7232,7 @@ function initAmbientAudio() {
     try {
       let audio;
       if (name === "never") {
-        audio = new Audio("music/Never%20See%20Me%20Again.mp3?v=20261105-63");
+        audio = new Audio("music/Never%20See%20Me%20Again.mp3?v=20261105-64");
       } else {
         const { samples, sampleRate } = buildAmbientSamples(name);
         audio = new Audio(encodeWavDataUri(samples, sampleRate));
@@ -7269,6 +7270,7 @@ function toggleAmbientAudio(name) {
     syncOsAudioButtons();
     return;
   }
+  audio.muted = false;
   setOsAudioStatus(audio.readyState < 3 ? "BUFFERING..." : "");
   const playRequest = audio.play();
   audioTracks[name] = true;
@@ -7584,7 +7586,13 @@ function openOsApp(name, { instant = false } = {}) {
   if (!instant && gsap && !reducedMotion) {
     gsap.fromTo(panel, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
   }
-  if (name === "audio") updateOsAudioUI();
+  if (name === "audio") {
+    updateOsAudioUI();
+    if (!osState.audioAutoStarted) {
+      osState.audioAutoStarted = true;
+      if (!audioTracks.never) toggleAmbientAudio("never");
+    }
+  }
   if (name === "environment") syncOsEnvironment();
 }
 
