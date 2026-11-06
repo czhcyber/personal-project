@@ -378,9 +378,14 @@ const osState = {
   audioCodeEl: null,
   audioTimeEl: null,
   audioDurationEl: null,
+  audioProgressEl: null,
   audioProgressFillEl: null,
+  audioProgressThumbEl: null,
+  audioSeekEl: null,
+  audioSeeking: false,
   audioStatusEl: null,
   audioAutoStarted: false,
+  audioPendingPlay: false,
   audioMixEl: null,
   audioRows: [],
   blueprintView: null,
@@ -545,9 +550,9 @@ const OS_AUDIO = {
     description: "A quiet four-bar progression for the late evening. Warm, unresolved and deliberately small.",
   },
   never: {
-    title: "Never See Me Again",
-    subtitle: "Ghost Town Run...",
-    artist: "Kanye West",
+    title: "Dark",
+    subtitle: "Dark",
+    artist: "mixed matches",
     label: "MY FAVOURITE / RECORD",
     code: "TRK-04",
     description: "The record that stays after everyone else has gone. Cover art from the personal archive.",
@@ -6368,8 +6373,8 @@ function initNocturneOS() {
                   <div class="os-audio-immersive-grid">
                     <div class="os-vinyl-stage">
                       <div class="os-vinyl-shell">
-                        <div class="os-vinyl-disc" id="os-audio-art" data-track="never" role="button" tabindex="0" aria-label="Play or pause Never See Me Again">
-                          <img class="os-vinyl-cover" src="images/blond.jpg" alt="Never See Me Again album cover">
+                        <div class="os-vinyl-disc" id="os-audio-art" data-track="never" role="button" tabindex="0" aria-label="Play or pause Dark by mixed matches">
+                          <img class="os-vinyl-cover" src="images/dark.jpg" alt="Dark album cover">
                         </div>
                         <div class="os-tonearm" id="os-audio-tonearm" aria-hidden="true">
                           <span class="os-tonearm-base"></span>
@@ -6380,12 +6385,12 @@ function initNocturneOS() {
                     </div>
                     <div class="os-audio-info">
                       <p class="os-audio-label" id="os-audio-label">MY FAVOURITE / RECORD</p>
-                      <h2 class="os-audio-title" id="os-audio-title">Never See Me Again</h2>
-                      <p class="os-audio-artist" id="os-audio-artist">Kanye West</p>
-                      <p class="os-audio-album" id="os-audio-subtitle">Ghost Town Run...</p>
+                      <h2 class="os-audio-title" id="os-audio-title">Dark</h2>
+                      <p class="os-audio-artist" id="os-audio-artist">mixed matches</p>
+                      <p class="os-audio-album" id="os-audio-subtitle">Dark</p>
                       <div class="os-audio-player">
                         <button class="os-audio-play" type="button" data-os-audio-play id="os-audio-play" aria-label="Play or pause">▶</button>
-                        <div class="os-audio-progress"><span id="os-audio-progress-fill"></span></div>
+                        <div class="os-audio-progress" id="os-audio-progress"><span id="os-audio-progress-fill"></span><i class="os-audio-progress-thumb" id="os-audio-progress-thumb" aria-hidden="true"></i><input class="os-audio-seek" id="os-audio-seek" type="range" min="0" max="1000" step="1" value="0" aria-label="Seek through Dark"></div>
                         <div class="os-audio-times"><span id="os-audio-time">00:00</span><span id="os-audio-duration">00:00</span></div>
                         <p class="os-audio-status" id="os-audio-status" aria-live="polite"></p>
                         <label class="os-audio-volume">VOL <input id="os-audio-volume" type="range" min="0" max="100" step="1" value="42"></label>
@@ -6625,7 +6630,10 @@ function initNocturneOS() {
   osState.audioCodeEl = overlay.querySelector("#os-audio-code");
   osState.audioTimeEl = overlay.querySelector("#os-audio-time");
   osState.audioDurationEl = overlay.querySelector("#os-audio-duration");
+  osState.audioProgressEl = overlay.querySelector("#os-audio-progress");
   osState.audioProgressFillEl = overlay.querySelector("#os-audio-progress-fill");
+  osState.audioProgressThumbEl = overlay.querySelector("#os-audio-progress-thumb");
+  osState.audioSeekEl = overlay.querySelector("#os-audio-seek");
   osState.audioStatusEl = overlay.querySelector("#os-audio-status");
   osState.audioMixEl = overlay.querySelector("#os-audio-mix");
   osState.appPanels = [...overlay.querySelectorAll("[data-os-panel]")];
@@ -6777,6 +6785,26 @@ function initNocturneOS() {
     });
   });
 
+  if (osState.audioSeekEl) {
+    const seekToValue = () => {
+      const audio = audioElements[osState.selectedAudio];
+      if (!audio || !Number.isFinite(audio.duration) || audio.duration <= 0) return;
+      audio.currentTime = (Number(osState.audioSeekEl.value) / 1000) * audio.duration;
+      updateOsAudioUI();
+    };
+    osState.audioSeekEl.addEventListener("pointerdown", () => {
+      osState.audioSeeking = true;
+    });
+    osState.audioSeekEl.addEventListener("input", seekToValue);
+    osState.audioSeekEl.addEventListener("change", seekToValue);
+    ["pointerup", "pointercancel", "blur"].forEach((type) => {
+      osState.audioSeekEl.addEventListener(type, () => {
+        osState.audioSeeking = false;
+        seekToValue();
+      });
+    });
+  }
+
   renderOsProjects();
   renderOsGallery();
   updateOsAudioUI();
@@ -6921,6 +6949,22 @@ function updateOsAudioUI() {
       ? clamp((audio.currentTime / audio.duration) * 100, 0, 100)
       : 0;
     osState.audioProgressFillEl.style.width = `${progress.toFixed(2)}%`;
+  }
+  if (osState.audioProgressThumbEl) {
+    const progress = audio && Number.isFinite(audio.duration) && audio.duration > 0
+      ? clamp((audio.currentTime / audio.duration) * 100, 0, 100)
+      : 0;
+    osState.audioProgressThumbEl.style.left = `${progress.toFixed(2)}%`;
+  }
+  if (
+    osState.audioSeekEl &&
+    !osState.audioSeeking &&
+    document.activeElement !== osState.audioSeekEl
+  ) {
+    const progress = audio && Number.isFinite(audio.duration) && audio.duration > 0
+      ? clamp((audio.currentTime / audio.duration) * 1000, 0, 1000)
+      : 0;
+    osState.audioSeekEl.value = String(Math.round(progress));
   }
   if (osState.audioRows) {
     osState.audioRows.forEach((row) => {
@@ -7232,13 +7276,15 @@ function initAmbientAudio() {
     try {
       let audio;
       if (name === "never") {
-        audio = new Audio("music/Never%20See%20Me%20Again.mp3?v=20261105-64");
+        audio = new Audio();
+        audio.dataset.loading = "true";
+        audio.preload = "auto";
       } else {
         const { samples, sampleRate } = buildAmbientSamples(name);
         audio = new Audio(encodeWavDataUri(samples, sampleRate));
       }
       audio.loop = true;
-      audio.preload = name === "never" ? "metadata" : "auto";
+      if (name !== "never") audio.preload = "auto";
       audio.volume = volumes[name] || 0.4;
       audio.style.display = "none";
       audio.setAttribute("aria-label", `NOCTURNE ${name} audio loop`);
@@ -7250,6 +7296,29 @@ function initAmbientAudio() {
       }
       document.body.appendChild(audio);
       audioElements[name] = audio;
+      if (name === "never") {
+        // Blob loading makes the track fully seekable on hosts that do not
+        // support byte ranges, and removes the CDN streaming stall.
+        fetch("music/Dark.mp3?v=20261105-66")
+          .then((response) => {
+            if (!response.ok) throw new Error(`Dark.mp3 ${response.status}`);
+            return response.blob();
+          })
+          .then((blob) => {
+            audio.src = URL.createObjectURL(blob);
+            audio.load();
+            audio.dataset.loading = "false";
+            if (osState.audioPendingPlay) {
+              osState.audioPendingPlay = false;
+              toggleAmbientAudio(name);
+              updateOsAudioUI();
+            }
+          })
+          .catch(() => {
+            audio.dataset.loading = "false";
+            setOsAudioStatus("AUDIO UNAVAILABLE / CHECK CONNECTION");
+          });
+      }
     } catch {
       // If audio construction is unavailable, the buttons remain inert but usable.
     }
@@ -7268,6 +7337,11 @@ function toggleAmbientAudio(name) {
     audioTracks[name] = false;
     setOsAudioStatus("");
     syncOsAudioButtons();
+    return;
+  }
+  if (name === "never" && audio.dataset.loading === "true") {
+    osState.audioPendingPlay = true;
+    setOsAudioStatus("LOADING TRACK...");
     return;
   }
   audio.muted = false;

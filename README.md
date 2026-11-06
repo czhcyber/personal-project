@@ -58,8 +58,8 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 - **Live Preview** — 外部详情页可打开 iframe 模态：容器 `#000`、12px 圆角、1px 白色透光边，iframe 100% 铺满；`sandbox="allow-scripts allow-same-origin"`。左上角 `[ × ]` 或 Escape 关闭并清空 iframe。
 - **Source isolation** — 除了把 Konbini 静态站复制到 `previews/konbini/` 作为隔离预览，没有修改任何其他项目文件夹；Refreshments / Personal Portfolio 只通过其 GitHub Pages URL 加载。缩略图分别来自 Konbini 自带 preview、Refreshments 首页截图、Personal Portfolio 首页截图。
 - **Gallery** — 5 张从 3D 场景直接捕获的别墅渲染静帧，可按 `ALL / INTERIOR / EXTERIOR` 筛选；点击进入纵向大图 lightbox，支持上一张 / 下一张和 ESC 返回画廊。
-- **Audio** — Audio 引擎保留四条 loop 轨道：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Never See Me Again`；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。长音频使用 `preload="metadata"`，不阻塞首屏。
-- **Immersive Audio / My Favourite** — 打开 Audio 会进入独立的全屏唱片房：暖棕色径向背景，左侧 60% 为巨型黑胶盘（封面圆形、黑胶凹槽 `repeating-radial-gradient`、CSS 持续旋转），右侧 40% 为 `Never See Me Again / Kanye West / Ghost Town Run...` 与极简播放控制。左上角 `[ ∨ MINIMIZE ]` 返回桌面；此视图会隐藏标准 OS 玻璃窗口、顶部栏与 Dock。银色唱臂由 GSAP 控制，播放时转到 `25deg`，暂停回到 `0deg`。音源位于 `music/Never See Me Again.mp3`。
+- **Audio** — Audio 引擎保留四条 loop 轨道：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Dark`；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。`Dark` 以小体积 Blob 完整加载，避免 CDN Range / 流式播放导致的无法 seek 或无声问题。
+- **Immersive Audio / My Favourite** — 打开 Audio 会进入独立的全屏唱片房：暖棕色径向背景，左侧 60% 为巨型黑胶盘（封面圆形、黑胶凹槽 `repeating-radial-gradient`、CSS 持续旋转），右侧 40% 为 `Dark / mixed matches / Dark` 与极简播放控制。左上角 `[ ∨ MINIMIZE ]` 返回桌面；此视图会隐藏标准 OS 玻璃窗口、顶部栏与 Dock。银色唱臂由 GSAP 控制，播放时转到 `25deg`，暂停回到 `0deg`。封面为 `images/dark.jpg`，音源位于 `music/Dark.mp3`；细线进度条支持点击、拖动与键盘左右键 seek。
 - **Environment** — `NIGHT MODE` / `DUSK MODE` 只记录 pending 状态，不会立即改变 3D 场景。返回别墅且相机回程完全结束后才执行：Dusk 用 GSAP 把 `AmbientLight` 调暖、`scene.background` 调为暮色，并关闭客厅 / 卧室 / 阅读区 / 茶室 / 书房主灯与局部灯；Night 恢复原始照明、背景和灯光。`currentEnvMode` 跨会话保留。
 - **Plans** — 保留 F1 / F2 内联 SVG 蓝图；可从 Dock 打开。蓝图、项目详情、Gallery lightbox 的 Escape 优先级都是“先返回上一层”，主桌面 Escape 才退出 OS。
 - **Onsen / Garden Map** — 别墅左前方扩展出独立的户外温泉亭：黑石平台、木格栅、暖水池、石灯笼、竹屏、涟漪与蒸汽。可通过空间索引 `08 温泉`、3D 点击或 `GARDEN MAP` 进入；聚焦后右下角提供 `STEAM`、`BATH LIGHT` 和 `RETURN TO GARDEN`。`GARDEN MAP` 也可用 `M` 打开、`ESC` 关闭，包含 Villa / Tea Room / Terrace / Garage / Onsen 五个镜头节点。
@@ -208,7 +208,7 @@ python -m http.server 8901
 - 玻璃外观：`backdrop-filter: blur(20px)`、`rgba(255,255,255,0.05)` 背景、`1px rgba(255,255,255,0.15)` 边框、分层阴影与 4px 银灰滚动条
 - Vision Pro Optical Glass：OS 窗口与 Projects / Gallery 卡片使用 `blur(30px) saturate(150%)`、28px 圆角、32px 内边距、20px 圆角缩略图与 99px 胶囊按钮；Dock 为同材质的浮动玻璃岛
 - 外部项目通过 `iframe` 隔离加载，不读取或合并其他本地项目源码；Launch App 使用新标签打开，Live Preview 关闭时把 `iframe.src` 重置为 `about:blank`
-- 环境切换、Blueprint / Projects / Gallery 的窗口与 lightbox 过渡均由 GSAP 控制；三条环境音为运行时生成的本地 WAV data URI，`NEVER SEE ME AGAIN` 则直接加载本地 MP3，并只预取元数据
+- 环境切换、Blueprint / Projects / Gallery 的窗口与 lightbox 过渡均由 GSAP 控制；三条环境音为运行时生成的本地 WAV data URI，`Dark` 通过 `fetch` → Blob URL 完整加载，确保进度条可自由拖动
 - 新增 `assets/gallery-*.png` 作为 Projects / Gallery 的内容静帧，由 3D 场景在浏览器中直接捕获，不参与 WebGL 材质贴图
 - CSS2D 标签、基座雾与家具灯光均为本地 Three.js / GSAP 实现，无外部图像依赖
 - `EffectComposer` + `RenderPass` + `OutlinePass` + `OutputPass`；只有 X-Ray Focus 时启用 composer，常规视图直接渲染
