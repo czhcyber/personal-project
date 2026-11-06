@@ -386,6 +386,9 @@ const osState = {
   audioStatusEl: null,
   audioAutoStarted: false,
   audioPendingPlay: false,
+  darkAudioReady: false,
+  darkAudioLoading: false,
+  darkAudioPromise: null,
   audioMixEl: null,
   audioRows: [],
   blueprintView: null,
@@ -7276,13 +7279,15 @@ function initAmbientAudio() {
     try {
       let audio;
       if (name === "never") {
-        audio = new Audio("music/Dark.mp3?v=20261105-67");
+        audio = new Audio();
+        audio.dataset.loading = "true";
+        audio.preload = "none";
       } else {
         const { samples, sampleRate } = buildAmbientSamples(name);
         audio = new Audio(encodeWavDataUri(samples, sampleRate));
       }
       audio.loop = true;
-      audio.preload = "auto";
+      if (name !== "never") audio.preload = "auto";
       audio.volume = volumes[name] || 0.4;
       audio.style.display = "none";
       audio.setAttribute("aria-label", `NOCTURNE ${name} audio loop`);
@@ -7298,15 +7303,78 @@ function initAmbientAudio() {
       // If audio construction is unavailable, the buttons remain inert but usable.
     }
   });
+
+  // Prefetch after the document has settled, not during app initialization.
+  const prefetchDark = () => {
+    window.setTimeout(() => {
+      if (!osState.darkAudioReady && audioElements.never) {
+        ensureDarkAudioLoaded().catch(() => {});
+      }
+    }, 600);
+  };
+  if (document.readyState === "complete") prefetchDark();
+  else window.addEventListener("load", prefetchDark, { once: true });
 }
 
 function setOsAudioStatus(text) {
   if (osState.audioStatusEl) osState.audioStatusEl.textContent = text;
 }
 
+function ensureDarkAudioLoaded() {
+  const audio = audioElements.never;
+  if (!audio) return Promise.reject(new Error("Dark audio element missing"));
+  if (osState.darkAudioReady) return Promise.resolve(audio);
+  if (osState.darkAudioPromise) return osState.darkAudioPromise;
+  osState.darkAudioLoading = true;
+  setOsAudioStatus("LOADING TRACK...");
+  const controller = new AbortController();
+  const abortTimer = window.setTimeout(() => controller.abort(), 6000);
+  osState.darkAudioPromise = fetch("music/Dark.mp3", { signal: controller.signal })
+    .then((response) => {
+      if (!response.ok) throw new Error(`Dark.mp3 ${response.status}`);
+      return response.blob();
+    })
+    .then((blob) => {
+      audio.src = URL.createObjectURL(blob);
+      audio.load();
+      return new Promise((resolve, reject) => {
+        if (audio.readyState >= 1) {
+          resolve();
+          return;
+        }
+        audio.addEventListener("loadedmetadata", resolve, { once: true });
+        audio.addEventListener("error", reject, { once: true });
+      });
+    })
+    .then(() => {
+      window.clearTimeout(abortTimer);
+      audio.dataset.loading = "false";
+      osState.darkAudioReady = true;
+      osState.darkAudioLoading = false;
+      setOsAudioStatus("");
+      return audio;
+    })
+    .catch((error) => {
+      window.clearTimeout(abortTimer);
+      osState.darkAudioLoading = false;
+      osState.darkAudioPromise = null;
+      setOsAudioStatus("AUDIO UNAVAILABLE / TAP TO RETRY");
+      throw error;
+    });
+  return osState.darkAudioPromise;
+}
+
 function toggleAmbientAudio(name) {
   const audio = audioElements[name];
   if (!audio) return;
+  if (name === "never" && !osState.darkAudioReady) {
+    ensureDarkAudioLoaded()
+      .then(() => {
+        if (!audioTracks[name]) toggleAmbientAudio(name);
+      })
+      .catch(() => {});
+    return;
+  }
   if (audioTracks[name]) {
     audio.pause();
     audioTracks[name] = false;
