@@ -6721,6 +6721,22 @@ body.os-open .hotspot-layer {
   background: #ffffff;
 }
 
+.os-audio-status {
+  min-height: 12px;
+  margin: 10px 0 0;
+  color: #c79b76;
+  font-family: var(--sans);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.1px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.os-vinyl-disc {
+  cursor: pointer;
+}
+
 @media (max-width: 900px) {
   .os-audio-immersive-grid {
     grid-template-columns: 1fr;

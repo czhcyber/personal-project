@@ -379,6 +379,7 @@ const osState = {
   audioTimeEl: null,
   audioDurationEl: null,
   audioProgressFillEl: null,
+  audioStatusEl: null,
   audioMixEl: null,
   audioRows: [],
   blueprintView: null,
@@ -6366,7 +6367,7 @@ function initNocturneOS() {
                   <div class="os-audio-immersive-grid">
                     <div class="os-vinyl-stage">
                       <div class="os-vinyl-shell">
-                        <div class="os-vinyl-disc" id="os-audio-art" data-track="never">
+                        <div class="os-vinyl-disc" id="os-audio-art" data-track="never" role="button" tabindex="0" aria-label="Play or pause Never See Me Again">
                           <img class="os-vinyl-cover" src="images/blond.jpg" alt="Never See Me Again album cover">
                         </div>
                         <div class="os-tonearm" id="os-audio-tonearm" aria-hidden="true">
@@ -6385,6 +6386,7 @@ function initNocturneOS() {
                         <button class="os-audio-play" type="button" data-os-audio-play id="os-audio-play" aria-label="Play or pause">▶</button>
                         <div class="os-audio-progress"><span id="os-audio-progress-fill"></span></div>
                         <div class="os-audio-times"><span id="os-audio-time">00:00</span><span id="os-audio-duration">00:00</span></div>
+                        <p class="os-audio-status" id="os-audio-status" aria-live="polite"></p>
                         <label class="os-audio-volume">VOL <input id="os-audio-volume" type="range" min="0" max="100" step="1" value="42"></label>
                       </div>
                     </div>
@@ -6623,6 +6625,7 @@ function initNocturneOS() {
   osState.audioTimeEl = overlay.querySelector("#os-audio-time");
   osState.audioDurationEl = overlay.querySelector("#os-audio-duration");
   osState.audioProgressFillEl = overlay.querySelector("#os-audio-progress-fill");
+  osState.audioStatusEl = overlay.querySelector("#os-audio-status");
   osState.audioMixEl = overlay.querySelector("#os-audio-mix");
   osState.appPanels = [...overlay.querySelectorAll("[data-os-panel]")];
   osState.dockButtons = [...overlay.querySelectorAll(".os-dock-item[data-os-app]")];
@@ -6694,6 +6697,18 @@ function initNocturneOS() {
   }
   overlay.querySelector(".os-skip-boot")?.addEventListener("click", enterOsDesktop);
   overlay.querySelector("[data-audio-minimize]")?.addEventListener("click", () => openOsApp("home"));
+  const audioDisc = overlay.querySelector(".os-vinyl-disc");
+  const toggleAudioFromDisc = () => {
+    toggleAmbientAudio(osState.selectedAudio);
+    updateOsAudioUI();
+  };
+  audioDisc?.addEventListener("click", toggleAudioFromDisc);
+  audioDisc?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggleAudioFromDisc();
+    }
+  });
   overlay.querySelector("[data-os-blueprint]")?.addEventListener("click", openOsBlueprint);
   overlay.querySelector(".os-blueprint-back")?.addEventListener("click", closeOsBlueprint);
   overlay.querySelector("[data-os-project-back]")?.addEventListener("click", hideProjectDetail);
@@ -7216,7 +7231,7 @@ function initAmbientAudio() {
     try {
       let audio;
       if (name === "never") {
-        audio = new Audio("music/Never%20See%20Me%20Again.mp3");
+        audio = new Audio("music/Never%20See%20Me%20Again.mp3?v=20261105-63");
       } else {
         const { samples, sampleRate } = buildAmbientSamples(name);
         audio = new Audio(encodeWavDataUri(samples, sampleRate));
@@ -7226,6 +7241,12 @@ function initAmbientAudio() {
       audio.volume = volumes[name] || 0.4;
       audio.style.display = "none";
       audio.setAttribute("aria-label", `NOCTURNE ${name} audio loop`);
+      if (name === "never") {
+        audio.addEventListener("waiting", () => setOsAudioStatus("BUFFERING..."));
+        audio.addEventListener("stalled", () => setOsAudioStatus("BUFFERING..."));
+        audio.addEventListener("playing", () => setOsAudioStatus(""));
+        audio.addEventListener("error", () => setOsAudioStatus("AUDIO UNAVAILABLE / CHECK CONNECTION"));
+      }
       document.body.appendChild(audio);
       audioElements[name] = audio;
     } catch {
@@ -7234,21 +7255,28 @@ function initAmbientAudio() {
   });
 }
 
+function setOsAudioStatus(text) {
+  if (osState.audioStatusEl) osState.audioStatusEl.textContent = text;
+}
+
 function toggleAmbientAudio(name) {
   const audio = audioElements[name];
   if (!audio) return;
   if (audioTracks[name]) {
     audio.pause();
     audioTracks[name] = false;
+    setOsAudioStatus("");
     syncOsAudioButtons();
     return;
   }
+  setOsAudioStatus(audio.readyState < 3 ? "BUFFERING..." : "");
   const playRequest = audio.play();
   audioTracks[name] = true;
   syncOsAudioButtons();
   if (playRequest && typeof playRequest.catch === "function") {
     playRequest.catch(() => {
       audioTracks[name] = false;
+      setOsAudioStatus("PLAYBACK BLOCKED / TAP PLAY AGAIN");
       syncOsAudioButtons();
     });
   }
