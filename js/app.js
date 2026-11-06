@@ -7667,30 +7667,46 @@ function encodeWavDataUri(samples, sampleRate) {
 
 function buildAmbientSamples(kind) {
   const sampleRate = 16000;
-  const durations = { rain: 4.8, wind: 6.4, jazz: 8 };
+  const durations = { rain: 7.2, wind: 9.0, jazz: 8 };
   const seconds = durations[kind] || 5;
   const length = Math.floor(sampleRate * seconds);
   const samples = new Float32Array(length);
 
   if (kind === "rain") {
+    // Soft, distant rain: two cascaded low-passes for the body, a very quiet
+    // high band for air, and sparse filtered droplets instead of sharp clicks.
     let low = 0;
+    let body = 0;
+    let droplet = 0;
     for (let index = 0; index < length; index += 1) {
       const white = Math.random() * 2 - 1;
-      low += (white - low) * 0.18;
-      const hiss = white - low;
-      const drop = Math.random() < 0.00085 ? (Math.random() * 2 - 1) * 0.28 : 0;
-      samples[index] = low * 0.22 + hiss * 0.055 + drop;
+      low += (white - low) * 0.12;
+      body += (low - body) * 0.035;
+      if (Math.random() < 0.00016) droplet += 0.012 + Math.random() * 0.012;
+      droplet *= 0.992;
+      samples[index] =
+        body * 0.62 +
+        low * 0.16 +
+        (white - low) * 0.009 +
+        droplet * (body * 1.6 + white * 0.25);
     }
   } else if (kind === "wind") {
-    let brown = 0;
+    // Airy wind without the old low-frequency roar. The slow gust envelope
+    // keeps it moving but never overpowers the room ambience.
+    let low = 0;
+    let band = 0;
     for (let index = 0; index < length; index += 1) {
       const t = index / sampleRate;
       const white = Math.random() * 2 - 1;
-      brown = (brown + white * 0.018) * 0.995;
-      const modulation =
-        0.45 + 0.28 * Math.sin((Math.PI * 2 * t) / 5.7) +
-        0.12 * Math.sin((Math.PI * 2 * t) / 1.9 + 0.8);
-      samples[index] = brown * modulation * 8.5 + white * 0.004;
+      low += (white - low) * 0.018;
+      band += (white - band) * 0.065;
+      const air = band - low;
+      const gust =
+        0.42 +
+        0.18 * Math.sin((Math.PI * 2 * t) / 7.9) +
+        0.08 * Math.sin((Math.PI * 2 * t) / 3.1 + 1.2);
+      samples[index] =
+        (low * 0.2 + air * 0.1 + band * 0.025 + white * 0.0018) * gust;
     }
   } else {
     const chords = [
@@ -7724,8 +7740,12 @@ function buildAmbientSamples(kind) {
   for (let index = 0; index < length; index += 1) {
     peak = Math.max(peak, Math.abs(samples[index]));
   }
-  const scale = Math.min(1, 0.72 / peak);
-  const fadeLength = Math.floor(sampleRate * 0.12);
+  const targetPeak = kind === "rain" ? 0.36 : kind === "wind" ? 0.4 : 0.72;
+  const scale =
+    kind === "rain" || kind === "wind"
+      ? targetPeak / peak
+      : Math.min(1, targetPeak / peak);
+  const fadeLength = Math.floor(sampleRate * (kind === "rain" || kind === "wind" ? 0.4 : 0.12));
   for (let index = 0; index < length; index += 1) {
     let envelope = 1;
     if (index < fadeLength) envelope = index / fadeLength;
@@ -7737,7 +7757,7 @@ function buildAmbientSamples(kind) {
 
 function initAmbientAudio() {
   if (Object.keys(audioElements).length) return;
-  const volumes = { rain: 0.42, wind: 0.46, jazz: 0.5, never: 0.5 };
+  const volumes = { rain: 0.22, wind: 0.24, jazz: 0.5, never: 0.5 };
   Object.keys(audioTracks).forEach((name) => {
     try {
       let audio;
