@@ -2483,24 +2483,40 @@ function buildFamilyPhoto() {
 
   interactiveGroups.push(group);
 
-  const loader = new THREE.TextureLoader();
-  const loadTimer = window.setTimeout(() => {
-    if (!photoFrameState.texture) loadFamilyPhotoViaFetch();
-  }, 1800);
-  loader.load(
-    "family.jpg",
-    (texture) => {
-      window.clearTimeout(loadTimer);
+  loadFamilyPhotoTexture();
+}
+
+function loadFamilyPhotoTexture() {
+  // A detached Image element can be collected while a slower CDN response is
+  // still in flight. Keep the source image in the DOM until it has decoded.
+  const image = document.createElement("img");
+  image.alt = "";
+  image.style.display = "none";
+  document.body.appendChild(image);
+  image.onload = () => {
+    try {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth || 1;
+      canvas.height = image.naturalHeight || 1;
+      const context = canvas.getContext("2d");
+      context.drawImage(image, 0, 0);
+      const texture = new THREE.CanvasTexture(canvas);
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
+      texture.needsUpdate = true;
       applyPhotoTexture(texture);
-    },
-    undefined,
-    () => {
-      loadFamilyPhotoViaFetch();
+    } catch {
+      showPhotoFallback();
+    } finally {
+      image.remove();
     }
-  );
+  };
+  image.onerror = () => {
+    image.remove();
+    showPhotoFallback();
+  };
+  image.src = "family.jpg";
 }
 
 function showPhotoFallback() {
@@ -2510,31 +2526,6 @@ function showPhotoFallback() {
   material.color.set(0x242321);
   material.needsUpdate = true;
   if (photoFrameState.fallbackBorder) photoFrameState.fallbackBorder.visible = true;
-}
-
-async function loadFamilyPhotoViaFetch() {
-  if (photoFrameState.texture) return;
-  const controller = new AbortController();
-  const abortTimer = window.setTimeout(() => controller.abort(), 2600);
-  try {
-    // A unique query avoids waiting on a stalled TextureLoader cache entry.
-    const response = await fetch(`family.jpg?fallback=${Date.now()}`, {
-      cache: "no-store",
-      signal: controller.signal,
-    });
-    if (!response.ok) throw new Error(`family.jpg ${response.status}`);
-    const bitmap = await createImageBitmap(await response.blob());
-    const texture = new THREE.Texture(bitmap);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.minFilter = THREE.LinearFilter;
-    texture.magFilter = THREE.LinearFilter;
-    texture.needsUpdate = true;
-    applyPhotoTexture(texture);
-  } catch {
-    showPhotoFallback();
-  } finally {
-    window.clearTimeout(abortTimer);
-  }
 }
 
 function applyPhotoTexture(texture) {
