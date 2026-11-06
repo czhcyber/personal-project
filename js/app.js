@@ -2484,9 +2484,13 @@ function buildFamilyPhoto() {
   interactiveGroups.push(group);
 
   const loader = new THREE.TextureLoader();
+  const loadTimer = window.setTimeout(() => {
+    if (!photoFrameState.texture) loadFamilyPhotoViaFetch();
+  }, 1800);
   loader.load(
     "family.jpg",
     (texture) => {
+      window.clearTimeout(loadTimer);
       texture.colorSpace = THREE.SRGBColorSpace;
       texture.minFilter = THREE.LinearFilter;
       texture.magFilter = THREE.LinearFilter;
@@ -2494,12 +2498,35 @@ function buildFamilyPhoto() {
     },
     undefined,
     () => {
-      photoMaterial.map = null;
-      photoMaterial.color.set(0x242321);
-      photoMaterial.needsUpdate = true;
-      fallbackBorder.visible = true;
+      loadFamilyPhotoViaFetch();
     }
   );
+}
+
+function showPhotoFallback() {
+  const material = photoFrameState.photoMaterial;
+  if (!material) return;
+  material.map = null;
+  material.color.set(0x242321);
+  material.needsUpdate = true;
+  if (photoFrameState.fallbackBorder) photoFrameState.fallbackBorder.visible = true;
+}
+
+async function loadFamilyPhotoViaFetch() {
+  if (photoFrameState.texture) return;
+  try {
+    const response = await fetch("family.jpg", { cache: "reload" });
+    if (!response.ok) throw new Error(`family.jpg ${response.status}`);
+    const bitmap = await createImageBitmap(await response.blob());
+    const texture = new THREE.Texture(bitmap);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.minFilter = THREE.LinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.needsUpdate = true;
+    applyPhotoTexture(texture);
+  } catch {
+    showPhotoFallback();
+  }
 }
 
 function applyPhotoTexture(texture) {
