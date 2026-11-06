@@ -2458,10 +2458,10 @@ function buildFamilyPhoto() {
   photo.receiveShadow = false;
   group.add(photo);
 
-  // A restrained gold inner border is only revealed when family.jpg is
-  // unavailable. It reads as a designed placeholder rather than a broken map.
+  // A restrained gold inner border is shown while family.jpg loads and stays
+  // visible if the image is unavailable. It reads as a designed placeholder.
   const fallbackBorder = new THREE.Group();
-  fallbackBorder.visible = false;
+  fallbackBorder.visible = true;
   const goldMaterial = new THREE.MeshStandardMaterial({
     color: 0xc7a77a,
     roughness: 0.38,
