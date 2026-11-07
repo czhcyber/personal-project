@@ -7648,3 +7648,169 @@ body.os-open .hotspot-layer {
     display: none;
   }
 }
+
+/* ENVIRONMENT / AI night plate ------------------------------------------- */
+.os-env-visual {
+  border-radius: 12px !important;
+  background: #05070c !important;
+}
+
+.os-env-visual::after {
+  display: none !important;
+}
+
+.os-env-photo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: #05070c;
+}
+
+.os-env-photo > img {
+  display: block;
+  width: 110%;
+  height: 110%;
+  max-width: none;
+  object-fit: cover;
+  transform: translate(-5%, -5%);
+  transition: filter 0.65s ease;
+  filter: brightness(0.9) contrast(1.1) saturate(1.2);
+}
+
+.os-env-visual.is-dusk .os-env-photo > img {
+  filter: sepia(0.5) hue-rotate(-15deg) brightness(1.1);
+}
+
+.os-env-visual.is-day .os-env-photo > img {
+  filter: brightness(1.6) saturate(0.8);
+}
+
+.os-env-photo-shade {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%;
+  height: 40%;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.os-env-photo-hud {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(244, 247, 250, 0.86);
+  font-family: "SFMono-Regular", "Cascadia Code", Consolas, monospace;
+  font-size: 6px;
+  letter-spacing: 1px;
+  line-height: 1.4;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+  text-transform: uppercase;
+}
+
+.os-env-photo-live {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #ff4a42;
+  box-shadow: 0 0 8px rgba(255, 74, 66, 0.9);
+  animation: osEnvBlink 1.05s steps(1) infinite;
+}
+
+@keyframes osEnvBlink {
+  0%, 55% { opacity: 1; }
+  56%, 100% { opacity: 0.18; }
+}
+
+.os-env-photo-divider {
+  color: rgba(244, 247, 250, 0.34);
+}
+
+.os-env-photo-rain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: none;
+  pointer-events: none;
+  opacity: 0.44;
+  background-image: url("../images/rain.png");
+  background-repeat: repeat;
+  background-size: 64px 128px;
+  animation: rainFall 0.5s linear infinite;
+  mix-blend-mode: screen;
+}
+
+@keyframes rainFall {
+  from { background-position: 0 0; }
+  to { background-position: -32px 128px; }
+}
+
+.os-env-photo-wind {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: none;
+  pointer-events: none;
+  opacity: 0.26;
+  background:
+    linear-gradient(90deg, transparent, rgba(214, 232, 245, 0.55), transparent) 0 32% / 48% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(214, 232, 245, 0.28), transparent) 80% 64% / 62% 1px no-repeat,
+    linear-gradient(90deg, transparent, rgba(214, 232, 245, 0.34), transparent) 30% 78% / 36% 1px no-repeat;
+  animation: osEnvPhotoWind 4.8s ease-in-out infinite alternate;
+}
+
+@keyframes osEnvPhotoWind {
+  from { transform: translateX(-7%); opacity: 0.12; }
+  to { transform: translateX(7%); opacity: 0.3; }
+}
+
+.os-env-visual.is-rain .os-env-photo-rain {
+  display: block;
+}
+
+.os-env-visual.is-wind .os-env-photo-wind {
+  display: block;
+}
+
+.os-env-photo .os-env-visual-meta {
+  right: 14px;
+  bottom: 11px;
+  left: 14px;
+  z-index: 5;
+}
+
+.os-env-photo .os-env-readout,
+.os-env-photo .os-env-sky-readout {
+  color: rgba(255, 247, 233, 0.76);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.75);
+}
+
+@media (max-width: 900px) {
+  .os-env-photo {
+    min-height: 220px;
+  }
+
+  .os-env-photo-hud {
+    top: 13px;
+    left: 13px;
+    gap: 6px;
+    font-size: 5px;
+  }
+
+  .os-env-photo .os-env-visual-meta {
+    right: 11px;
+    bottom: 9px;
+    left: 11px;
+  }
+}

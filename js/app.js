@@ -346,6 +346,7 @@ const osState = {
   envSliderThumbEl: null,
   envModeEl: null,
   envSkyReadoutEl: null,
+  envPhotoModeEl: null,
   envWeatherButtons: [],
   envSliderActive: false,
   homeMonitors: [],
@@ -7594,40 +7595,21 @@ function initNocturneOS() {
                   </header>
                   <div class="os-env-layout">
                     <div class="os-env-visual" id="os-env-preview" data-os-env-visual="night" style="--env-pos:0">
-                      <div class="os-env-sky" aria-hidden="true">
-                        <span class="os-env-stars"></span>
-                      </div>
-                      <svg class="os-env-roof" viewBox="0 0 800 460" role="img" aria-label="NOCTURNE villa roof at night">
-                        <path class="os-env-roof-shadow" d="M72 282 310 282 346 262 726 262 726 288 642 288 642 320 186 320 186 288 72 288Z"/>
-                        <path class="os-env-roof-deck" d="M92 294 322 294 354 276 706 276 706 300 654 300 654 330 202 330 202 300 92 300Z"/>
-                        <path class="os-env-roof-glass" d="M160 330 160 414 340 414 340 330Z"/>
-                        <path class="os-env-roof-glass" d="M380 330 380 404 520 404 520 330Z"/>
-                        <path class="os-env-roof-wing" d="M552 300 552 394 690 394 690 300Z"/>
-                        <g class="os-env-mullions">
-                          <path d="M160 352H340M160 378H340M214 330V414M280 330V414"/>
-                          <path d="M380 354H520M380 380H520M450 330V404"/>
-                          <path d="M552 328H690M621 300V394"/>
-                        </g>
-                        <g class="os-env-windows">
-                          <rect x="172" y="342" width="32" height="24"/>
-                          <rect x="228" y="342" width="38" height="24"/>
-                          <rect x="292" y="342" width="34" height="24"/>
-                          <rect x="392" y="342" width="38" height="24"/>
-                          <rect x="462" y="342" width="40" height="24"/>
-                          <rect x="564" y="316" width="28" height="62"/>
-                          <rect x="646" y="316" width="22" height="62"/>
-                        </g>
-                        <path class="os-env-roof-base" d="M62 430H738"/>
-                        <path class="os-env-roof-line" d="M92 294 322 294 354 276 706 276"/>
-                        <path class="os-env-roof-line" d="M202 330H654"/>
-                        <path class="os-env-roof-line" d="M552 300H690"/>
-                        <path class="os-env-roof-line" d="M62 430H738"/>
-                      </svg>
-                      <span class="os-env-weather-fx os-env-rain" aria-hidden="true"></span>
-                      <span class="os-env-weather-fx os-env-wind" aria-hidden="true"></span>
-                      <div class="os-env-visual-meta">
-                        <span class="os-env-readout">ENV / NIGHT</span>
-                        <span class="os-env-sky-readout">SKY 00 / DARK</span>
+                      <div class="os-env-photo">
+                        <img src="images/env-night.jpg" alt="AI study of the NOCTURNE villa at night with pool reflections">
+                        <div class="os-env-photo-hud">
+                          <i class="os-env-photo-live" aria-hidden="true"></i>
+                          <span id="os-env-photo-mode">ENV / NIGHT</span>
+                          <span class="os-env-photo-divider" aria-hidden="true">/</span>
+                          <span>SKY TEMP / 22°</span>
+                        </div>
+                        <div class="os-env-photo-shade" aria-hidden="true"></div>
+                        <span class="os-env-photo-rain" aria-hidden="true"></span>
+                        <span class="os-env-photo-wind" aria-hidden="true"></span>
+                        <div class="os-env-visual-meta">
+                          <span class="os-env-readout">ENV / NIGHT</span>
+                          <span class="os-env-sky-readout">SKY 00 / DARK</span>
+                        </div>
                       </div>
                     </div>
                     <div class="os-env-copy">
@@ -7838,6 +7820,7 @@ function initNocturneOS() {
   osState.envSliderThumbEl = overlay.querySelector("#os-env-slider-thumb");
   osState.envModeEl = overlay.querySelector("#os-env-mode");
   osState.envSkyReadoutEl = overlay.querySelector(".os-env-sky-readout");
+  osState.envPhotoModeEl = overlay.querySelector("#os-env-photo-mode");
   osState.envWeatherButtons = [...overlay.querySelectorAll("[data-os-weather]")];
   osState.homeMonitors = [...overlay.querySelectorAll("[data-os-home-monitor]")];
   osState.homeReadouts = [...overlay.querySelectorAll("[data-os-home-readout]")];
@@ -8261,11 +8244,13 @@ function updateEnvironmentVisual(position) {
   visual.style.setProperty("--env-orb-x", `${66 + pos * 0.08}%`);
   visual.style.setProperty("--env-orb-y", `${24 - pos * 0.06}%`);
   visual.dataset.osEnvVisual = mode;
+  visual.classList.toggle("is-night", mode === "night");
   visual.classList.toggle("is-dusk", mode === "dusk");
   visual.classList.toggle("is-day", mode === "day");
   if (osState.envSliderFillEl) osState.envSliderFillEl.style.width = `${pos}%`;
   if (osState.envSliderThumbEl) osState.envSliderThumbEl.style.left = `${pos}%`;
   if (osState.envModeEl) osState.envModeEl.textContent = mode.toUpperCase();
+  if (osState.envPhotoModeEl) osState.envPhotoModeEl.textContent = `ENV / ${mode.toUpperCase()}`;
   if (osState.envSkyReadoutEl) {
     const stateLabel = mode === "day" ? "LIGHT" : mode === "dusk" ? "LOW" : "DARK";
     osState.envSkyReadoutEl.textContent = `SKY ${String(Math.round(pos)).padStart(2, "0")} / ${stateLabel}`;
