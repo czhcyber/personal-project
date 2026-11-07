@@ -771,6 +771,163 @@ const ATELIER_CHAPTERS = [
   },
 ];
 
+const ATELIER_SPREADS = [
+  {
+    id: "origin-1",
+    chapter: "origin",
+    left: {
+      label: "PLATE 01 / EXTERIOR",
+      image: "assets/gallery-villa.png",
+      alt: "NOCTURNE villa at night",
+      caption: "总览 / NIGHT · 410 m² · 2026",
+    },
+    right: {
+      kicker: "ATELIER / NOTE 01",
+      title: "先有一片夜，<br><em>再有一栋房子。</em>",
+      deck:
+        "NOCTURNE 的起点不是一个建筑类型，而是一种时间：当一天结束，房子不再向外展示，而是把光收回来。",
+      paragraphs: [
+        "很多夜景住宅的做法，是先完成建筑，再在外面打一层暖光。NOCTURNE 想反过来：先决定夜晚如何发生，再让墙、玻璃、木头和水为这件事让路。",
+        "所以首层被压低，玻璃退到黑色石基后面，真正亮着的是茶室、书房和庭院边缘。光被留在室内，像一件不愿意被路人看见的东西。",
+      ],
+    },
+  },
+  {
+    id: "origin-2",
+    chapter: "origin",
+    left: {
+      label: "PLATE 02 / STUDY",
+      image: "assets/gallery-study.png",
+      alt: "NOCTURNE study and atelier",
+      caption: "书房 / ATELIER · 二层 · 30 m²",
+    },
+    right: {
+      kicker: "ORIGIN / THE RULES",
+      title: "三条最初的规则。",
+      paragraphs: [
+        "我不想用某一张参考图来定义这栋房子。最后留下来的不是风格，而是三个必须同时成立的条件。",
+      ],
+      points: [
+        "房子必须有两个尺度：远处是安静的体量，走近后才有可以停留的房间。",
+        "所有材料必须能在夜里工作：混凝土吸光，胡桃木保温，玻璃把庭院借进来，黄铜只出现在需要被触摸的地方。",
+        "技术不能盖过空间。NOCTURNE OS 可以很复杂，但它打开的第一屏应该只是“欢迎回来”。",
+      ],
+      quote: "白天，房子属于风景；入夜，风景属于房子。",
+    },
+  },
+  {
+    id: "process-1",
+    chapter: "process",
+    left: {
+      label: "PLATE 03 / SECTION",
+      diagram: true,
+      caption: "体量 / 剖面关系 · 07 个关键动作",
+    },
+    right: {
+      kicker: "ATELIER / NOTE 02",
+      title: "把房子抬起来，<br><em>把夜晚放下去。</em>",
+      deck:
+        "两层白色体量、黑色石基、下沉车库与悬挑茶室——所有形式都先被一条剖面说服，然后才被做成可以旋转的实时模型。",
+      points: [
+        "黑色石基把建筑从草地上抬起来，也藏住设备、车库和结构。",
+        "下沉车库让车从地面消失，保留首层完整的水平线。",
+        "悬挑茶室把最轻的房间推到庭院上方，让玻璃盒成为夜晚的灯。",
+        "屋顶露台在二层留一个没有墙的观察点。",
+      ],
+    },
+  },
+  {
+    id: "process-2",
+    chapter: "process",
+    left: {
+      label: "PLATE 04 / GARAGE",
+      image: "preview-nocturne-garage.png",
+      alt: "NOCTURNE sunken garage with showroom car",
+      caption: "下沉车库 / 体量与坡道 · NIGHT",
+    },
+    right: {
+      kicker: "PROCESS / SYSTEM",
+      title: "从模型到实时系统。",
+      paragraphs: [
+        "这栋房子不是一张静态效果图。它由 Three.js 程序化搭建：墙体、楼板、家具、植物和灯光都是可编辑的几何体，镜头可以在总览、房间、X-Ray 与剖面之间移动。",
+        "NOCTURNE OS 是第二层空间：项目档案、环境控制、声音和家庭照片被放进同一套界面。它必须像一个系统，但又不能比房子更吵。所以最终留下的都是低对比的玻璃、很细的分隔线和一块只显示必要信息的 dashboard。",
+      ],
+      quote: "每一个体量，都要在剖面上解释自己。",
+    },
+  },
+  {
+    id: "material-1",
+    chapter: "material",
+    left: {
+      label: "PLATE 05 / ONSEN",
+      image: "preview-nocturne-onsen.png",
+      alt: "NOCTURNE outdoor onsen at night",
+      caption: "温泉 / 水、黑石与木格栅 · NIGHT",
+    },
+    right: {
+      kicker: "ATELIER / NOTE 03",
+      title: "光，是最后<br><em>一种材料。</em>",
+      deck:
+        "混凝土、玻璃、胡桃木、黑石、黄铜和水，最后都要经过同一件事的检验：它在夜里是否还愿意留下来。",
+      points: [
+        "混凝土吸光，胡桃木保温，黑石让水声变得清楚。",
+        "玻璃不是墙，而是把庭院借进室内的取景器。",
+        "黄铜只在把手、灯杆和书脊上出现。",
+        "NIGHT 是默认状态；DUSK 把房子交给桃金色空气；DAY 把房间交还给风景。",
+      ],
+      quote: "材料决定房子如何被触摸；光决定它如何被记住。",
+    },
+  },
+  {
+    id: "sources-1",
+    chapter: "sources",
+    left: {
+      label: "PLATE 06 / SYSTEM",
+      image: "preview-nocturne-home-dashboard.png",
+      alt: "NOCTURNE OS home dashboard",
+      caption: "NOCTURNE OS / HOME · SESSION 04",
+    },
+    right: {
+      kicker: "SOURCES & CREDITS",
+      title: "留下值得<br><em>被追溯的痕迹。</em>",
+      deck:
+        "空间判断、视觉资产和技术实现来自不同的地方。这一页记录它们各自支撑了 NOCTURNE 的哪一部分。",
+      paragraphs: [
+        "NOCTURNE 是一个以夜晚为主题的个人建筑与交互实验。空间概念、体量关系、镜头、界面结构、页面文案与 3D 场景由项目作者完成；家庭照片由作者提供，是这栋房子里唯一一件不能被程序生成的物件。",
+        "AI 工具参与了资料整理、英文润色、代码编写与调试，以及部分概念图像的生成。空间取舍、视觉方向、文案判断与最终验收由作者完成。",
+      ],
+    },
+  },
+  {
+    id: "sources-2",
+    chapter: "sources",
+    left: {
+      label: "PLATE 07 / COLOPHON",
+      image: "assets/gallery-living.png",
+      alt: "NOCTURNE living room at night",
+      caption: "客厅 / LIVING · 首层 · 38 m²",
+    },
+    right: {
+      kicker: "COLOPHON / BUILD",
+      title: "Sources & Credits.",
+      paragraphs: [
+        "场景由 Three.js r187 与本地 GLTFLoader / DRACOLoader 驱动。建筑、家具、植物、灯光和大部分材质为程序化几何体；车库跑车使用 three.js 示例资产，在项目中作为同类型跑车的占位模型。",
+      ],
+      credits: [
+        ["PROJECT", "NOCTURNE / 2026"],
+        ["DESIGN & CODE", "Project author"],
+        ["ENGINE", "Three.js r187 / GSAP"],
+        ["3D ASSET", "Ferrari GLB / three.js"],
+        ["AUDIO", "Dark — mixed matches"],
+        ["WEATHER", "Procedural WAV"],
+        ["TYPE", "Newsreader / system serif"],
+        ["BUILD", "2026.11 / GitHub Pages"],
+      ],
+      quote: "A house is also an archive of the decisions that made it.",
+    },
+  },
+];
+
 const ATELIER_OBJECTS = [
   {
     id: "origin",
@@ -808,8 +965,14 @@ const ATELIER_OBJECTS = [
 
 const atelierState = {
   overlay: null,
-  reader: null,
+  book: null,
+  leftPage: null,
+  rightPage: null,
   chapter: null,
+  bookIndex: 0,
+  bookBusy: false,
+  flipTween: null,
+  savedCamera: null,
   hotspotRoot: null,
   hotspots: [],
   hud: null,
@@ -6277,7 +6440,7 @@ function initRaycaster() {
   if (!raycaster) return;
 
   canvas.addEventListener("pointerdown", (event) => {
-    if (osState.active) return;
+    if (osState.active || atelierState.active) return;
     if (event.button !== 0) return;
     pointerDown = {
       x: event.clientX,
@@ -6287,7 +6450,7 @@ function initRaycaster() {
   });
 
   canvas.addEventListener("pointerup", (event) => {
-    if (osState.active) return;
+    if (osState.active || atelierState.active) return;
     if (!pointerDown) return;
     const down = pointerDown;
     pointerDown = null;
@@ -6655,21 +6818,27 @@ function initAtelier() {
   overlay.innerHTML = `
     <header class="atelier-topbar">
       <span class="atelier-brand">NOCTURNE <i>/</i> ATELIER</span>
-      <span class="atelier-position" id="atelier-position">01 / 04</span>
-      <button class="atelier-close" type="button" data-atelier-close>[ CLOSE ]</button>
+      <span class="atelier-position" id="atelier-position">01 / 07</span>
+      <button class="atelier-close" type="button" data-atelier-close>CLOSE BOOK ×</button>
     </header>
-    <div class="atelier-layout">
-      <aside class="atelier-side">
-        <span class="atelier-side-kicker">MAKING OF NOCTURNE</span>
-        <nav class="atelier-side-nav" id="atelier-nav" aria-label="Atelier chapters"></nav>
-        <span class="atelier-side-foot">A private residence<br>2026 / 410 m²</span>
-      </aside>
-      <main class="atelier-reader" id="atelier-reader" tabindex="-1"></main>
+    <div class="book-stage">
+      <div class="book" id="atelier-book">
+        <div class="book-page book-page-left" id="atelier-book-left"></div>
+        <div class="book-page book-page-right" id="atelier-book-right"></div>
+        <span class="book-spine" aria-hidden="true"></span>
+      </div>
     </div>
+    <footer class="book-footer">
+      <button class="book-nav book-prev" type="button" data-book-prev>← PREVIOUS PAGE</button>
+      <span class="book-folio" id="book-folio">SPREAD 01 / 07</span>
+      <button class="book-nav book-next" type="button" data-book-next>NEXT PAGE →</button>
+    </footer>
   `;
   document.body.appendChild(overlay);
   atelierState.overlay = overlay;
-  atelierState.reader = overlay.querySelector("#atelier-reader");
+  atelierState.book = overlay.querySelector("#atelier-book");
+  atelierState.leftPage = overlay.querySelector("#atelier-book-left");
+  atelierState.rightPage = overlay.querySelector("#atelier-book-right");
 
   const hud = document.createElement("aside");
   hud.className = "atelier-room-hud";
@@ -6682,14 +6851,6 @@ function initAtelier() {
   document.body.appendChild(hud);
   atelierState.hud = hud;
 
-  const navMarkup = ATELIER_CHAPTERS.map(
-    (chapter) => `
-      <button type="button" data-atelier-chapter="${chapter.id}">
-        <span>${chapter.number}</span><em>${chapter.label}</em>
-      </button>
-    `
-  ).join("");
-  overlay.querySelector("#atelier-nav").innerHTML = navMarkup;
   hud.querySelector("#atelier-hud-links").innerHTML = ATELIER_CHAPTERS.map(
     (chapter) => `
       <button type="button" data-atelier-chapter="${chapter.id}">
@@ -6703,9 +6864,12 @@ function initAtelier() {
       closeAtelier();
       return;
     }
-    const chapterButton = event.target.closest("[data-atelier-chapter]");
-    if (chapterButton) {
-      openAtelierChapter(chapterButton.dataset.atelierChapter);
+    if (event.target.closest("[data-book-prev]")) {
+      flipBook(-1);
+      return;
+    }
+    if (event.target.closest("[data-book-next]")) {
+      flipBook(1);
     }
   });
 
@@ -6890,39 +7054,309 @@ function atelierMarkup(chapter) {
     `;
 }
 
-function openAtelierChapter(id, { focusRoom = true } = {}) {
-  const chapter = ATELIER_CHAPTERS.find((item) => item.id === id);
-  if (!chapter || !atelierState.overlay) return;
-  atelierState.active = true;
-  if (focusRoom && state.focus?.roomId !== "study") {
-    selectRoom("study", { fly: true });
+function atelierDiagramMarkup() {
+  return `
+    <div class="book-diagram">
+      <svg viewBox="0 0 900 430" role="img" aria-label="NOCTURNE massing and section diagram">
+        <path class="diagram-ground" d="M54 342H846"/>
+        <path class="diagram-base" d="M160 342V286H720V342"/>
+        <path class="diagram-fill" d="M190 286V206H666V286"/>
+        <path class="diagram-line" d="M170 206H688M190 206V286M666 206V286"/>
+        <path class="diagram-fill" d="M230 206V128H610V206"/>
+        <path class="diagram-line" d="M210 128H630M230 128V206M610 128V206"/>
+        <path class="diagram-fill" d="M96 220H240V270H96Z"/>
+        <path class="diagram-line" d="M96 220H240M96 270H240"/>
+        <path class="diagram-fill" d="M650 260H800V286H650Z"/>
+        <path class="diagram-line" d="M650 260H800"/>
+        <path class="diagram-accent" d="M230 128H610M210 206H666M160 286H720"/>
+        <g class="diagram-labels">
+          <text x="64" y="372">BLACK STONE BASE</text>
+          <text x="198" y="108">VOLUME 02 / PRIVATE</text>
+          <text x="198" y="190">VOLUME 01 / SHARED</text>
+          <text x="690" y="248">TEA ROOM</text>
+          <text x="64" y="204">CANTILEVER</text>
+        </g>
+        <g class="diagram-ticks">
+          <path d="M54 354V368M846 354V368M160 354V368M720 354V368"/>
+          <text x="54" y="390">0</text><text x="705" y="390">12M</text><text x="820" y="390">18M</text>
+        </g>
+      </svg>
+    </div>
+  `;
+}
+
+function atelierLeftPageMarkup(spread, index) {
+  const left = spread.left;
+  const media = left.diagram
+    ? atelierDiagramMarkup()
+    : `<figure class="book-figure"><img src="${left.image}" alt="${left.alt}" loading="eager"></figure>`;
+  return `
+    <div class="book-page-inner book-page-left-inner">
+      <p class="book-plate-label">${left.label}</p>
+      <div class="book-media">${media}</div>
+      <p class="book-caption">${left.caption}</p>
+      <div class="book-page-foot">
+        <span>NOCTURNE / ATELIER</span>
+        <span>${String(index * 2 + 1).padStart(2, "0")}</span>
+      </div>
+    </div>
+  `;
+}
+
+function atelierRightPageMarkup(spread, index) {
+  const right = spread.right;
+  const points = right.points
+    ? `<ul class="book-points">${right.points.map((point) => `<li>${point}</li>`).join("")}</ul>`
+    : "";
+  const paragraphs = (right.paragraphs || [])
+    .map((paragraph) => `<p>${paragraph}</p>`)
+    .join("");
+  const credits = right.credits
+    ? `<dl class="book-credits">${right.credits
+        .map(([term, value]) => `<div><dt>${term}</dt><dd>${value}</dd></div>`)
+        .join("")}</dl>`
+    : "";
+  const quote = right.quote ? `<blockquote>${right.quote}</blockquote>` : "";
+  return `
+    <div class="book-page-inner book-page-right-inner">
+      <p class="book-kicker">${right.kicker}</p>
+      <h2 id="atelier-title">${right.title}</h2>
+      ${right.deck ? `<p class="book-deck">${right.deck}</p>` : ""}
+      <div class="book-body">${paragraphs}</div>
+      ${points}
+      ${credits}
+      ${quote}
+      <div class="book-page-foot">
+        <span>NOCTURNE / ATELIER</span>
+        <span>${String(index * 2 + 2).padStart(2, "0")}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderBookSpread(index, { instant = false } = {}) {
+  const target = clamp(index, 0, ATELIER_SPREADS.length - 1);
+  atelierState.bookIndex = target;
+  const spread = ATELIER_SPREADS[target];
+  atelierState.leftPage.innerHTML = atelierLeftPageMarkup(spread, target);
+  atelierState.rightPage.innerHTML = atelierRightPageMarkup(spread, target);
+  atelierState.leftPage.style.opacity = "1";
+  atelierState.rightPage.style.opacity = "1";
+  if (instant) {
+    atelierState.leftPage.scrollTop = 0;
+    atelierState.rightPage.scrollTop = 0;
   }
+  updateBookControls();
+}
+
+function updateBookControls() {
+  const overlay = atelierState.overlay;
+  if (!overlay) return;
+  const prev = overlay.querySelector("[data-book-prev]");
+  const next = overlay.querySelector("[data-book-next]");
+  const spread = ATELIER_SPREADS[atelierState.bookIndex];
+  const position = overlay.querySelector("#atelier-position");
+  const folio = overlay.querySelector("#book-folio");
+  if (position) position.textContent = `${String(atelierState.bookIndex + 1).padStart(2, "0")} / ${String(ATELIER_SPREADS.length).padStart(2, "0")}`;
+  if (folio) folio.textContent = `SPREAD ${String(atelierState.bookIndex + 1).padStart(2, "0")} / ${String(ATELIER_SPREADS.length).padStart(2, "0")}`;
+  if (prev) {
+    prev.hidden = atelierState.bookIndex === 0;
+    prev.disabled = atelierState.bookBusy;
+  }
+  if (next) {
+    next.hidden = atelierState.bookIndex === ATELIER_SPREADS.length - 1;
+    next.disabled = atelierState.bookBusy;
+  }
+  if (spread) {
+    atelierState.chapter = spread.chapter;
+    history.replaceState(null, "", `${location.pathname}${location.search}#atelier/${spread.chapter}`);
+  }
+}
+
+function flipBook(direction) {
+  if (
+    !atelierState.active ||
+    atelierState.bookBusy ||
+    !atelierState.overlay ||
+    !atelierState.book
+  ) {
+    return;
+  }
+  const nextIndex = atelierState.bookIndex + direction;
+  if (nextIndex < 0 || nextIndex >= ATELIER_SPREADS.length) return;
+
+  atelierState.bookBusy = true;
+  updateBookControls();
+  const sourcePage = direction > 0 ? atelierState.rightPage : atelierState.leftPage;
+  const sheet = sourcePage.cloneNode(true);
+  sheet.removeAttribute("id");
+  sheet.classList.add("book-flip-sheet");
+  sheet.classList.add(direction > 0 ? "from-right" : "from-left");
+  sheet.setAttribute("aria-hidden", "true");
+  atelierState.book.appendChild(sheet);
+
+  const incomingPage = direction > 0 ? atelierState.rightPage : atelierState.leftPage;
+  renderBookSpread(nextIndex);
+  incomingPage.style.opacity = "0";
+
+  const finish = () => {
+    sheet.remove();
+    atelierState.flipTween = null;
+    incomingPage.style.opacity = "1";
+    atelierState.bookBusy = false;
+    updateBookControls();
+    const closeButton = atelierState.overlay.querySelector("[data-atelier-close]");
+    closeButton?.focus({ preventScroll: true });
+  };
+
+  if (reducedMotion || !gsap) {
+    finish();
+    return;
+  }
+
+  const pageWidth = Math.max(1, atelierState.book.getBoundingClientRect().width / 2);
+  const timeline = gsap.timeline({ onComplete: finish });
+  atelierState.flipTween = timeline;
+  timeline.to(
+    sheet,
+    {
+      x: direction > 0 ? -pageWidth : pageWidth,
+      duration: 0.64,
+      ease: "power2.out",
+      boxShadow: "0 24px 50px rgba(55, 36, 18, 0.3)",
+    },
+    0
+  );
+  timeline.to(
+    sheet,
+    {
+      opacity: 0,
+      duration: 0.24,
+      ease: "power1.out",
+    },
+    0.54
+  );
+  timeline.to(
+    incomingPage,
+    {
+      opacity: 1,
+      duration: 0.36,
+      ease: "power2.out",
+    },
+    0.46
+  );
+}
+
+function saveAtelierCamera() {
+  if (atelierState.savedCamera) return;
+  if (state.cameraTween) {
+    state.cameraTween.kill();
+    state.cameraTween = null;
+  }
+  atelierState.savedCamera = {
+    position: camera.position.clone(),
+    target: controls.target.clone(),
+    controlsEnabled: controls.enabled,
+    userMoved: state.userMoved,
+  };
+  controls.enabled = false;
+}
+
+function openAtelierChapter(id) {
+  if (atelierState.bookBusy === "closing") return;
+  const startIndex = ATELIER_SPREADS.findIndex((spread) => spread.chapter === id);
+  if (startIndex < 0 || !atelierState.overlay) return;
+  if (!atelierState.active) {
+    saveAtelierCamera();
+    atelierState.active = true;
+    atelierState.overlay.querySelector("[data-book-prev]")?.removeAttribute("disabled");
+    atelierState.overlay.querySelector("[data-book-next]")?.removeAttribute("disabled");
+    atelierState.overlay.classList.add("is-open");
+    atelierState.overlay.setAttribute("aria-hidden", "false");
+    atelierState.overlay.style.opacity = "1";
+    document.body.classList.add("atelier-open");
+  }
+  atelierState.bookBusy = false;
+  renderBookSpread(startIndex, { instant: true });
   atelierState.chapter = id;
-  atelierState.reader.innerHTML = atelierMarkup(chapter);
-  atelierState.overlay.classList.add("is-open");
-  atelierState.overlay.setAttribute("aria-hidden", "false");
-  document.body.classList.add("atelier-open");
-  atelierState.reader.scrollTop = 0;
-  atelierState.overlay.querySelector("#atelier-position").textContent = `${chapter.number} / 04`;
-  atelierState.overlay.querySelectorAll(".atelier-side-nav button").forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.atelierChapter === id);
-  });
   syncAtelierPresence();
-  history.replaceState(null, "", `${location.pathname}${location.search}#atelier/${id}`);
   window.requestAnimationFrame(() => {
     atelierState.overlay.querySelector("[data-atelier-close]")?.focus({ preventScroll: true });
   });
 }
 
 function closeAtelier() {
-  if (!atelierState.active || !atelierState.overlay) return;
-  atelierState.active = false;
-  atelierState.chapter = null;
-  atelierState.overlay.classList.remove("is-open");
-  atelierState.overlay.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("atelier-open");
+  if (!atelierState.active || !atelierState.overlay || atelierState.bookBusy === "closing") return;
+  atelierState.bookBusy = "closing";
+  if (atelierState.flipTween) {
+    atelierState.flipTween.kill();
+    atelierState.flipTween = null;
+  }
+  atelierState.book?.querySelectorAll(".book-flip-sheet").forEach((sheet) => sheet.remove());
+  const overlay = atelierState.overlay;
+  const saved = atelierState.savedCamera;
   history.replaceState(null, "", `${location.pathname}${location.search}`);
-  syncAtelierPresence();
+  const finishCamera = () => {
+    if (saved) {
+      state.userMoved = saved.userMoved;
+    }
+    controls.enabled = true;
+    atelierState.savedCamera = null;
+    atelierState.active = false;
+    atelierState.bookBusy = false;
+    atelierState.chapter = null;
+    syncAtelierPresence();
+  };
+  const fadeDone = () => {
+    overlay.classList.remove("is-open");
+    overlay.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("atelier-open");
+    overlay.style.opacity = "";
+    if (!saved || !gsap || reducedMotion) {
+      if (saved) {
+        camera.position.copy(saved.position);
+        controls.target.copy(saved.target);
+        camera.lookAt(controls.target);
+      }
+      finishCamera();
+      return;
+    }
+    const tl = gsap.timeline({ onComplete: finishCamera });
+    tl.to(
+      camera.position,
+      {
+        x: saved.position.x,
+        y: saved.position.y,
+        z: saved.position.z,
+        duration: 0.78,
+        ease: "power2.out",
+        onUpdate: () => camera.lookAt(controls.target),
+      },
+      0
+    );
+    tl.to(
+      controls.target,
+      {
+        x: saved.target.x,
+        y: saved.target.y,
+        z: saved.target.z,
+        duration: 0.78,
+        ease: "power2.out",
+        onUpdate: () => camera.lookAt(controls.target),
+      },
+      0
+    );
+  };
+  if (gsap && !reducedMotion) {
+    gsap.to(overlay, {
+      opacity: 0,
+      duration: 0.34,
+      ease: "power2.out",
+      onComplete: fadeDone,
+    });
+  } else {
+    fadeDone();
+  }
 }
 
 function handleAtelierHash() {
@@ -9569,6 +10003,9 @@ function renderFrame() {
 
 function animate() {
   if (!renderer) return;
+  // The book is a DOM layer; do not spend frames re-rendering the villa while
+  // it is open. Resume as soon as Close Book starts its fade.
+  if (atelierState.active && atelierState.bookBusy !== "closing") return;
   if (controls.enabled) {
     controls.update();
   } else {
