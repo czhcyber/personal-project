@@ -61,7 +61,8 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 - **Gallery** — 5 张从 3D 场景直接捕获的别墅渲染静帧，可按 `ALL / INTERIOR / EXTERIOR` 筛选；点击进入纵向大图 lightbox，支持上一张 / 下一张和 ESC 返回画廊。
 - **Audio** — Audio 引擎保留四条 loop 轨道：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Dark`；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。`Dark` 在页面加载完成后以 Blob 形式完整预取，打开 Audio 时自动开始播放，并支持自由 seek。
 - **Immersive Audio / My Favourite** — 打开 Audio 会进入独立的全屏唱片房：暖棕色径向背景，左侧 60% 为巨型黑胶盘（封面圆形、黑胶凹槽 `repeating-radial-gradient`、CSS 持续旋转），右侧 40% 为 `Dark / mixed matches / Dark` 与极简播放控制。左上角 `[ ∨ MINIMIZE ]` 返回桌面；此视图会隐藏标准 OS 玻璃窗口、顶部栏与 Dock。银色唱臂由 GSAP 控制，播放时转到 `25deg`，暂停回到 `0deg`。封面为 `images/dark.jpg`，音源位于 `music/Dark.mp3`；细线进度条支持点击、拖动与键盘左右键 seek。
-- **Environment** — `NIGHT MODE` / `DUSK MODE` 只记录 pending 状态，不会立即改变 3D 场景。返回别墅且相机回程完全结束后才执行：Dusk 用 GSAP 把 `AmbientLight` 调暖、`scene.background` 调为暮色，并关闭客厅 / 卧室 / 阅读区 / 茶室 / 书房主灯与局部灯；Night 恢复原始照明、背景和灯光。`currentEnvMode` 跨会话保留。
+- **Atelier / 创作手记** — 首页空间索引里的 `05 书房 / 创作室` 通向一间可探索的 Atelier。桌面手记、材料盘、建筑模型和档案盒分别对应四篇 editorial 手记：创作起点、体量 / 剖面、材料与光，以及 `Sources & Credits`。书房聚焦后显示 `ATELIER` HUD 与 CSS2D 物件标签；阅读层使用全屏暖黑纸面、衬线大标题、图版 / 剖面图和章节导航，支持 `#atelier/origin` 等深链、Esc 关闭和移动端布局。
+- **Environment** — `NIGHT / DUSK / DAY` 现在是横向精密滑轨；拖动时左侧 SVG 别墅屋顶与天空渐变实时变化，滑轨位置映射到 pending 状态。返回别墅且相机回程完全结束后才应用：Night 恢复原始照明，Dusk 调暖背景并关闭房间主灯，Day 使用冷白环境光和浅色天空。RAIN / WIND 使用 iOS 开关，同时控制对应环境音与视觉天气层。
 - **Plans** — 保留 F1 / F2 内联 SVG 蓝图；可从 Dock 打开。蓝图、项目详情、Gallery lightbox 的 Escape 优先级都是“先返回上一层”，主桌面 Escape 才退出 OS。
 - **Onsen / Garden Map** — 别墅左前方扩展出独立的户外温泉亭：黑石平台、木格栅、暖水池、石灯笼、竹屏、涟漪与蒸汽。可通过空间索引 `08 温泉`、3D 点击或 `GARDEN MAP` 进入；聚焦后右下角提供 `STEAM`、`BATH LIGHT` 和 `RETURN TO GARDEN`。`GARDEN MAP` 也可用 `M` 打开、`ESC` 关闭，包含 Villa / Tea Room / Terrace / Garage / Onsen 五个镜头节点。
 - **Master Suite family photo** — 主卧床头墙新增 1.12 × 0.82 m 深木相框与 `PlaneGeometry(1,1)` 照片平面，读取根目录 `family.jpg` 并按原始宽高比自适应缩放。当前已放入用户提供的家庭照片；没有图片时显示深灰底与细金内框，不阻塞场景。鼠标悬停相框会出现手型光标，点击弹出文件选择器；上传图片通过 `FileReader` + `THREE.Texture` 热替换，旧纹理即时 `dispose()`。相框上方有一盏 `0.5` 强度的暖色 `SpotLight`，随卧室在 X-Ray Focus 中的变暗而渐隐到 `0.075`，退出聚焦后回到 `0.5`。
@@ -84,6 +85,12 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 ![NOCTURNE PROJECTS digital gallery](preview-nocturne-projects.png)
 
 ![NOCTURNE ENVIRONMENT precision controls](preview-nocturne-environment.png)
+
+![NOCTURNE Atelier in the study](preview-nocturne-atelier-room.png)
+
+![NOCTURNE Atelier editorial reading](preview-nocturne-atelier-reading.png)
+
+![NOCTURNE Atelier sources and credits](preview-nocturne-atelier-sources.png)
 
 ![NOCTURNE OS audio player](preview-nocturne-audio.png)
 

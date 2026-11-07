@@ -61,7 +61,7 @@ const ROOM_LABELS = [
   { roomId: "living", zh: "客厅", en: "Living", position: [0.95, 2.9, 0.25] },
   { roomId: "teaRoom", zh: "茶室", en: "Tea Room", position: [-3.65, 6.45, 0.55] },
   { roomId: "bedroom", zh: "主卧", en: "Master Suite", position: [-0.55, 6.95, -1.0] },
-  { roomId: "study", zh: "书房/次卧", en: "Study", position: [4.55, 7.05, -1.0] },
+  { roomId: "study", zh: "书房 / 创作室", en: "Atelier", position: [4.55, 7.05, -1.0] },
   { roomId: "terrace", zh: "露台", en: "Terrace", position: [2.2, 4.62, 0.9] },
   { roomId: "garage", zh: "车库", en: "Garage", position: [6.8, 1.28, -0.5] },
   { roomId: "onsen", zh: "温泉", en: "Onsen", position: [-6.3, 2.78, 4.25] },
@@ -574,6 +574,248 @@ const OS_AUDIO = {
     code: "TRK-04",
     description: "The record that stays after everyone else has gone. Cover art from the personal archive.",
   },
+};
+
+const ATELIER_CHAPTERS = [
+  {
+    id: "origin",
+    number: "01",
+    label: "ORIGIN",
+    kicker: "ATELIER / NOTE 01",
+    title: "先有一片夜，<br><em>再有一栋房子。</em>",
+    deck:
+      "NOCTURNE 的起点不是一个建筑类型，而是一种时间：当一天结束，房子不再向外展示，而是把光收回来。",
+    meta: ["2026", "PERSONAL PROJECT", "410 M²"],
+    hero: {
+      src: "assets/gallery-villa.png",
+      alt: "NOCTURNE villa at night",
+      caption: "总览 / NIGHT · 410 m² · 2026",
+    },
+    sections: [
+      {
+        number: "01",
+        heading: "不是一栋被照亮的房子",
+        paragraphs: [
+          "很多夜景住宅的做法，是先完成建筑，再在外面打一层暖光。NOCTURNE 想反过来：先决定夜晚如何发生，再让墙、玻璃、木头和水为这件事让路。",
+          "所以它没有把客厅做成一个向城市展示的舞台。首层被压低，玻璃退到黑色石基后面，真正亮着的是茶室、书房和庭院边缘。光被留在室内，像一件不愿意被路人看见的东西。",
+        ],
+      },
+      {
+        number: "02",
+        heading: "三条最初的规则",
+        points: [
+          "房子必须有两个尺度：从远处看是安静的体量，走近后才有可以停留的房间。",
+          "所有材料必须能在夜里工作：混凝土吸光，胡桃木保温，玻璃负责把庭院借进来，黄铜只出现在需要被触摸的地方。",
+          "技术不能盖过空间。NOCTURNE OS 可以很复杂，但它打开的第一屏应该只是“欢迎回来”。",
+        ],
+      },
+      {
+        number: "03",
+        heading: "从情绪到空间",
+        paragraphs: [
+          "我把参考拆成三类：日本旅馆的室内外界限、加州现代主义的水平屋顶，以及电影里那种没有主角的夜景。最后留下来的不是某一张图，而是一种关系——人坐在室内，光在水面和树叶上慢慢移动。",
+          "这也是为什么房子最后围绕一个下沉的黑色基座展开。它让建筑看起来像是从地面里长出来，而不是放在草地上。夜晚的边界因此变得很低，灯光也更容易留下来。",
+        ],
+      },
+    ],
+    quote: "白天，房子属于风景；入夜，风景属于房子。",
+    next: "process",
+  },
+  {
+    id: "process",
+    number: "02",
+    label: "PROCESS",
+    kicker: "ATELIER / NOTE 02",
+    title: "把房子抬起来，<br><em>把夜晚放下去。</em>",
+    deck:
+      "两层白色体量、黑色石基、下沉车库与悬挑茶室——所有形式都先被一条剖面说服，然后才被做成可以旋转的实时模型。",
+    meta: ["MASSING", "SECTION", "THREE.JS"],
+    hero: {
+      src: "preview-nocturne-garage.png",
+      alt: "Sunken garage and villa model",
+      caption: "下沉车库 / 体量与坡道 · 2026",
+    },
+    diagram: true,
+    sections: [
+      {
+        number: "01",
+        heading: "体量不是造型，是关系",
+        paragraphs: [
+          "第一版方案把房子做成一个完整的白盒子，所有房间都在里面。它很干净，但没有夜晚需要的缝隙。后来我把体量拆成两块：一块放公共空间，一块放私密房间，中间留出庭院和一条可以看到天空的缝。",
+          "水平屋顶被拉长，楼板变薄，玻璃幕墙退到结构后面。房子因此不像一个封闭的盒子，而像几块漂浮在黑色基座上的平面。",
+        ],
+      },
+      {
+        number: "02",
+        heading: "一条剖面，四个动作",
+        points: [
+          "黑色石基：把建筑从草地上抬起来，藏住设备、车库和结构。",
+          "下沉车库：让车从地面消失，保留首层完整的水平线。",
+          "悬挑茶室：把最轻的房间推到庭院上方，让玻璃盒成为夜晚的灯。",
+          "屋顶露台：在二层留一个没有墙的观察点，让人重新看见整栋房子。",
+        ],
+      },
+      {
+        number: "03",
+        heading: "从模型到实时系统",
+        paragraphs: [
+          "这栋房子不是一张静态效果图。它由 Three.js 程序化搭建：墙体、楼板、家具、植物和灯光都是可编辑的几何体，镜头可以在总览、房间、X-Ray 与剖面之间移动。",
+          "NOCTURNE OS 是第二层空间：项目档案、环境控制、声音和家庭照片被放进同一套界面。它必须像一个系统，但又不能比房子更吵。所以最终留下的都是低对比的玻璃、很细的分隔线和一块只显示必要信息的 dashboard。",
+        ],
+      },
+    ],
+    quote: "每一个体量，都要在剖面上解释自己。",
+    next: "material",
+  },
+  {
+    id: "material",
+    number: "03",
+    label: "MATERIAL",
+    kicker: "ATELIER / NOTE 03",
+    title: "光，是最后一种材料。",
+    deck:
+      "混凝土、玻璃、胡桃木、黑石、黄铜和水，最后都要经过同一件事的检验：它在夜里是否还愿意留下来。",
+    meta: ["MATERIAL", "LIGHT", "SOUND"],
+    hero: {
+      src: "preview-nocturne-onsen.png",
+      alt: "NOCTURNE outdoor onsen at night",
+      caption: "温泉 / 水、黑石与木格栅 · NIGHT",
+    },
+    sections: [
+      {
+        number: "01",
+        heading: "六种表面",
+        points: [
+          "混凝土：吸收光线，让房子在夜里保持沉默。",
+          "胡桃木：把室内的暖光留在人的尺度上。",
+          "黑石：作为地面和水池的底色，几乎不反射，却让水声变得清楚。",
+          "玻璃：不是墙，而是把庭院借进室内的取景器。",
+          "黄铜：只在把手、灯杆和书脊上出现，提醒人这是一个被触摸过的家。",
+          "水：温泉和庭院水面把灯光打碎，变成会移动的第二层材料。",
+        ],
+      },
+      {
+        number: "02",
+        heading: "三种时间",
+        paragraphs: [
+          "NIGHT 是默认状态：室内暖光、庭院冷光、几乎看不见的天空。DUSK 把房子交给一层桃金色的空气，室内灯退到背景。DAY 则把房间交还给风景，所有灯都关掉，只剩材料本身。",
+          "这三种状态不是简单的滤镜，而是同一套灯光、背景和曝光参数在实时场景里的重新配平。滑动 Environment 里的时间轴，房子会真的改变，而不只是换一张图。",
+        ],
+      },
+      {
+        number: "03",
+        heading: "声音作为空间的边缘",
+        paragraphs: [
+          "雨声和风声是程序生成的：雨被两次低通滤波压成远处的水面，风只保留空气流动的频段。它们不负责制造气氛，而是负责让房间有一个更大的外部。",
+          "唱片是另一个极端。Dark 被放在 Audio 里，不按照环境音的方式循环，而是有一个完整的播放、进度和唱臂动作。它让这个家偶尔从“空间”变成一个有人待着的地方。",
+        ],
+      },
+    ],
+    quote: "材料决定房子如何被触摸；光决定它如何被记住。",
+    next: "sources",
+  },
+  {
+    id: "sources",
+    number: "04",
+    label: "SOURCES",
+    kicker: "SOURCES & CREDITS",
+    type: "sources",
+    title: "留下值得<br><em>被追溯的痕迹。</em>",
+    deck:
+      "Release facts、空间判断、视觉资产和技术实现来自不同的地方。这一页记录它们各自支撑了 NOCTURNE 的哪一部分。",
+    meta: ["COLOPHON", "CREDITS", "VERSION 2026.11"],
+    sections: [
+      {
+        number: "01",
+        heading: "Original work & editorial choices",
+        paragraphs: [
+          "NOCTURNE 是一个以夜晚为主题的个人建筑与交互实验。空间概念、体量关系、镜头、界面结构、页面文案与 3D 场景由项目作者完成；所有“看起来像照片”的画面，优先来自实时模型截图，而不是后期拼贴。",
+          "项目里的家庭照片由作者提供。它被保留在卧室的相框里，作为这栋房子唯一一件不能被程序生成的物件。",
+        ],
+      },
+      {
+        number: "02",
+        heading: "AI tools & assistance",
+        paragraphs: [
+          "AI 工具参与了资料整理、英文润色、代码编写与调试，以及部分概念图像的生成。空间取舍、视觉方向、文案判断与最终验收由作者完成。",
+          "如果一张图是 AI 生成的，它不会被写成现场记录；如果一段声音是程序生成的，它不会被写成实地录音。这一页的目的，是让每一件东西都能被追溯。",
+        ],
+      },
+      {
+        number: "03",
+        heading: "3D assets & licenses",
+        paragraphs: [
+          "场景由 Three.js r187 与本地 GLTFLoader / DRACOLoader 驱动。建筑、家具、植物、灯光和大部分材质为程序化几何体；车库跑车使用 three.js 示例资产（Ferrari GLB），在项目中作为同类型跑车的占位模型。",
+          "字体使用系统字体栈：SF Pro / PingFang SC / Microsoft YaHei；阅读页的衬线标题使用 Iowan Old Style / Palatino / Songti / Georgia 的系统回退。没有引入外部图片托管或第三方追踪脚本。",
+        ],
+      },
+      {
+        number: "04",
+        heading: "Audio & imagery",
+        paragraphs: [
+          "Dark — mixed matches 由项目作者提供，作为 Audio 的完整曲目使用。Rain 与 Wind 为运行时程序生成的 WAV 循环，没有采样第三方录音。",
+          "NOCTURNE 的渲染图、界面截图和空间照片来自本地项目文件。家庭照片仅用于这个个人项目，不授权转载。",
+        ],
+      },
+      {
+        number: "05",
+        heading: "Build",
+        paragraphs: [
+          "Static site / GitHub Pages · Three.js r187 · GSAP 3.13 · GLTFLoader + DRACO · 本地 MP3 / 程序化环境音。",
+          "Version 2026.11 · 410 m² · Night / Dusk / Day · Made for the hours after dark.",
+        ],
+      },
+    ],
+    quote: "A house is also an archive of the decisions that made it.",
+    next: null,
+  },
+];
+
+const ATELIER_OBJECTS = [
+  {
+    id: "origin",
+    type: "atelier-origin",
+    label: "01 / ORIGIN",
+    hint: "桌上的手记",
+    position: [3.56, 4.585, -1.32],
+    hotspot: [3.56, 4.9, -1.28],
+  },
+  {
+    id: "process",
+    type: "atelier-process",
+    label: "02 / PROCESS",
+    hint: "建筑模型",
+    position: [5.56, 3.84, -0.58],
+    hotspot: [5.56, 4.58, -0.52],
+  },
+  {
+    id: "material",
+    type: "atelier-material",
+    label: "03 / MATERIAL",
+    hint: "材料盘",
+    position: [4.58, 4.585, -1.32],
+    hotspot: [4.58, 4.82, -1.28],
+  },
+  {
+    id: "sources",
+    type: "atelier-sources",
+    label: "04 / SOURCES",
+    hint: "档案盒",
+    position: [5.6, 3.84, -1.55],
+    hotspot: [5.6, 4.44, -1.5],
+  },
+];
+
+const atelierState = {
+  overlay: null,
+  reader: null,
+  chapter: null,
+  hotspotRoot: null,
+  hotspots: [],
+  hud: null,
+  active: false,
+  lastFocus: null,
+  hashListener: false,
 };
 
 const photoFrameState = {
@@ -3565,6 +3807,73 @@ function buildStudyDeskScene(group) {
   buildStudyComputer(group);
   buildStudyDeskLamp(group);
   buildStudyBookshelf(group);
+  buildAtelierObjects(group);
+}
+
+function buildAtelierObjects(group) {
+  const origin = new THREE.Group();
+  origin.position.set(3.56, 4.585, -1.32);
+  origin.rotation.y = -8 * DEG;
+  group.add(origin);
+  addBox(origin, 0.36, 0.022, 0.25, MAT.bookCream, 0, 0.011, 0, { cast: true });
+  addBox(origin, 0.31, 0.026, 0.225, MAT.bookRust, 0.015, 0.039, 0.006, {
+    rotation: [0, 4 * DEG, 0],
+    cast: true,
+  });
+  addBox(origin, 0.24, 0.005, 0.17, MAT.bookCream, -0.02, 0.056, 0.02, {
+    rotation: [0, -7 * DEG, 0],
+    cast: false,
+  });
+  addBox(origin, 0.018, 0.007, 0.17, MAT.brass, 0.15, 0.029, 0, { cast: false });
+  registerStudyInteractive(origin, "atelier-origin");
+
+  const material = new THREE.Group();
+  material.position.set(4.58, 4.585, -1.32);
+  group.add(material);
+  addBox(material, 0.36, 0.022, 0.235, MAT.darkStone, 0, 0.011, 0, { cast: true });
+  addBox(material, 0.32, 0.008, 0.195, MAT.darkMetal, 0, 0.026, 0, { cast: false });
+  [
+    [-0.115, MAT.darkStone],
+    [-0.055, MAT.walnut],
+    [0.005, MAT.brass],
+    [0.065, MAT.fabricLight],
+    [0.125, MAT.glass],
+  ].forEach(([x, mat], index) => {
+    addBox(material, 0.05, 0.022 + index * 0.002, 0.13, mat, x, 0.037, 0, {
+      rotation: [0, 0, index * 2 * DEG],
+      cast: true,
+    });
+  });
+  registerStudyInteractive(material, "atelier-material");
+
+  const process = new THREE.Group();
+  process.position.set(5.56, 3.82, -0.58);
+  process.rotation.y = -14 * DEG;
+  group.add(process);
+  addBox(process, 0.46, 0.5, 0.46, MAT.darkStone, 0, 0.25, 0, { cast: true, receive: true });
+  addBox(process, 0.4, 0.025, 0.4, MAT.brass, 0, 0.512, 0, { cast: false });
+  addBox(process, 0.34, 0.035, 0.27, MAT.white, 0, 0.54, 0, { cast: true });
+  addBox(process, 0.24, 0.12, 0.19, MAT.white, -0.035, 0.62, 0.015, { cast: true });
+  addBox(process, 0.17, 0.08, 0.14, MAT.white, 0.075, 0.59, -0.02, { cast: true });
+  addBox(process, 0.05, 0.05, 0.05, MAT.darkStone, -0.15, 0.585, -0.09, { cast: true });
+  addCylinder(process, 0.012, 0.13, MAT.brass, 0.13, 0.62, 0.07, { cast: true });
+  registerStudyInteractive(process, "atelier-process");
+
+  const sources = new THREE.Group();
+  sources.position.set(5.6, 3.82, -1.55);
+  sources.rotation.y = 10 * DEG;
+  group.add(sources);
+  addBox(sources, 0.32, 0.16, 0.24, MAT.darkStone, 0, 0.08, 0, { cast: true, receive: true });
+  addBox(sources, 0.28, 0.14, 0.21, MAT.bookRust, 0.02, 0.23, 0.01, {
+    rotation: [0, 5 * DEG, 0],
+    cast: true,
+  });
+  addBox(sources, 0.22, 0.012, 0.15, MAT.bookCream, -0.01, 0.306, 0, {
+    rotation: [0, -4 * DEG, 0],
+    cast: false,
+  });
+  addBox(sources, 0.018, 0.018, 0.12, MAT.brass, 0.14, 0.17, 0, { cast: false });
+  registerStudyInteractive(sources, "atelier-sources");
 }
 
 function buildStudyComputer(group) {
@@ -3988,7 +4297,9 @@ function toggleStudyDeskLamp() {
 }
 
 function handleStudyInteraction(type) {
-  if (type === "computer") openNocturneOS();
+  if (type.startsWith("atelier-")) {
+    openAtelierChapter(type.replace("atelier-", ""));
+  } else if (type === "computer") openNocturneOS();
   else if (type === "bookshelf") toggleStudyBookshelf();
   else if (type === "deskLamp") toggleStudyDeskLamp();
   else if (type === "photoUpload") document.getElementById("photo-upload")?.click();
@@ -5774,7 +6085,7 @@ const ROOM_CAPTIONS = {
   reading: "阅读角 / Reading Corner",
   terrace: "露台 / Roof Terrace",
   teaRoom: "茶室 / Tea Room",
-  study: "书房/次卧 / Study / Guest Room",
+  study: "书房 / ATELIER · 创作室",
   garage: "车库 / Sunken Garage",
   onsen: "温泉 / Outdoor Onsen",
 };
@@ -6315,6 +6626,7 @@ function syncRoomLabelFocus(roomId = null) {
     roomLabels.forEach((entry) => {
       entry.focusFade = roomId === null || roomId === entry.roomId ? 1 : 0;
     });
+    syncAtelierPresence();
     return;
   }
   roomLabels.forEach((entry) => {
@@ -6327,6 +6639,303 @@ function syncRoomLabelFocus(roomId = null) {
       overwrite: true,
     });
   });
+  syncAtelierPresence();
+}
+
+function initAtelier() {
+  if (atelierState.overlay) return;
+
+  const overlay = document.createElement("section");
+  overlay.className = "atelier-overlay";
+  overlay.id = "atelier-overlay";
+  overlay.setAttribute("aria-hidden", "true");
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  overlay.setAttribute("aria-labelledby", "atelier-title");
+  overlay.innerHTML = `
+    <header class="atelier-topbar">
+      <span class="atelier-brand">NOCTURNE <i>/</i> ATELIER</span>
+      <span class="atelier-position" id="atelier-position">01 / 04</span>
+      <button class="atelier-close" type="button" data-atelier-close>[ CLOSE ]</button>
+    </header>
+    <div class="atelier-layout">
+      <aside class="atelier-side">
+        <span class="atelier-side-kicker">MAKING OF NOCTURNE</span>
+        <nav class="atelier-side-nav" id="atelier-nav" aria-label="Atelier chapters"></nav>
+        <span class="atelier-side-foot">A private residence<br>2026 / 410 m²</span>
+      </aside>
+      <main class="atelier-reader" id="atelier-reader" tabindex="-1"></main>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  atelierState.overlay = overlay;
+  atelierState.reader = overlay.querySelector("#atelier-reader");
+
+  const hud = document.createElement("aside");
+  hud.className = "atelier-room-hud";
+  hud.setAttribute("aria-label", "Atelier room guide");
+  hud.innerHTML = `
+    <div class="atelier-hud-head"><span>ATELIER / 创作手记</span><b>04 NOTES</b></div>
+    <p>这个房间里放着这栋房子的四个决定。点击物件，或从下面开始阅读。</p>
+    <div class="atelier-hud-links" id="atelier-hud-links"></div>
+  `;
+  document.body.appendChild(hud);
+  atelierState.hud = hud;
+
+  const navMarkup = ATELIER_CHAPTERS.map(
+    (chapter) => `
+      <button type="button" data-atelier-chapter="${chapter.id}">
+        <span>${chapter.number}</span><em>${chapter.label}</em>
+      </button>
+    `
+  ).join("");
+  overlay.querySelector("#atelier-nav").innerHTML = navMarkup;
+  hud.querySelector("#atelier-hud-links").innerHTML = ATELIER_CHAPTERS.map(
+    (chapter) => `
+      <button type="button" data-atelier-chapter="${chapter.id}">
+        <span>${chapter.number}</span>${chapter.label.toLowerCase()}
+      </button>
+    `
+  ).join("");
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target.closest("[data-atelier-close]")) {
+      closeAtelier();
+      return;
+    }
+    const chapterButton = event.target.closest("[data-atelier-chapter]");
+    if (chapterButton) {
+      openAtelierChapter(chapterButton.dataset.atelierChapter);
+    }
+  });
+
+  hud.addEventListener("click", (event) => {
+    const chapterButton = event.target.closest("[data-atelier-chapter]");
+    if (chapterButton) {
+      openAtelierChapter(chapterButton.dataset.atelierChapter);
+    }
+  });
+
+  document.querySelectorAll("[data-atelier-entry]").forEach((button) => {
+    button.addEventListener("click", () => enterAtelier());
+  });
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+      if (!atelierState.active || event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeAtelier();
+    },
+    true
+  );
+
+  if (labelRenderer) {
+    const root = new THREE.Group();
+    root.name = "AtelierHotspots";
+    scene.add(root);
+    atelierState.hotspotRoot = root;
+    ATELIER_OBJECTS.forEach((entry) => {
+      const element = document.createElement("button");
+      element.type = "button";
+      element.className = "atelier-hotspot";
+      element.dataset.atelierChapter = entry.id;
+      element.innerHTML = `<span>${entry.label}</span><i>${entry.hint}</i>`;
+      element.addEventListener("click", (event) => {
+        event.stopPropagation();
+        openAtelierChapter(entry.id);
+      });
+      const label = new CSS2DObject(element);
+      label.position.set(...entry.hotspot);
+      label.center.set(0.5, 1);
+      root.add(label);
+      atelierState.hotspots.push({ entry, label, element });
+    });
+  }
+
+  window.addEventListener("hashchange", handleAtelierHash);
+  atelierState.hashListener = true;
+  syncAtelierPresence();
+  window.setTimeout(handleAtelierHash, 1200);
+}
+
+function syncAtelierPresence() {
+  const visible =
+    !!atelierState.overlay &&
+    !atelierState.active &&
+    !osState.active &&
+    state.focus?.roomId === "study" &&
+    !state.introPlaying;
+  if (atelierState.hud) {
+    atelierState.hud.classList.toggle("is-visible", visible);
+    atelierState.hud.setAttribute("aria-hidden", visible ? "false" : "true");
+  }
+  if (atelierState.hotspotRoot) {
+    atelierState.hotspotRoot.visible = visible;
+  }
+  atelierState.hotspots.forEach(({ label, element }) => {
+    label.visible = visible;
+    element.style.display = visible ? "" : "none";
+    element.setAttribute("aria-hidden", visible ? "false" : "true");
+  });
+}
+
+function enterAtelier() {
+  if (atelierState.active) return;
+  if (state.focus?.roomId !== "study") {
+    selectRoom("study", { fly: true });
+  }
+  syncAtelierPresence();
+}
+
+function atelierMarkup(chapter) {
+  const hero = chapter.hero
+    ? `<figure class="atelier-plate">
+        <img src="${chapter.hero.src}" alt="${chapter.hero.alt}" loading="eager">
+        <figcaption>${chapter.hero.caption}</figcaption>
+      </figure>`
+    : "";
+  const diagram = chapter.diagram
+    ? `<figure class="atelier-plate atelier-diagram">
+        <svg viewBox="0 0 900 430" role="img" aria-label="NOCTURNE massing and section diagram">
+          <path class="diagram-ground" d="M54 342H846"/>
+          <path class="diagram-base" d="M160 342V286H720V342"/>
+          <path class="diagram-fill" d="M190 286V206H666V286"/>
+          <path class="diagram-line" d="M170 206H688M190 206V286M666 206V286"/>
+          <path class="diagram-fill" d="M230 206V128H610V206"/>
+          <path class="diagram-line" d="M210 128H630M230 128V206M610 128V206"/>
+          <path class="diagram-fill" d="M96 220H240V270H96Z"/>
+          <path class="diagram-line" d="M96 220H240M96 270H240"/>
+          <path class="diagram-fill" d="M650 260H800V286H650Z"/>
+          <path class="diagram-line" d="M650 260H800"/>
+          <path class="diagram-accent" d="M230 128H610M210 206H666M160 286H720"/>
+          <g class="diagram-labels">
+            <text x="64" y="372">BLACK STONE BASE</text>
+            <text x="198" y="108">VOLUME 02 / PRIVATE</text>
+            <text x="198" y="190">VOLUME 01 / SHARED</text>
+            <text x="690" y="248">TEA ROOM</text>
+            <text x="64" y="204">CANTILEVER</text>
+          </g>
+          <g class="diagram-ticks">
+            <path d="M54 354V368M846 354V368M160 354V368M720 354V368"/>
+            <text x="54" y="390">0</text><text x="705" y="390">12M</text><text x="820" y="390">18M</text>
+          </g>
+        </svg>
+        <figcaption>体量 / 剖面关系 · 07 个关键动作</figcaption>
+      </figure>`
+    : "";
+  const sections = chapter.sections
+    .map(
+      (section) => `
+      <section class="atelier-section">
+        <span class="atelier-section-number">${section.number}</span>
+        <div class="atelier-section-copy">
+          <h2>${section.heading}</h2>
+          ${(section.paragraphs || []).map((paragraph) => `<p>${paragraph}</p>`).join("")}
+          ${
+            section.points
+              ? `<ul class="atelier-points">${section.points
+                  .map((point) => `<li>${point}</li>`)
+                  .join("")}</ul>`
+              : ""
+          }
+        </div>
+      </section>`
+    )
+    .join("");
+  const credits =
+    chapter.type === "sources"
+      ? `<div class="atelier-credits">
+          <div><span>PROJECT</span><strong>NOCTURNE / 2026</strong></div>
+          <div><span>DESIGN & CODE</span><strong>Project author</strong></div>
+          <div><span>ENGINE</span><strong>Three.js r187</strong></div>
+          <div><span>3D ASSET</span><strong>Ferrari GLB / three.js example</strong></div>
+          <div><span>AUDIO</span><strong>Dark — mixed matches</strong></div>
+          <div><span>TYPE</span><strong>System serif / SF Pro</strong></div>
+          <div><span>BUILD</span><strong>2026.11 / GitHub Pages</strong></div>
+          <div><span>NOTE</span><strong>Personal project</strong></div>
+        </div>`
+      : "";
+  const next = chapter.next ? ATELIER_CHAPTERS.find((item) => item.id === chapter.next) : null;
+  const nextMarkup = next
+    ? `<footer class="atelier-next">
+        <span>NEXT / ${next.number}</span>
+        <button type="button" data-atelier-chapter="${next.id}">${next.label}<b>${next.title.replace(/<[^>]+>/g, " ")}</b><i>→</i></button>
+      </footer>`
+    : `<footer class="atelier-next">
+        <span>END OF NOTES</span>
+        <button type="button" data-atelier-close>RETURN TO THE HOUSE <i>↗</i></button>
+      </footer>`;
+  return `
+    <article class="atelier-article ${chapter.type === "sources" ? "is-sources" : ""}">
+      <header class="atelier-article-head">
+        <p class="atelier-kicker">${chapter.kicker}</p>
+        <h1 id="atelier-title">${chapter.title}</h1>
+        <p class="atelier-deck">${chapter.deck}</p>
+        <div class="atelier-meta">${chapter.meta.map((item) => `<span>${item}</span>`).join("")}</div>
+      </header>
+      <div class="atelier-hairline" aria-hidden="true"></div>
+      ${hero}
+      ${diagram}
+      <div class="atelier-sections">${sections}</div>
+      ${credits}
+      <blockquote class="atelier-quote">${chapter.quote}</blockquote>
+      ${nextMarkup}
+      <footer class="atelier-end">
+        <span>NOCTURNE / ATELIER</span>
+        <span>${chapter.number} / 04</span>
+      </footer>
+    </article>
+    `;
+}
+
+function openAtelierChapter(id, { focusRoom = true } = {}) {
+  const chapter = ATELIER_CHAPTERS.find((item) => item.id === id);
+  if (!chapter || !atelierState.overlay) return;
+  atelierState.active = true;
+  if (focusRoom && state.focus?.roomId !== "study") {
+    selectRoom("study", { fly: true });
+  }
+  atelierState.chapter = id;
+  atelierState.reader.innerHTML = atelierMarkup(chapter);
+  atelierState.overlay.classList.add("is-open");
+  atelierState.overlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("atelier-open");
+  atelierState.reader.scrollTop = 0;
+  atelierState.overlay.querySelector("#atelier-position").textContent = `${chapter.number} / 04`;
+  atelierState.overlay.querySelectorAll(".atelier-side-nav button").forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.atelierChapter === id);
+  });
+  syncAtelierPresence();
+  history.replaceState(null, "", `${location.pathname}${location.search}#atelier/${id}`);
+  window.requestAnimationFrame(() => {
+    atelierState.overlay.querySelector("[data-atelier-close]")?.focus({ preventScroll: true });
+  });
+}
+
+function closeAtelier() {
+  if (!atelierState.active || !atelierState.overlay) return;
+  atelierState.active = false;
+  atelierState.chapter = null;
+  atelierState.overlay.classList.remove("is-open");
+  atelierState.overlay.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("atelier-open");
+  history.replaceState(null, "", `${location.pathname}${location.search}`);
+  syncAtelierPresence();
+}
+
+function handleAtelierHash() {
+  const match = location.hash.match(/^#atelier\/([a-z]+)$/i);
+  if (match && ATELIER_CHAPTERS.some((chapter) => chapter.id === match[1])) {
+    if (!atelierState.active) {
+      openAtelierChapter(match[1]);
+    } else if (atelierState.chapter !== match[1]) {
+      openAtelierChapter(match[1]);
+    }
+    return;
+  }
+  if (atelierState.active) closeAtelier();
 }
 
 function updateRoomLabels() {
@@ -9061,6 +9670,7 @@ function init() {
   initUI();
   createHotspots();
   initRoomLabels();
+  initAtelier();
   initGardenExperience();
   initPhotoInteraction();
   initArchitectureStudy();
