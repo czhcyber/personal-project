@@ -61,7 +61,8 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 - **Gallery** — 5 张从 3D 场景直接捕获的别墅渲染静帧，可按 `ALL / INTERIOR / EXTERIOR` 筛选；点击进入纵向大图 lightbox，支持上一张 / 下一张和 ESC 返回画廊。
 - **Audio** — Audio 引擎保留四条 loop 轨道：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Dark`；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。`Dark` 在页面加载完成后以 Blob 形式完整预取，打开 Audio 时自动开始播放，并支持自由 seek。
 - **Immersive Audio / My Favourite** — 打开 Audio 会进入独立的全屏唱片房：暖棕色径向背景，左侧 60% 为巨型黑胶盘（封面圆形、黑胶凹槽 `repeating-radial-gradient`、CSS 持续旋转），右侧 40% 为 `Dark / mixed matches / Dark` 与极简播放控制。左上角 `[ ∨ MINIMIZE ]` 返回桌面；此视图会隐藏标准 OS 玻璃窗口、顶部栏与 Dock。银色唱臂由 GSAP 控制，播放时转到 `25deg`，暂停回到 `0deg`。封面为 `images/dark.jpg`，音源位于 `music/Dark.mp3`；细线进度条支持点击、拖动与键盘左右键 seek。
-- **Atelier / Flipbook 创作手记** — 首页空间索引里的 `05 书房 / 创作室` 通向一间可探索的 Atelier。桌面手记、材料盘、建筑模型和档案盒分别对应创作起点、过程、材料与 `Sources & Credits`。书房聚焦后显示 `ATELIER` HUD 与 CSS2D 物件标签；打开物件后进入全屏实体书阅读层：暖白纸面 `#e8dfcf`、左右双页、中央书脊阴影、Newsreader 自托管衬线字体，以及 7 个 spread。翻页使用 DOM 克隆页 + GSAP `x` / `opacity` / `box-shadow`，不做 3D curl；Next 时右页向左滑过左页，Prev 反向。首尾自动隐藏 Prev / Next，Close Book 会先淡出书页，再用 GSAP 把相机送回打开前保存的视角。
+- **Atelier / Flipbook 创作手记** — 首页空间索引里的 `05 书房 / 创作室` 通向一间可探索的 Atelier。桌面手记、材料盘、建筑模型和档案盒分别对应创作起点、过程、材料与 `Sources & Credits`。书房聚焦后显示 `ATELIER` HUD 与 CSS2D 物件标签；打开物件后进入全屏实体书阅读层：暖白纸面 `#e8dfcf`、左右双页、中央书脊阴影、Newsreader 自托管衬线字体，以及 8 个 spread。第 05 个 spread 是实际的 process evidence：旧版 Environment 控制台截图、当前 editorial 页面和直接从 Three.js 场景抓取的 wireframe，并列说明 car / audio / Atelier 的迭代。翻页使用 DOM 克隆页 + GSAP `x` / `opacity` / `box-shadow`，不做 3D curl；Next 时右页向左滑过左页，Prev 反向。首尾自动隐藏 Prev / Next，Close Book 会先淡出书页，再用 GSAP 把相机送回打开前保存的视角。
+- **Identity / Open Graph** — 新增 `images/og-image.jpg`（1200 × 630，约 75 KB，使用真实 3D 场景渲染）、`favicon-32.png`、`apple-touch-icon.png`（180 × 180）和 512 px 图标母版；四个页面 `<head>` 都补齐 `og:image`、`og:url`、`og:site_name`、`og:image:width/height` 与 Twitter card。首页增加公开作者行：`Designed & built by CZH · Fictional residence / 2026`，以及 `PROJECT NOTES / SOURCES ↗` 直达 Atelier Sources。
 - **Environment / Design Philosophy** — Environment 不再是控制台，而是一页纯阅读的建筑杂志跨页：左侧 60% 全高 AI 夜景图 `images/env-night.jpg`，右侧 40% 使用自托管 Playfair Display 的巨幅标题 `THE NIGHT IS A MATERIAL.`，下方两段窄栏 Newsreader 正文讨论黑色石材如何吸光、玻璃如何把室内暖意交还给庭院。底部右下角保留 `[ CAPTURED AT 23:00 / NOCTURNE ARCHIVES ]` 档案标签。该视图不包含任何 slider、toggle 或模式按钮，保持纯排版阅读。
 - **Plans** — 保留 F1 / F2 内联 SVG 蓝图；可从 Dock 打开。蓝图、项目详情、Gallery lightbox 的 Escape 优先级都是“先返回上一层”，主桌面 Escape 才退出 OS。
 - **Onsen / Garden Map** — 别墅左前方扩展出独立的户外温泉亭：黑石平台、木格栅、暖水池、石灯笼、竹屏、涟漪与蒸汽。可通过空间索引 `08 温泉`、3D 点击或 `GARDEN MAP` 进入；聚焦后右下角提供 `STEAM`、`BATH LIGHT` 和 `RETURN TO GARDEN`。`GARDEN MAP` 也可用 `M` 打开、`ESC` 关闭，包含 Villa / Tea Room / Terrace / Garage / Onsen 五个镜头节点。
@@ -90,7 +91,13 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 
 ![NOCTURNE Atelier editorial reading](preview-nocturne-atelier-reading.png)
 
+![NOCTURNE Atelier process evidence](preview-nocturne-atelier-process.png)
+
 ![NOCTURNE Atelier sources and credits](preview-nocturne-atelier-sources.png)
+
+![NOCTURNE Atelier colophon](preview-nocturne-atelier-sources-last.png)
+
+![NOCTURNE Open Graph image](images/og-image.jpg)
 
 ![NOCTURNE OS audio player](preview-nocturne-audio.png)
 

@@ -858,6 +858,47 @@ const ATELIER_SPREADS = [
     },
   },
   {
+    id: "process-3",
+    chapter: "process",
+    left: {
+      label: "PROCESS / EVIDENCE",
+      type: "process",
+      images: [
+        {
+          src: "images/process-before-env.jpg",
+          alt: "Earlier environment control desk before the editorial redesign",
+          label: "BEFORE / CONTROL DESK",
+        },
+        {
+          src: "images/process-after-env.jpg",
+          alt: "Current environment design philosophy spread",
+          label: "AFTER / DESIGN PHILOSOPHY",
+        },
+        {
+          src: "images/process-wireframe.jpg",
+          alt: "Wireframe study of the NOCTURNE model",
+          label: "MESH / WIREFRAME STUDY",
+        },
+      ],
+      caption: "Actual development files / before, after, and the mesh",
+    },
+    right: {
+      kicker: "PROCESS / EVIDENCE",
+      title: "过程不是附件。",
+      paragraphs: [
+        "这一页的材料来自实际文件，不是补做的 mockup。旧版 Environment 截图来自 Git 历史，wireframe 直接从当前 Three.js 场景抓取，右侧的 editorial 页面则是它后来变成的样子。",
+        "从控制台到阅读页，从平面播放器到唱片房，从方块车到 GLB 跑车，从暗色弹窗到双页 flipbook：真正定义项目的不是最后那版，而是这些被留下来的版本。",
+      ],
+      points: [
+        "Environment：控制台 → 建筑杂志跨页。",
+        "Audio：平面播放器 → 唱片房，再重做雨声与风声。",
+        "Car：低模盒子 → GLB + 车库环境反射。",
+        "Atelier：暗色 modal → 实体书式 flipbook。",
+      ],
+      quote: "The version you see is the last one, not the only one.",
+    },
+  },
+  {
     id: "material-1",
     chapter: "material",
     left: {
@@ -917,7 +958,7 @@ const ATELIER_SPREADS = [
       ],
       credits: [
         ["PROJECT", "NOCTURNE / 2026"],
-        ["DESIGN & CODE", "Project author"],
+        ["DESIGN & CODE", "CZH"],
         ["ENGINE", "Three.js r187 / GSAP"],
         ["3D ASSET", "Ferrari GLB / three.js"],
         ["AUDIO", "Dark — mixed matches"],
@@ -6820,7 +6861,7 @@ function initAtelier() {
   overlay.innerHTML = `
     <header class="atelier-topbar">
       <span class="atelier-brand">NOCTURNE <i>/</i> ATELIER</span>
-      <span class="atelier-position" id="atelier-position">01 / 07</span>
+      <span class="atelier-position" id="atelier-position">01 / 08</span>
       <button class="atelier-close" type="button" data-atelier-close>CLOSE BOOK ×</button>
     </header>
     <div class="book-stage">
@@ -6832,7 +6873,7 @@ function initAtelier() {
     </div>
     <footer class="book-footer">
       <button class="book-nav book-prev" type="button" data-book-prev>← PREVIOUS PAGE</button>
-      <span class="book-folio" id="book-folio">SPREAD 01 / 07</span>
+      <span class="book-folio" id="book-folio">SPREAD 01 / 08</span>
       <button class="book-nav book-next" type="button" data-book-next>NEXT PAGE →</button>
     </footer>
   `;
@@ -6884,6 +6925,9 @@ function initAtelier() {
 
   document.querySelectorAll("[data-atelier-entry]").forEach((button) => {
     button.addEventListener("click", () => enterAtelier());
+  });
+  document.querySelectorAll("[data-atelier-source]").forEach((button) => {
+    button.addEventListener("click", () => openAtelierChapter("sources"));
   });
 
   document.addEventListener(
@@ -7014,7 +7058,7 @@ function atelierMarkup(chapter) {
     chapter.type === "sources"
       ? `<div class="atelier-credits">
           <div><span>PROJECT</span><strong>NOCTURNE / 2026</strong></div>
-          <div><span>DESIGN & CODE</span><strong>Project author</strong></div>
+          <div><span>DESIGN & CODE</span><strong>CZH</strong></div>
           <div><span>ENGINE</span><strong>Three.js r187</strong></div>
           <div><span>3D ASSET</span><strong>Ferrari GLB / three.js example</strong></div>
           <div><span>AUDIO</span><strong>Dark — mixed matches</strong></div>
@@ -7091,7 +7135,17 @@ function atelierLeftPageMarkup(spread, index) {
   const left = spread.left;
   const media = left.diagram
     ? atelierDiagramMarkup()
-    : `<figure class="book-figure"><img src="${left.image}" alt="${left.alt}" loading="eager"></figure>`;
+    : left.type === "process"
+      ? `<div class="book-process-grid">${left.images
+          .map(
+            (image) => `
+              <figure>
+                <img src="${image.src}" alt="${image.alt}" loading="eager">
+                <figcaption>${image.label}</figcaption>
+              </figure>`
+          )
+          .join("")}</div>`
+      : `<figure class="book-figure"><img src="${left.image}" alt="${left.alt}" loading="eager"></figure>`;
   return `
     <div class="book-page-inner book-page-left-inner">
       <p class="book-plate-label">${left.label}</p>
@@ -7593,6 +7647,7 @@ function initNocturneOS() {
                   <div class="os-env-editorial">
                     <figure class="os-env-editorial-plate">
                       <img src="images/env-night.jpg" alt="AI study of the NOCTURNE villa at night with pool reflections">
+                      <figcaption>AI-ASSISTED CONCEPT IMAGE / NOCTURNE ARCHIVES</figcaption>
                     </figure>
                     <div class="os-env-editorial-copy">
                       <p class="os-env-editorial-kicker">DESIGN PHILOSOPHY / ENVIRONMENT</p>
