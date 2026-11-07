@@ -62,7 +62,7 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 - **Audio** — Audio 引擎保留四条 loop 轨道：`AMBIENT RAIN`、`WIND`、`JAZZ` 与本地文件 `Dark`；`audioTracks` 跨 OS 会话保存，关闭 / 重开 OS 时继续播放。`Dark` 在页面加载完成后以 Blob 形式完整预取，打开 Audio 时自动开始播放，并支持自由 seek。
 - **Immersive Audio / My Favourite** — 打开 Audio 会进入独立的全屏唱片房：暖棕色径向背景，左侧 60% 为巨型黑胶盘（封面圆形、黑胶凹槽 `repeating-radial-gradient`、CSS 持续旋转），右侧 40% 为 `Dark / mixed matches / Dark` 与极简播放控制。左上角 `[ ∨ MINIMIZE ]` 返回桌面；此视图会隐藏标准 OS 玻璃窗口、顶部栏与 Dock。银色唱臂由 GSAP 控制，播放时转到 `25deg`，暂停回到 `0deg`。封面为 `images/dark.jpg`，音源位于 `music/Dark.mp3`；细线进度条支持点击、拖动与键盘左右键 seek。
 - **Atelier / Flipbook 创作手记** — 首页空间索引里的 `05 书房 / 创作室` 通向一间可探索的 Atelier。桌面手记、材料盘、建筑模型和档案盒分别对应创作起点、过程、材料与 `Sources & Credits`。书房聚焦后显示 `ATELIER` HUD 与 CSS2D 物件标签；打开物件后进入全屏实体书阅读层：暖白纸面 `#e8dfcf`、左右双页、中央书脊阴影、Newsreader 自托管衬线字体，以及 7 个 spread。翻页使用 DOM 克隆页 + GSAP `x` / `opacity` / `box-shadow`，不做 3D curl；Next 时右页向左滑过左页，Prev 反向。首尾自动隐藏 Prev / Next，Close Book 会先淡出书页，再用 GSAP 把相机送回打开前保存的视角。
-- **Environment** — `NIGHT / DUSK / DAY` 现在是横向精密滑轨；左侧显示 AI 生成的夜景图 `images/env-night.jpg`，用 110% 尺寸与 `translate(-5%, -5%)` 裁掉水印，并叠加 `ENV / NIGHT / SKY TEMP / 22°` 摄像头 HUD、闪烁红灯和底部 40% 暗角渐变。滑轨会实时切换图片滤镜：Night 冷调高饱和、Dusk sepia + hue-rotate、Day 提亮降饱和。RAIN / WIND 使用 iOS 开关，同时控制环境音、`images/rain.png` 循环雨层和风线。返回别墅且相机回程完全结束后才应用 3D 照明：Night 恢复原始照明，Dusk 调暖背景并关闭房间主灯，Day 使用冷白环境光和浅色天空。
+- **Environment / Design Philosophy** — Environment 不再是控制台，而是一页纯阅读的建筑杂志跨页：左侧 60% 全高 AI 夜景图 `images/env-night.jpg`，右侧 40% 使用自托管 Playfair Display 的巨幅标题 `THE NIGHT IS A MATERIAL.`，下方两段窄栏 Newsreader 正文讨论黑色石材如何吸光、玻璃如何把室内暖意交还给庭院。底部右下角保留 `[ CAPTURED AT 23:00 / NOCTURNE ARCHIVES ]` 档案标签。该视图不包含任何 slider、toggle 或模式按钮，保持纯排版阅读。
 - **Plans** — 保留 F1 / F2 内联 SVG 蓝图；可从 Dock 打开。蓝图、项目详情、Gallery lightbox 的 Escape 优先级都是“先返回上一层”，主桌面 Escape 才退出 OS。
 - **Onsen / Garden Map** — 别墅左前方扩展出独立的户外温泉亭：黑石平台、木格栅、暖水池、石灯笼、竹屏、涟漪与蒸汽。可通过空间索引 `08 温泉`、3D 点击或 `GARDEN MAP` 进入；聚焦后右下角提供 `STEAM`、`BATH LIGHT` 和 `RETURN TO GARDEN`。`GARDEN MAP` 也可用 `M` 打开、`ESC` 关闭，包含 Villa / Tea Room / Terrace / Garage / Onsen 五个镜头节点。
 - **Master Suite family photo** — 主卧床头墙新增 1.12 × 0.82 m 深木相框与 `PlaneGeometry(1,1)` 照片平面，读取根目录 `family.jpg` 并按原始宽高比自适应缩放。当前已放入用户提供的家庭照片；没有图片时显示深灰底与细金内框，不阻塞场景。鼠标悬停相框会出现手型光标，点击弹出文件选择器；上传图片通过 `FileReader` + `THREE.Texture` 热替换，旧纹理即时 `dispose()`。相框上方有一盏 `0.5` 强度的暖色 `SpotLight`，随卧室在 X-Ray Focus 中的变暗而渐隐到 `0.075`，退出聚焦后回到 `0.5`。
@@ -84,7 +84,7 @@ OS 不再只是启动终端加控制面板，而是一套带启动动画的 macO
 
 ![NOCTURNE PROJECTS digital gallery](preview-nocturne-projects.png)
 
-![NOCTURNE ENVIRONMENT precision controls](preview-nocturne-environment.png)
+![NOCTURNE ENVIRONMENT design philosophy](preview-nocturne-environment.png)
 
 ![NOCTURNE Atelier in the study](preview-nocturne-atelier-room.png)
 

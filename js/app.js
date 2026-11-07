@@ -335,6 +335,7 @@ const osState = {
   activeAppEl: null,
   menuTitleEl: null,
   windowTitleEl: null,
+  windowBodyEl: null,
   desktopEnvEl: null,
   desktopAudioEl: null,
   desktopClockEl: null,
@@ -444,7 +445,7 @@ const OS_APPS = {
   projects: { label: "PROJECTS", title: "ARCHIVE / PROJECTS", meta: "04 ENTRIES / 2026" },
   gallery: { label: "GALLERY", title: "ARCHIVE / RENDERS", meta: "05 FRAMES / NIGHT" },
   audio: { label: "AUDIO", title: "MEDIA / AMBIENCE", meta: "04 TRACKS / LIVE" },
-  environment: { label: "ENVIRONMENT", title: "CONTROL / ATMOSPHERE", meta: "NIGHT / DUSK / DAY" },
+  environment: { label: "ENVIRONMENT", title: "DESIGN PHILOSOPHY", meta: "EDITORIAL / 01" },
 };
 
 const portfolioData = [
@@ -7480,7 +7481,7 @@ function initNocturneOS() {
                     <button class="os-home-module" type="button" data-os-app="projects"><i class="os-module-led" aria-hidden="true"></i><span>01</span><strong>PROJECTS</strong><small>04 ENTRIES</small></button>
                     <button class="os-home-module" type="button" data-os-app="gallery"><i class="os-module-led" aria-hidden="true"></i><span>02</span><strong>GALLERY</strong><small>05 FRAMES</small></button>
                     <button class="os-home-module" type="button" data-os-app="audio"><i class="os-module-led" aria-hidden="true"></i><span>03</span><strong>AUDIO</strong><small>04 TRACKS</small></button>
-                    <button class="os-home-module" type="button" data-os-app="environment"><i class="os-module-led" aria-hidden="true"></i><span>04</span><strong>ENVIRONMENT</strong><small>NIGHT / DUSK / DAY</small></button>
+                    <button class="os-home-module" type="button" data-os-app="environment"><i class="os-module-led" aria-hidden="true"></i><span>04</span><strong>ENVIRONMENT</strong><small>DESIGN PHILOSOPHY</small></button>
                   </div>
                 </section>
 
@@ -7588,56 +7589,21 @@ function initNocturneOS() {
                   </div>
                 </section>
 
-                <section class="os-app" data-os-panel="environment">
-                  <header class="os-app-head">
-                    <div><p class="os-app-kicker">CONTROL / 04</p><h2>ENVIRONMENT</h2></div>
-                    <span class="os-app-meta">NIGHT / DUSK / DAY</span>
-                  </header>
-                  <div class="os-env-layout">
-                    <div class="os-env-visual" id="os-env-preview" data-os-env-visual="night" style="--env-pos:0">
-                      <div class="os-env-photo">
-                        <img src="images/env-night.jpg" alt="AI study of the NOCTURNE villa at night with pool reflections">
-                        <div class="os-env-photo-hud">
-                          <i class="os-env-photo-live" aria-hidden="true"></i>
-                          <span id="os-env-photo-mode">ENV / NIGHT</span>
-                          <span class="os-env-photo-divider" aria-hidden="true">/</span>
-                          <span>SKY TEMP / 22°</span>
-                        </div>
-                        <div class="os-env-photo-shade" aria-hidden="true"></div>
-                        <span class="os-env-photo-rain" aria-hidden="true"></span>
-                        <span class="os-env-photo-wind" aria-hidden="true"></span>
-                        <div class="os-env-visual-meta">
-                          <span class="os-env-readout">ENV / NIGHT</span>
-                          <span class="os-env-sky-readout">SKY 00 / DARK</span>
-                        </div>
+                <section class="os-app os-env-editorial-app" data-os-panel="environment">
+                  <div class="os-env-editorial">
+                    <figure class="os-env-editorial-plate">
+                      <img src="images/env-night.jpg" alt="AI study of the NOCTURNE villa at night with pool reflections">
+                    </figure>
+                    <div class="os-env-editorial-copy">
+                      <p class="os-env-editorial-kicker">DESIGN PHILOSOPHY / ENVIRONMENT</p>
+                      <h2 class="os-env-editorial-title"><span>THE NIGHT</span><span>IS A <em>MATERIAL.</em></span></h2>
+                      <div class="os-env-editorial-body">
+                        <p>Night begins at the base. The black stone is chosen for its appetite: it absorbs the last of the sky, erases the seam between house and ground, and gives the illuminated rooms something quiet to float against.</p>
+                        <p>Glass does the opposite. It refuses to compete with the dark; it simply reveals the warmth already inside — walnut, linen, a low lamp, the trace of someone still awake. From the garden, the villa reads as a sequence of held lights.</p>
                       </div>
-                    </div>
-                    <div class="os-env-copy">
-                      <p class="os-env-desc">A precision lighting desk for the residence. Stage the sky, weather and display state here; the villa receives the preset when you return.</p>
-                      <div class="os-env-slider-block">
-                        <div class="os-env-slider-head"><span>DAY / NIGHT</span><b id="os-env-mode">NIGHT</b></div>
-                        <div class="os-env-slider">
-                          <span class="os-env-slider-rail" aria-hidden="true"></span>
-                          <span class="os-env-slider-fill" id="os-env-slider-fill" aria-hidden="true"></span>
-                          <span class="os-env-slider-ticks" aria-hidden="true"><i></i><i></i><i></i></span>
-                          <i class="os-env-slider-thumb" id="os-env-slider-thumb" aria-hidden="true"></i>
-                          <input id="os-env-slider" type="range" min="0" max="100" step="1" value="0" aria-label="Day and night cycle">
-                        </div>
-                        <div class="os-env-slider-labels"><span>NIGHT</span><span>DUSK</span><span>DAY</span></div>
-                      </div>
-                      <div class="os-env-weather">
-                        <div class="os-env-weather-row"><span><i class="os-weather-icon" aria-hidden="true">///</i>RAIN</span><button class="os-switch" type="button" data-os-weather="rain" aria-pressed="false" aria-label="Toggle rain"><i></i></button></div>
-                        <div class="os-env-weather-row"><span><i class="os-weather-icon" aria-hidden="true">~~</i>WIND</span><button class="os-switch" type="button" data-os-weather="wind" aria-pressed="false" aria-label="Toggle wind"><i></i></button></div>
-                      </div>
-                      <div class="os-env-status" id="os-env-status">CURRENT / NIGHT · APPLIES ON RETURN</div>
-                      <div class="os-env-rule"></div>
-                      <div class="os-env-display">
-                        <div class="os-env-display-head"><span>DISPLAY MODE</span><span id="os-mode-status">DISPLAY / OFF</span></div>
-                        <div class="os-modes os-env-hardware">
-                          <button type="button" class="os-mode" data-os-mode="0">OFF</button>
-                          <button type="button" class="os-mode" data-os-mode="1">TERMINAL</button>
-                          <button type="button" class="os-mode" data-os-mode="2">SIGNAL</button>
-                        </div>
+                      <div class="os-env-editorial-foot">
+                        <span>NOCTURNE RESIDENCE / 2026</span>
+                        <span class="os-env-editorial-tag">[ CAPTURED AT 23:00 / NOCTURNE ARCHIVES ]</span>
                       </div>
                     </div>
                   </div>
@@ -7809,6 +7775,7 @@ function initNocturneOS() {
   osState.activeAppEl = overlay.querySelector("#os-active-app");
   osState.menuTitleEl = overlay.querySelector("#os-menu-title");
   osState.windowTitleEl = overlay.querySelector("#os-window-title");
+  osState.windowBodyEl = overlay.querySelector("#os-window-body");
   osState.desktopEnvEl = overlay.querySelector("#os-desktop-env");
   osState.desktopAudioEl = overlay.querySelector("#os-desktop-audio");
   osState.desktopClockEl = overlay.querySelector("#os-desktop-clock");
@@ -9185,6 +9152,7 @@ function setActiveAppUI(name) {
   if (osState.menuTitleEl) osState.menuTitleEl.textContent = info.title;
   if (osState.windowTitleEl) osState.windowTitleEl.textContent = `${info.label} / ${info.title}`;
   osState.overlay?.classList.toggle("is-audio-mode", name === "audio");
+  osState.windowBodyEl?.classList.toggle("is-environment-mode", name === "environment");
 }
 
 function openOsApp(name, { instant = false } = {}) {
