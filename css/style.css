@@ -8050,6 +8050,16 @@ body.os-open .hotspot-layer {
 }
 
 /* Project identity / visible author and sources ---------------------------- */
+.hero-cn {
+  margin: 15px 0 0;
+  color: rgba(var(--accent-rgb), 0.42);
+  font-family: "Songti SC", "STSong", "Noto Serif SC", serif;
+  font-size: clamp(10px, 0.9vw, 12px);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
+}
+
 .project-byline {
   display: flex;
   flex-direction: column;

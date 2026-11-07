@@ -155,47 +155,47 @@ const LIGHT_RIG_KEYS = [
 const HOTSPOTS = [
   {
     id: "stone",
-    title: "文化石柱",
-    text: "天然文化石饰面",
+    title: "Hand-Laid Stone",
+    text: "Natural stone facing",
     position: [-2.54, 3.35, 1.42],
     normal: [0, 0, 1],
   },
   {
     id: "terrace",
-    title: "二层露台",
-    text: "二层观景露台",
+    title: "Upper Terrace",
+    text: "Second-floor lookout",
     position: [2.15, 4.14, 1.64],
     normal: [0, 0, 1],
   },
   {
     id: "sofa",
-    title: "户外沙发",
-    text: "庭院里的户外起居",
+    title: "Outdoor Lounge",
+    text: "Outdoor living in the garden",
     position: [-2.78, 0.9, 2.96],
     normal: [0, 1, 0],
   },
   {
     id: "window",
-    title: "主卧窗户",
-    text: "全景落地窗，引入庭院夜色",
+    title: "Master Window",
+    text: "Full-height glazing brings the garden night inside",
     position: [-0.35, 4.9, 0.42],
     normal: [0, 0, 1],
     requires: "glass",
   },
   {
     id: "pathLight",
-    title: "路径灯",
-    text: "点击依次点亮步道灯",
-    activeText: "再次点击重播路径灯",
+    title: "Path Lights",
+    text: "Click to light the garden path",
+    activeText: "Click again to replay the path lights",
     action: "pathLights",
     position: [2.65, 0.36, 3.85],
     normal: [0, 1, 0],
   },
   {
     id: "shrubs",
-    title: "庭院灌木",
-    text: "点击召唤萤火虫",
-    activeText: "再次点击收起萤火虫",
+    title: "Garden Planting",
+    text: "Click to summon the fireflies",
+    activeText: "Click again to release the fireflies",
     action: "fireflies",
     position: [4.18, 0.76, 2.15],
     normal: [0, 1, 0],
@@ -781,16 +781,16 @@ const ATELIER_SPREADS = [
       label: "PLATE 01 / EXTERIOR",
       image: "assets/gallery-villa.png",
       alt: "NOCTURNE villa at night",
-      caption: "总览 / NIGHT · 410 m² · 2026",
+      caption: "Overview / NIGHT · 410 m² · 2026",
     },
     right: {
       kicker: "ATELIER / NOTE 01",
-      title: "先有一片夜，<br><em>再有一栋房子。</em>",
+      title: "A NIGHT FIRST,<br><em>A HOUSE SECOND.</em>",
       deck:
-        "NOCTURNE 的起点不是一个建筑类型，而是一种时间：当一天结束，房子不再向外展示，而是把光收回来。",
+        "NOCTURNE began with a time of day, not a building type: the hour when a house stops performing for the world and begins to gather its light inward.",
       paragraphs: [
-        "很多夜景住宅的做法，是先完成建筑，再在外面打一层暖光。NOCTURNE 想反过来：先决定夜晚如何发生，再让墙、玻璃、木头和水为这件事让路。",
-        "所以首层被压低，玻璃退到黑色石基后面，真正亮着的是茶室、书房和庭院边缘。光被留在室内，像一件不愿意被路人看见的东西。",
+        "Most night houses are completed first and washed with warm light afterwards. NOCTURNE works the other way around: decide how night should happen, then let wall, glass, timber and water make room for it.",
+        "The ground floor is kept low. Glass withdraws behind the black stone base; the tea room, study and garden edge hold the glow. Light stays inside, like something the house is not ready to show the street.",
       ],
     },
   },
@@ -801,20 +801,20 @@ const ATELIER_SPREADS = [
       label: "PLATE 02 / STUDY",
       image: "assets/gallery-study.png",
       alt: "NOCTURNE study and atelier",
-      caption: "书房 / ATELIER · 二层 · 30 m²",
+      caption: "Study / ATELIER · Level 2 · 30 m²",
     },
     right: {
       kicker: "ORIGIN / THE RULES",
-      title: "三条最初的规则。",
+      title: "Three rules,<br><em>before a form.</em>",
       paragraphs: [
-        "我不想用某一张参考图来定义这栋房子。最后留下来的不是风格，而是三个必须同时成立的条件。",
+        "I did not want a single reference image to define the house. What remained was not a style, but three conditions that had to be true at once.",
       ],
       points: [
-        "房子必须有两个尺度：远处是安静的体量，走近后才有可以停留的房间。",
-        "所有材料必须能在夜里工作：混凝土吸光，胡桃木保温，玻璃把庭院借进来，黄铜只出现在需要被触摸的地方。",
-        "技术不能盖过空间。NOCTURNE OS 可以很复杂，但它打开的第一屏应该只是“欢迎回来”。",
+        "The house needed two scales: a quiet volume from a distance, and rooms worth staying in up close.",
+        "Every material had to work at night: concrete absorbs, walnut holds warmth, glass borrows the garden, brass appears only where a hand would touch.",
+        "Technology must never outshout the room. NOCTURNE OS can be complex, but its first screen should only say: welcome back.",
       ],
-      quote: "白天，房子属于风景；入夜，风景属于房子。",
+      quote: "By day, the house belongs to the view. After dark, the view belongs to the house.",
     },
   },
   {
@@ -823,18 +823,18 @@ const ATELIER_SPREADS = [
     left: {
       label: "PLATE 03 / SECTION",
       diagram: true,
-      caption: "体量 / 剖面关系 · 07 个关键动作",
+      caption: "Massing / section · seven moves",
     },
     right: {
       kicker: "ATELIER / NOTE 02",
-      title: "把房子抬起来，<br><em>把夜晚放下去。</em>",
+      title: "LIFT THE HOUSE,<br><em>LOWER THE NIGHT.</em>",
       deck:
-        "两层白色体量、黑色石基、下沉车库与悬挑茶室——所有形式都先被一条剖面说服，然后才被做成可以旋转的实时模型。",
+        "Two pale volumes, a black stone base, a sunken garage and a cantilevered tea room: every form had to be proved in section before it became a real-time model.",
       points: [
-        "黑色石基把建筑从草地上抬起来，也藏住设备、车库和结构。",
-        "下沉车库让车从地面消失，保留首层完整的水平线。",
-        "悬挑茶室把最轻的房间推到庭院上方，让玻璃盒成为夜晚的灯。",
-        "屋顶露台在二层留一个没有墙的观察点。",
+        "The black stone base lifts the house from the grass and hides services, garage and structure.",
+        "The sunken garage removes the car from the ground plane, keeping the ground-floor line intact.",
+        "The cantilevered tea room pushes the lightest room over the garden, turning a glass box into a night lantern.",
+        "The roof terrace leaves one place on the second floor with no wall at all.",
       ],
     },
   },
@@ -845,16 +845,16 @@ const ATELIER_SPREADS = [
       label: "PLATE 04 / GARAGE",
       image: "preview-nocturne-garage.png",
       alt: "NOCTURNE sunken garage with showroom car",
-      caption: "下沉车库 / 体量与坡道 · NIGHT",
+      caption: "Sunken garage / massing and ramp · NIGHT",
     },
     right: {
       kicker: "PROCESS / SYSTEM",
-      title: "从模型到实时系统。",
+      title: "From model<br><em>to system.</em>",
       paragraphs: [
-        "这栋房子不是一张静态效果图。它由 Three.js 程序化搭建：墙体、楼板、家具、植物和灯光都是可编辑的几何体，镜头可以在总览、房间、X-Ray 与剖面之间移动。",
-        "NOCTURNE OS 是第二层空间：项目档案、环境控制、声音和家庭照片被放进同一套界面。它必须像一个系统，但又不能比房子更吵。所以最终留下的都是低对比的玻璃、很细的分隔线和一块只显示必要信息的 dashboard。",
+        "This house is not a static rendering. It is built procedurally in Three.js: walls, slabs, furniture, planting and lighting are editable geometry, and the camera can move between overview, rooms, X-Ray and section.",
+        "NOCTURNE OS is the second layer: project archive, environment, sound and a family photograph inside one interface. It has to feel like a system without becoming louder than the house. What remained is low-contrast glass, hairline divisions and a dashboard that only shows what is necessary.",
       ],
-      quote: "每一个体量，都要在剖面上解释自己。",
+      quote: "Every volume has to explain itself in section.",
     },
   },
   {
@@ -880,20 +880,20 @@ const ATELIER_SPREADS = [
           label: "MESH / WIREFRAME STUDY",
         },
       ],
-      caption: "Actual development files / before, after, and the mesh",
+      caption: "Actual development files / before, after and the mesh",
     },
     right: {
       kicker: "PROCESS / EVIDENCE",
-      title: "过程不是附件。",
+      title: "Process is not<br><em>an appendix.</em>",
       paragraphs: [
-        "这一页的材料来自实际文件，不是补做的 mockup。旧版 Environment 截图来自 Git 历史，wireframe 直接从当前 Three.js 场景抓取，右侧的 editorial 页面则是它后来变成的样子。",
-        "从控制台到阅读页，从平面播放器到唱片房，从方块车到 GLB 跑车，从暗色弹窗到双页 flipbook：真正定义项目的不是最后那版，而是这些被留下来的版本。",
+        "The material on this page comes from the actual files, not from a mockup made afterwards. The old Environment screenshot is from the Git history, the wireframe was captured from the current Three.js scene, and the editorial page is what it became.",
+        "From control desk to reading page, from flat player to listening room, from box car to GLB sports car, from dark modal to a printed flipbook: what defines the project is not only the final version, but the versions that were allowed to remain.",
       ],
       points: [
-        "Environment：控制台 → 建筑杂志跨页。",
-        "Audio：平面播放器 → 唱片房，再重做雨声与风声。",
-        "Car：低模盒子 → GLB + 车库环境反射。",
-        "Atelier：暗色 modal → 实体书式 flipbook。",
+        "Environment: control desk → architectural magazine spread.",
+        "Audio: flat player → listening room, then softer rain and wind.",
+        "Car: low-poly box → GLB with garage reflections.",
+        "Atelier: dark modal → physical-book flipbook.",
       ],
       quote: "The version you see is the last one, not the only one.",
     },
@@ -905,20 +905,20 @@ const ATELIER_SPREADS = [
       label: "PLATE 05 / ONSEN",
       image: "preview-nocturne-onsen.png",
       alt: "NOCTURNE outdoor onsen at night",
-      caption: "温泉 / 水、黑石与木格栅 · NIGHT",
+      caption: "Onsen / water, black stone and timber · NIGHT",
     },
     right: {
       kicker: "ATELIER / NOTE 03",
-      title: "光，是最后<br><em>一种材料。</em>",
+      title: "LIGHT IS THE LAST<br><em>MATERIAL.</em>",
       deck:
-        "混凝土、玻璃、胡桃木、黑石、黄铜和水，最后都要经过同一件事的检验：它在夜里是否还愿意留下来。",
+        "Concrete, glass, walnut, black stone, brass and water all have to pass the same test: will they stay in the room at night?",
       points: [
-        "混凝土吸光，胡桃木保温，黑石让水声变得清楚。",
-        "玻璃不是墙，而是把庭院借进室内的取景器。",
-        "黄铜只在把手、灯杆和书脊上出现。",
-        "NIGHT 是默认状态；DUSK 把房子交给桃金色空气；DAY 把房间交还给风景。",
+        "Concrete absorbs. Walnut holds warmth. Black stone makes the sound of water legible.",
+        "Glass is not a wall; it is a viewfinder that borrows the garden.",
+        "Brass appears only on handles, lamp stems and book spines.",
+        "NIGHT is the default; DUSK hands the house to peach-coloured air; DAY returns the rooms to the view.",
       ],
-      quote: "材料决定房子如何被触摸；光决定它如何被记住。",
+      quote: "Material tells you how a house is touched. Light tells you how it is remembered.",
     },
   },
   {
@@ -932,12 +932,12 @@ const ATELIER_SPREADS = [
     },
     right: {
       kicker: "SOURCES & CREDITS",
-      title: "留下值得<br><em>被追溯的痕迹。</em>",
+      title: "A TRAIL WORTH<br><em>FOLLOWING.</em>",
       deck:
-        "空间判断、视觉资产和技术实现来自不同的地方。这一页记录它们各自支撑了 NOCTURNE 的哪一部分。",
+        "Spatial decisions, visual assets and technical implementation come from different places. This page records what supports each part of NOCTURNE.",
       paragraphs: [
-        "NOCTURNE 是一个以夜晚为主题的个人建筑与交互实验。空间概念、体量关系、镜头、界面结构、页面文案与 3D 场景由项目作者完成；家庭照片由作者提供，是这栋房子里唯一一件不能被程序生成的物件。",
-        "AI 工具参与了资料整理、英文润色、代码编写与调试，以及部分概念图像的生成。空间取舍、视觉方向、文案判断与最终验收由作者完成。",
+        "NOCTURNE is a personal architectural and interactive study about night. The spatial concept, massing, camera, interface structure, page copy and 3D scene were developed by CZH. The family photograph was supplied by the author and remains the one object in the house that cannot be generated.",
+        "AI tools supported research organisation, English editing, code preparation and debugging, and some concept imagery. Spatial choices, visual direction, editorial judgment and final approval remained with the author.",
       ],
     },
   },
@@ -948,13 +948,13 @@ const ATELIER_SPREADS = [
       label: "PLATE 07 / COLOPHON",
       image: "assets/gallery-living.png",
       alt: "NOCTURNE living room at night",
-      caption: "客厅 / LIVING · 首层 · 38 m²",
+      caption: "Living / ground floor · 38 m²",
     },
     right: {
       kicker: "COLOPHON / BUILD",
       title: "Sources & Credits.",
       paragraphs: [
-        "场景由 Three.js r187 与本地 GLTFLoader / DRACOLoader 驱动。建筑、家具、植物、灯光和大部分材质为程序化几何体；车库跑车使用 three.js 示例资产，在项目中作为同类型跑车的占位模型。",
+        "The scene is driven by Three.js r187 and local GLTFLoader / DRACOLoader. The architecture, furniture, planting, lighting and most materials are procedural geometry; the garage car uses a three.js example asset as a stand-in sports car.",
       ],
       credits: [
         ["PROJECT", "NOCTURNE / 2026"],
@@ -963,7 +963,7 @@ const ATELIER_SPREADS = [
         ["3D ASSET", "Ferrari GLB / three.js"],
         ["AUDIO", "Dark — mixed matches"],
         ["WEATHER", "Procedural WAV"],
-        ["TYPE", "Newsreader / system serif"],
+        ["TYPE", "Newsreader / Playfair / system serif"],
         ["BUILD", "2026.11 / GitHub Pages"],
       ],
       quote: "A house is also an archive of the decisions that made it.",
@@ -976,7 +976,7 @@ const ATELIER_OBJECTS = [
     id: "origin",
     type: "atelier-origin",
     label: "01 / ORIGIN",
-    hint: "桌上的手记",
+    hint: "desk notes",
     position: [3.56, 4.585, -1.32],
     hotspot: [3.56, 4.9, -1.28],
   },
@@ -984,7 +984,7 @@ const ATELIER_OBJECTS = [
     id: "process",
     type: "atelier-process",
     label: "02 / PROCESS",
-    hint: "建筑模型",
+    hint: "massing model",
     position: [5.56, 3.84, -0.58],
     hotspot: [5.56, 4.58, -0.52],
   },
@@ -992,7 +992,7 @@ const ATELIER_OBJECTS = [
     id: "material",
     type: "atelier-material",
     label: "03 / MATERIAL",
-    hint: "材料盘",
+    hint: "material tray",
     position: [4.58, 4.585, -1.32],
     hotspot: [4.58, 4.82, -1.28],
   },
@@ -1000,7 +1000,7 @@ const ATELIER_OBJECTS = [
     id: "sources",
     type: "atelier-sources",
     label: "04 / SOURCES",
-    hint: "档案盒",
+    hint: "archive box",
     position: [5.6, 3.84, -1.55],
     hotspot: [5.6, 4.44, -1.5],
   },
@@ -5793,7 +5793,7 @@ function createHotspots() {
   const layer = document.createElement("div");
   layer.className = "hotspot-layer";
   layer.setAttribute("role", "group");
-  layer.setAttribute("aria-label", "空间标记");
+  layer.setAttribute("aria-label", "Space labels");
   viewer.appendChild(layer);
 
   HOTSPOTS.forEach((spot) => {
@@ -6285,15 +6285,15 @@ function initArchitectureStudy() {
 }
 
 const ROOM_CAPTIONS = {
-  living: "客厅 / Living Room",
-  dining: "餐厨 / Kitchen & Dining",
-  bedroom: "主卧 / Master Suite",
-  reading: "阅读角 / Reading Corner",
-  terrace: "露台 / Roof Terrace",
-  teaRoom: "茶室 / Tea Room",
-  study: "书房 / ATELIER · 创作室",
-  garage: "车库 / Sunken Garage",
-  onsen: "温泉 / Outdoor Onsen",
+  living: "Living Room",
+  dining: "Kitchen & Dining",
+  bedroom: "Master Suite",
+  reading: "Reading Corner",
+  terrace: "Roof Terrace",
+  teaRoom: "Tea Room",
+  study: "Study / Atelier",
+  garage: "Sunken Garage",
+  onsen: "Outdoor Onsen",
 };
 
 function cloneSelectedMaterials(group) {
@@ -6567,16 +6567,16 @@ function initRoomLabels() {
     element.style.pointerEvents = "auto";
     element.setAttribute(
       "aria-label",
-      `${config.zh} ${config.en}：聚焦空间`
+      `${config.en} / ${config.zh}: focus space`
     );
 
     const inner = document.createElement("span");
     inner.className = "room-label-inner";
     inner.innerHTML = [
       '<span class="room-label-mark" aria-hidden="true">✦</span>',
-      `<span class="room-label-zh">${config.zh}</span>`,
+      `<span class="room-label-zh">${config.en}</span>`,
       '<span class="room-label-sep" aria-hidden="true">/</span>',
-      `<span class="room-label-en">${config.en}</span>`,
+      `<span class="room-label-en" lang="zh-CN">${config.zh}</span>`,
     ].join("");
     element.appendChild(inner);
 
@@ -6654,7 +6654,7 @@ function initGardenExperience() {
   trigger.type = "button";
   trigger.className = "garden-map-trigger";
   trigger.innerHTML = '<span class="garden-map-dot" aria-hidden="true"></span>GARDEN MAP <span aria-hidden="true">⌘</span>';
-  trigger.setAttribute("aria-label", "打开庭院地图");
+  trigger.setAttribute("aria-label", "Open Garden Map");
   viewer.appendChild(trigger);
 
   const hud = document.createElement("aside");
@@ -6685,10 +6685,10 @@ function initGardenExperience() {
           <p>NOCTURNE / GROUNDS</p>
           <h2 id="garden-map-title">Garden Map</h2>
         </div>
-        <button type="button" class="garden-map-close" data-garden-close aria-label="关闭庭院地图">[ CLOSE × ]</button>
+        <button type="button" class="garden-map-close" data-garden-close aria-label="Close Garden Map">[ CLOSE × ]</button>
       </header>
       <div class="garden-map-canvas">
-        <svg viewBox="0 0 680 360" role="img" aria-label="NOCTURNE 别墅与温泉庭院平面图">
+        <svg viewBox="0 0 680 360" role="img" aria-label="Plan of the NOCTURNE villa and onsen garden">
           <defs>
             <linearGradient id="garden-laen" x1="0" x2="1" y1="0" y2="1">
               <stop offset="0" stop-color="rgba(255,255,255,.07)"/>
@@ -6887,8 +6887,8 @@ function initAtelier() {
   hud.className = "atelier-room-hud";
   hud.setAttribute("aria-label", "Atelier room guide");
   hud.innerHTML = `
-    <div class="atelier-hud-head"><span>ATELIER / 创作手记</span><b>04 NOTES</b></div>
-    <p>这个房间里放着这栋房子的四个决定。点击物件，或从下面开始阅读。</p>
+    <div class="atelier-hud-head"><span>ATELIER / PROJECT NOTES</span><b>04 NOTES</b></div>
+    <p>Four decisions for this house live in this room. Click an object, or begin reading below.</p>
     <div class="atelier-hud-links" id="atelier-hud-links"></div>
   `;
   document.body.appendChild(hud);
@@ -7463,7 +7463,7 @@ function initNocturneOS() {
     <div class="os-topbar">
       <div class="os-brand"><span class="os-mark" aria-hidden="true">✦</span><span>NOCTURNE / OS</span></div>
       <div class="os-topmeta"><span>NODE 04</span><span>SECURE LINK</span></div>
-      <button class="os-return" type="button">[ ✕ Return to Villa / 返回别墅 ]</button>
+      <button class="os-return" type="button">[ ✕ Return to Villa ]</button>
     </div>
     <main class="os-stage">
       <section class="os-console" aria-label="NOCTURNE system console">
@@ -7506,7 +7506,7 @@ function initNocturneOS() {
                   <div class="os-home-layout">
                     <div class="os-home-copy">
                       <p class="os-app-kicker">WELCOME BACK / SESSION 04</p>
-                      <h2 class="os-home-title">把夜晚，<br><em>留在桌面。</em></h2>
+                      <h2 class="os-home-title">KEEP THE NIGHT,<br><em>ON THE DESKTOP.</em></h2>
                       <p class="os-home-desc">A private control surface for the NOCTURNE residence. Projects, renders, sound and atmosphere — all in one place, until the villa calls you back.</p>
                       <div class="os-home-actions">
                         <button class="os-text-link" type="button" data-os-app="projects">OPEN PROJECTS <span>↗</span></button>
@@ -7700,7 +7700,7 @@ function initNocturneOS() {
               <span>ARCHIVE / FLOORPLAN</span>
               <strong>NOCTURNE RESIDENCE · F1 / F2</strong>
             </div>
-            <button class="os-blueprint-back" type="button">← Back to Terminal / 返回终端</button>
+            <button class="os-blueprint-back" type="button">← Back to Terminal</button>
           </div>
           <div class="os-blueprint-sheet">
             <svg class="os-blueprint-svg" viewBox="0 0 1200 760" role="img" aria-label="NOCTURNE villa floorplans, ground floor and upper floor">
